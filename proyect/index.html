@@ -1,13 +1,241 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proyect</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rosé Beauty — Catálogo</title>
+  <meta name="description" content="Descubre nuestra colección curada de productos de maquillaje premium.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/Client/index.css">
+</head>
+<body>
+  <!-- Header -->
+
+  <!-- Main -->
+
+  <div id="root"></div>
+  <script type="module" src="/proyect/src/Client/main.jsx"></script>
+
+  <!-- Cart Drawer -->
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h2 class="cart-title">Tu carrito (<span id="cart-count">0</span>)</h2>
+      <button class="modal-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-body" id="cart-body">
+      <div class="cart-empty" id="cart-empty">
+        <div class="cart-empty-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </div>
+        <p class="cart-empty-title">Carrito vacío</p>
+        <p class="cart-empty-sub">Explora el catálogo y agrega productos</p>
+      </div>
+      <div id="cart-items"></div>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display:none">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-price" id="cart-total">$0.00</span>
+    </div>
+  </aside>
+
+  <!-- Detail Modals -->
+  
+    <div class="modal-overlay" id="modal-1" onclick="closeDetail(event,'1')">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeDetail(event,'1')">✕</button>
+        <div class="modal-grid">
+          <div class="modal-img"><img src="img/velvet-lip-tint.jpg" alt="Velvet Lip Tint"></div>
+          <div class="modal-info">
+            <p class="product-brand">Rosé Studio · Labios</p>
+            <h2 class="modal-title">Velvet Lip Tint</h2>
+            <p class="modal-price">$24.50</p>
+            <p class="modal-desc">Un tinte labial aterciopelado de larga duración que deja un acabado mate suave y natural. Fórmula hidratante enriquecida con aceite de jojoba.</p>
+            <div class="detail-shades-section"><p class="detail-shades-label">Tonos disponibles</p><div class="detail-shades"><span class="shade">Rosewood</span><span class="shade">Berry Crush</span><span class="shade">Nude Petal</span><span class="shade">Crimson</span></div></div>
+            <div class="modal-actions">
+              <div class="qty-controls" id="modal-qty-1" style="display:none">
+                <button onclick="changeQty('1',-1)" class="qty-btn">−</button>
+                <span class="qty-num" id="modal-qty-num-1">0</span>
+                <button onclick="changeQty('1',1)" class="qty-btn">+</button>
+                <span class="in-cart-label">en el carrito</span>
+              </div>
+              <button class="add-btn-primary" id="modal-add-1" onclick="changeQty('1',1)">+ Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="modal-2" onclick="closeDetail(event,'2')">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeDetail(event,'2')">✕</button>
+        <div class="modal-grid">
+          <div class="modal-img"><img src="img/luminous-skin-serum.jpg" alt="Luminous Skin Serum"></div>
+          <div class="modal-info">
+            <p class="product-brand">Glow Lab · Rostro</p>
+            <h2 class="modal-title">Luminous Skin Serum</h2>
+            <p class="modal-price">$38.00</p>
+            <p class="modal-desc">Sérum iluminador con partículas de luz que aporta un brillo natural y saludable. Perfecto como base de maquillaje o solo.</p>
+            
+            <div class="modal-actions">
+              <div class="qty-controls" id="modal-qty-2" style="display:none">
+                <button onclick="changeQty('2',-1)" class="qty-btn">−</button>
+                <span class="qty-num" id="modal-qty-num-2">0</span>
+                <button onclick="changeQty('2',1)" class="qty-btn">+</button>
+                <span class="in-cart-label">en el carrito</span>
+              </div>
+              <button class="add-btn-primary" id="modal-add-2" onclick="changeQty('2',1)">+ Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="modal-3" onclick="closeDetail(event,'3')">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeDetail(event,'3')">✕</button>
+        <div class="modal-grid">
+          <div class="modal-img"><img src="img/silk-foundation.jpg" alt="Silk Foundation"></div>
+          <div class="modal-info">
+            <p class="product-brand">Rosé Studio · Rostro</p>
+            <h2 class="modal-title">Silk Foundation</h2>
+            <p class="modal-price">$42.00</p>
+            <p class="modal-desc">Base de maquillaje con acabado satinado que se funde con la piel. Cobertura media a alta, buildable y de larga duración.</p>
+            <div class="detail-shades-section"><p class="detail-shades-label">Tonos disponibles</p><div class="detail-shades"><span class="shade">Porcelain</span><span class="shade">Sand</span><span class="shade">Honey</span><span class="shade">Caramel</span><span class="shade">Espresso</span></div></div>
+            <div class="modal-actions">
+              <div class="qty-controls" id="modal-qty-3" style="display:none">
+                <button onclick="changeQty('3',-1)" class="qty-btn">−</button>
+                <span class="qty-num" id="modal-qty-num-3">0</span>
+                <button onclick="changeQty('3',1)" class="qty-btn">+</button>
+                <span class="in-cart-label">en el carrito</span>
+              </div>
+              <button class="add-btn-primary" id="modal-add-3" onclick="changeQty('3',1)">+ Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="modal-4" onclick="closeDetail(event,'4')">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeDetail(event,'4')">✕</button>
+        <div class="modal-grid">
+          <div class="modal-img"><img src="img/brow-sculptor.jpg" alt="Brow Sculptor"></div>
+          <div class="modal-info">
+            <p class="product-brand">Arch Atelier · Cejas</p>
+            <h2 class="modal-title">Brow Sculptor</h2>
+            <p class="modal-price">$18.00</p>
+            <p class="modal-desc">Lápiz de cejas ultra fino con cepillo integrado para definir y dar forma. Resistente al agua y al sudor.</p>
+            <div class="detail-shades-section"><p class="detail-shades-label">Tonos disponibles</p><div class="detail-shades"><span class="shade">Blonde</span><span class="shade">Brunette</span><span class="shade">Dark Brown</span></div></div>
+            <div class="modal-actions">
+              <div class="qty-controls" id="modal-qty-4" style="display:none">
+                <button onclick="changeQty('4',-1)" class="qty-btn">−</button>
+                <span class="qty-num" id="modal-qty-num-4">0</span>
+                <button onclick="changeQty('4',1)" class="qty-btn">+</button>
+                <span class="in-cart-label">en el carrito</span>
+              </div>
+              <button class="add-btn-primary" id="modal-add-4" onclick="changeQty('4',1)">+ Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="modal-5" onclick="closeDetail(event,'5')">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeDetail(event,'5')">✕</button>
+        <div class="modal-grid">
+          <div class="modal-img"><img src="img/cloud-blush.jpg" alt="Cloud Blush"></div>
+          <div class="modal-info">
+            <p class="product-brand">Petal Beauty · Mejillas</p>
+            <h2 class="modal-title">Cloud Blush</h2>
+            <p class="modal-price">$28.00</p>
+            <p class="modal-desc">Rubor en crema con textura de nube que se difumina fácilmente. Aporta un color natural y fresco que dura todo el día.</p>
+            <div class="detail-shades-section"><p class="detail-shades-label">Tonos disponibles</p><div class="detail-shades"><span class="shade">Peach Glow</span><span class="shade">Soft Rose</span><span class="shade">Berry Flush</span></div></div>
+            <div class="modal-actions">
+              <div class="qty-controls" id="modal-qty-5" style="display:none">
+                <button onclick="changeQty('5',-1)" class="qty-btn">−</button>
+                <span class="qty-num" id="modal-qty-num-5">0</span>
+                <button onclick="changeQty('5',1)" class="qty-btn">+</button>
+                <span class="in-cart-label">en el carrito</span>
+              </div>
+              <button class="add-btn-primary" id="modal-add-5" onclick="changeQty('5',1)">+ Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="modal-6" onclick="closeDetail(event,'6')">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeDetail(event,'6')">✕</button>
+        <div class="modal-grid">
+          <div class="modal-img"><img src="img/midnight-mascara.jpg" alt="Midnight Mascara"></div>
+          <div class="modal-info">
+            <p class="product-brand">Lash Co. · Ojos</p>
+            <h2 class="modal-title">Midnight Mascara</h2>
+            <p class="modal-price">$22.00</p>
+            <p class="modal-desc">Máscara de pestañas voluminizadora y alargadora. Fórmula sin grumos que resiste todo el día sin correrse.</p>
+            
+            <div class="modal-actions">
+              <div class="qty-controls" id="modal-qty-6" style="display:none">
+                <button onclick="changeQty('6',-1)" class="qty-btn">−</button>
+                <span class="qty-num" id="modal-qty-num-6">0</span>
+                <button onclick="changeQty('6',1)" class="qty-btn">+</button>
+                <span class="in-cart-label">en el carrito</span>
+              </div>
+              <button class="add-btn-primary" id="modal-add-6" onclick="changeQty('6',1)">+ Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="modal-7" onclick="closeDetail(event,'7')">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeDetail(event,'7')">✕</button>
+        <div class="modal-grid">
+          <div class="modal-img"><img src="img/palette-terre.jpg" alt="Palette Terre"></div>
+          <div class="modal-info">
+            <p class="product-brand">Rosé Studio · Ojos</p>
+            <h2 class="modal-title">Palette Terre</h2>
+            <p class="modal-price">$45.00</p>
+            <p class="modal-desc">Paleta de 9 sombras en tonos tierra con acabados mate, satinados y brillantes. Altamente pigmentada y fácil de difuminar.</p>
+            
+            <div class="modal-actions">
+              <div class="qty-controls" id="modal-qty-7" style="display:none">
+                <button onclick="changeQty('7',-1)" class="qty-btn">−</button>
+                <span class="qty-num" id="modal-qty-num-7">0</span>
+                <button onclick="changeQty('7',1)" class="qty-btn">+</button>
+                <span class="in-cart-label">en el carrito</span>
+              </div>
+              <button class="add-btn-primary" id="modal-add-7" onclick="changeQty('7',1)">+ Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="modal-8" onclick="closeDetail(event,'8')">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeDetail(event,'8')">✕</button>
+        <div class="modal-grid">
+          <div class="modal-img"><img src="img/dewy-setting-spray.jpg" alt="Dewy Setting Spray"></div>
+          <div class="modal-info">
+            <p class="product-brand">Glow Lab · Rostro</p>
+            <h2 class="modal-title">Dewy Setting Spray</h2>
+            <p class="modal-price">$19.50</p>
+            <p class="modal-desc">Spray fijador con acabado luminoso que sella el maquillaje durante 16 horas. Refresca e hidrata la piel al instante.</p>
+            
+            <div class="modal-actions">
+              <div class="qty-controls" id="modal-qty-8" style="display:none">
+                <button onclick="changeQty('8',-1)" class="qty-btn">−</button>
+                <span class="qty-num" id="modal-qty-num-8">0</span>
+                <button onclick="changeQty('8',1)" class="qty-btn">+</button>
+                <span class="in-cart-label">en el carrito</span>
+              </div>
+              <button class="add-btn-primary" id="modal-add-8" onclick="changeQty('8',1)">+ Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+  
+</body>
 </html>
