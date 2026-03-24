@@ -4,39 +4,30 @@ import debug from '../utils/debug.js';
 const Cart = ({ isOpen, onClose, cartItems = [] }) => {
   debug.lifecycle('Cart', 'render', { isOpen, cartItemsCount: cartItems.length });
   
+  // Mantenemos el return null si no está abierto para optimizar, 
+  // pero si quieres animaciones de salida, deberías manejarlo solo con clases CSS.
   if (!isOpen) {
     debug.info('Cart', 'Cart is closed');
     return null;
   }
   
-  debug.cartState(cartItems, 'render');
-  
-  // Calcular el total del carrito
   const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
   return (
     <>
-      {/* Overlay: Solo se muestra si isOpen es true */}
+      {/* QUITAMOS: style={{ border, background, display }} 
+          Dejamos que el CSS maneje .cart-overlay.active 
+      */}
       <div 
         className={`cart-overlay ${isOpen ? 'active' : ''}`} 
         onClick={onClose}
-        style={{
-          border: isOpen ? '10px solid red' : 'none',
-          background: isOpen ? 'rgba(255, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.5)',
-          display: isOpen ? 'block' : 'none'
-        }}
       ></div>
 
-      {console.log('🔍 DRAWER DEBUG - isOpen:', isOpen, 'clase activa:', isOpen ? 'active' : 'sin active')}
       <aside
         className={`cart-drawer ${isOpen ? 'active' : ''}`}
-        style={{
-          border: '5px solid blue',
-          background: 'white', // Aseguramos que el fondo sea blanco para ver el contenido
-          boxShadow: '0 0 20px 5px blue',
-          zIndex: 10001, // Aseguramos que esté por encima del overlay
-          right: isOpen ? '0 !important' : undefined // Forzar right: 0 cuando está abierto
-        }}
+        /* QUITAMOS: Los estilos inline de debug (border blue, box-shadow, etc.)
+           El CSS que te pasé antes ya tiene el z-index y el fondo blanco.
+        */
       >
         <div className="cart-header">
           <h2 className="cart-title">Tu carrito (<span>{cartItems.length}</span>)</h2>
@@ -59,6 +50,7 @@ const Cart = ({ isOpen, onClose, cartItems = [] }) => {
               {cartItems.map(item => (
                 <div key={item.id} className="cart-item">
                   <div className="cart-item-img">
+                    {/* Asegúrate de que esta ruta a las imágenes sea correcta */}
                     <img src={`/src/Client/assets/${item.id}.jpeg`} alt={item.name} />
                   </div>
                   <div className="cart-item-info">

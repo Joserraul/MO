@@ -2,6 +2,12 @@ import Navbar from "../Components/navbar.jsx"; // Asegúrate de que la ruta sea 
 import Cart from "./cart.jsx"; // Asegúrate de que la ruta sea correcta
 import { useState } from "react";
 import { debug } from "../utils/debug.js"; // Importa tu utilidad de debug
+import '../Hero.css'; // Importa los estilos del Hero
+import '../Categories.css'; // Importa los estilos de Categories
+import '../ProductGrid.css'; // Importa los estilos de Product Grid
+import '../AddQty.css'; // Importa los estilos de Add / Qty
+import '../Modal.css'; // Importa los estilos del Modal
+import '../CartDrawer.css'; // Importa los estilos del Cart Drawer
 
 function Home() {
   const [cartItems, setCartItems] = useState({}); // { '1': 2, '3': 1 }
@@ -56,24 +62,7 @@ const changeQty = (id, delta) => {
         cartItems={getCartList()} 
       />
 
-      {/* Botón temporal de prueba */}
-      <button 
-        onClick={() => setIsCartOpen(true)} 
-        style={{ 
-          position: 'fixed', 
-          bottom: '20px', 
-          right: '20px', 
-          zIndex: 1001,
-          padding: '10px 20px',
-          background: '#d63384',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-      >
-        PROBAR CARRITO
-      </button>
+
 
       <main className="container main">
         <div className="hero">

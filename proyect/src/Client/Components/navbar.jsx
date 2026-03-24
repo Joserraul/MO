@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import '../Header.css'; // Importa los estilos del Header
 
 function Navbar({ onCartClick }) {
   const [cartCount, setCartCount] = useState(0);

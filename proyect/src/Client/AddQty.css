@@ -1,0 +1,10 @@
+/* Add / Qty */
+.product-actions { margin-top: 0.75rem; }
+.add-btn { padding: 0.4rem 1rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; border: 1px solid var(--border); background: transparent; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+.add-btn:hover { background: var(--secondary); }
+.add-btn:active { transform: scale(0.95); }
+.qty-controls { display: inline-flex; align-items: center; gap: 0.75rem; background: var(--secondary); border-radius: 9999px; padding: 0.25rem 0.25rem; }
+.qty-btn { width: 2rem; height: 2rem; border-radius: 50%; border: none; background: transparent; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.1s; }
+.qty-btn:hover { background: var(--accent); }
+.qty-btn:active { transform: scale(0.95); }
+.qty-num { font-size: 0.875rem; font-weight: 500; width: 1rem; text-align: center; font-variant-numeric: tabular-nums; }

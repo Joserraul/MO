@@ -1,0 +1,6 @@
+/* Categories */
+.categories { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
+.cat-btn { padding: 0.5rem 1.25rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; border: none; cursor: pointer; white-space: nowrap; background: var(--secondary); color: var(--secondary-fg); transition: background 0.2s, transform 0.1s; }
+.cat-btn:hover { background: var(--accent); }
+.cat-btn:active { transform: scale(0.95); }
+.cat-btn.active { background: var(--primary); color: var(--primary-fg); }

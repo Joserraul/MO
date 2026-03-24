@@ -1,0 +1,4 @@
+/* Hero */
+.hero { margin-bottom: 4rem; max-width: 36rem; }
+.hero-title { font-size: clamp(2.5rem, 5vw, 3.75rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; }
+.hero-sub { color: var(--muted); margin-top: 1rem; font-size: 1.125rem; line-height: 1.6; }
