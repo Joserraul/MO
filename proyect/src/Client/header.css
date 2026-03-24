@@ -1,10 +1,20 @@
 /* Header */
-.header {
+.Navbar {
+  /* Propiedad CLAVE para que baje al hacer scroll */
+  position: fixed; 
   top: 0;
-  z-index: 40;
-  background: hsla(30,25%,97%,.85);
+  left: 0;
+  right: 0;
+  
+  /* Elevación y Transparencia */
+  z-index: 1000; /* Lo bajamos de 10000 (carrito) pero lo dejamos alto */
+  background: hsla(30, 25%, 97%, 0.85);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  -webkit-backdrop-filter: blur(12px); /* Soporte para Safari */
+  border-bottom: 1px solid var(--border, #eee);
+  
+  /* Aseguramos que ocupe todo el ancho sin padding externo */
+  width: 100%;
 }
 
 .header-inner {
@@ -12,12 +22,17 @@
   align-items: center;
   justify-content: space-between;
   height: 4rem;
+  max-width: 1200px; /* Ajusta según el ancho de tu web */
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--fg, #333);
 }
 
 .cart-toggle {
@@ -25,28 +40,32 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--fg);
+  color: var(--fg, #333);
   padding: 0.5rem;
   border-radius: 50%;
   transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-toggle:hover {
-  background: var(--secondary);
+  background: var(--secondary, #f0f0f0);
 }
 
 .cart-badge {
   position: absolute;
-  top: -2px;
-  right: -2px;
-  background: var(--primary);
-  color: var(--primary-fg);
+  top: 2px; /* Ajustado para que no se salga tanto */
+  right: 2px;
+  background: var(--primary, #d63384); /* Color Rosé */
+  color: white;
   font-size: 0.65rem;
-  font-weight: 600;
-  width: 1.1rem;
-  height: 1.1rem;
+  font-weight: 700;
+  width: 1.2rem;
+  height: 1.2rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 0 2px white; /* Pequeño borde para que resalte */
 }

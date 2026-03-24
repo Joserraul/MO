@@ -20,9 +20,12 @@ html, body {
   height: 100%; /* Asegura que html y body tomen la altura completa de su padre (el viewport) */
 }
 
+/* src/Client/index.css */
+
 body {
-  min-height: 100vh; /* Asegura que body sea al menos la altura del viewport */
-  background: var(--bg); color: var(--fg); font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding-top: 4rem; /* Esto empuja todo el contenido hacia abajo */
+  background-color: hsla(30, 25%, 97%, 1); /* Opcional: fondo que combine */
 }
 h1,h2,h3,h4 { font-family: var(--font-display); }
 
