@@ -1,33 +1,20 @@
 import React from 'react';
 import debug from '../utils/debug.js';
 
-const Cart = ({ isOpen, onClose, cartItems = [] }) => {
+const Cart = ({ isOpen, onClose, cartItems = [], onChangeQty }) => {
   debug.lifecycle('Cart', 'render', { isOpen, cartItemsCount: cartItems.length });
-  
-  // Mantenemos el return null si no está abierto para optimizar, 
-  // pero si quieres animaciones de salida, deberías manejarlo solo con clases CSS.
-  if (!isOpen) {
-    debug.info('Cart', 'Cart is closed');
-    return null;
-  }
   
   const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
   return (
     <>
-      {/* QUITAMOS: style={{ border, background, display }} 
-          Dejamos que el CSS maneje .cart-overlay.active 
-      */}
       <div 
-        className={`cart-overlay ${isOpen ? 'active' : ''}`} 
+        className={`cart-overlay ${isOpen ? 'open' : ''}`} 
         onClick={onClose}
       ></div>
 
       <aside
-        className={`cart-drawer ${isOpen ? 'active' : ''}`}
-        /* QUITAMOS: Los estilos inline de debug (border blue, box-shadow, etc.)
-           El CSS que te pasé antes ya tiene el z-index y el fondo blanco.
-        */
+        className={`cart-drawer ${isOpen ? 'open' : ''}`}
       >
         <div className="cart-header">
           <h2 className="cart-title">Tu carrito (<span>{cartItems.length}</span>)</h2>
@@ -50,16 +37,17 @@ const Cart = ({ isOpen, onClose, cartItems = [] }) => {
               {cartItems.map(item => (
                 <div key={item.id} className="cart-item">
                   <div className="cart-item-img">
-                    {/* Asegúrate de que esta ruta a las imágenes sea correcta */}
                     <img src={`/src/Client/assets/${item.id}.jpeg`} alt={item.name} />
                   </div>
                   <div className="cart-item-info">
                     <h4 className="cart-item-name">{item.name}</h4>
                     <p className="cart-item-brand">{item.brand}</p>
                     <p className="cart-item-price">${item.price.toFixed(2)}</p>
-                  </div>
-                  <div className="cart-item-qty">
-                    <span className="cart-item-qty-num">{item.quantity}</span>
+                    <div className="qty-controls">
+                      <button onClick={() => onChangeQty(item.id, -1)} className="qty-btn">−</button>
+                      <span className="qty-num">{item.quantity}</span>
+                      <button onClick={() => onChangeQty(item.id, 1)} className="qty-btn">+</button>
+                    </div>
                   </div>
                   <div className="cart-item-total">
                     ${(item.price * item.quantity).toFixed(2)}
@@ -72,8 +60,11 @@ const Cart = ({ isOpen, onClose, cartItems = [] }) => {
 
         {cartItems.length > 0 && (
           <div className="cart-footer">
-            <span className="cart-total-label">Total</span>
-            <span className="cart-total-price">${total.toFixed(2)}</span>
+            <div className="cart-total">
+              <span className="cart-total-label">Total</span>
+              <span className="cart-total-price">${total.toFixed(2)}</span>
+            </div>
+            <button className="checkout-btn">Ir a Pagar</button>
           </div>
         )}
       </aside>

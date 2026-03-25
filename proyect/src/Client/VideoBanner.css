@@ -1,0 +1,118 @@
+.video-banner-container {
+  position: relative;
+  width: 100%;
+  /* max-width: 1200px; */ /* Eliminado para ancho completo */
+  margin: 0; /* Eliminado para ancho completo */
+  /* overflow: hidden; */
+  border-radius: 0; /* Eliminado para aspecto sin bordes */
+  box-shadow: none; /* Eliminado para aspecto sin bordes */
+  padding: 2rem 0; /* Añadir padding vertical para separar de otros elementos */
+}
+
+.video-banner-wrapper {
+  display: flex;
+  overflow-x: scroll; /* Habilitar desplazamiento horizontal */
+  scroll-snap-type: x mandatory; /* Forzar el "snap" a los elementos */
+  scroll-behavior: smooth; /* Desplazamiento suave */
+  -webkit-overflow-scrolling: touch; /* Para desplazamiento suave en iOS */
+  padding: 0 10%; /* Ajustar para centrar el elemento activo y mostrar partes de los laterales */
+  /* Eliminar transition: transform 0.5s ease-in-out; */
+}
+
+/* Ocultar la barra de desplazamiento para una mejor estética */
+.video-banner-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.video-banner-wrapper {
+  -ms-overflow-style: none;  /* IE y Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.video-item {
+  flex-shrink: 0; /* Evitar que los elementos se encojan */
+  width: 25%; /* Cada elemento ocupa el 25% del ancho visible del wrapper */
+  scroll-snap-align: center; /* Alinear al centro al hacer "snap" */
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 75%; /* Proporción 4:3 para videos (3/4 * 100) */
+  overflow: hidden;
+  margin: 0 1%; /* Espaciado entre elementos */
+  border-radius: 0.75rem; /* Esquinas redondeadas para los items */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Hacer el elemento activo ligeramente más grande o prominente */
+.video-item.active {
+  transform: scale(1.05);
+  opacity: 1;
+  z-index: 5;
+}
+/* Los elementos no activos pueden ser ligeramente más pequeños o menos opacos */
+.video-item:not(.active) {
+  transform: scale(0.9);
+  opacity: 0.7;
+}
+
+.video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que el video cubra el área sin distorsionarse */
+}
+
+.video-banner-controls {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.control-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.control-dot.active {
+  background-color: var(--primary); /* Color principal para el punto activo */
+  width: 12px;
+  height: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .video-banner-wrapper {
+    padding: 0 5%; /* Ajustar padding para pantallas más pequeñas */
+  }
+  .video-item {
+    width: 40%; /* Ajustar ancho del item para pantallas más pequeñas */
+    margin: 0 1.5%;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-banner-wrapper {
+    padding: 0 10%; /* Ajustar padding para pantallas muy pequeñas, mostrando partes de los videos laterales */
+  }
+  .video-item {
+    width: 80%; /* Ajustar ancho del item para pantallas muy pequeñas */
+    margin: 0 5px; /* Espaciado entre elementos */
+  }
+  .video-item.active {
+    transform: scale(1); /* No escalar en móviles para evitar que se salga de la pantalla */
+  }
+  .video-item:not(.active) {
+    transform: scale(0.95); /* Ligeramente más pequeño */
+    opacity: 0.8;
+  }
+}

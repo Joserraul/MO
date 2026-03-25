@@ -1,52 +1,91 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Reset Base */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
 
 :root {
-  --bg: hsl(30, 25%, 97%);
-  --fg: hsl(20, 10%, 15%);
-  --card: hsl(30, 20%, 95%);
-  --primary: hsl(350, 35%, 52%);
-  --primary-fg: hsl(30, 25%, 97%);
-  --secondary: hsl(30, 15%, 90%);
-  --secondary-fg: hsl(20, 10%, 25%);
-  --muted: hsl(20, 6%, 50%);
-  --accent: hsl(20, 30%, 88%);
-  --border: hsl(30, 15%, 88%);
-  --radius: 0.75rem;
+  /* Fondo principal: Blanco puro (como en la referencia) */
+  --bg: hsl(0, 0%, 100%);
+  
+  /* Texto: Negro profundo para elegancia */
+  --fg: hsl(0, 0%, 100%);
+  
+  /* Tarjetas: Gris/Crema muy sutil para las fotos de producto */
+  --card: hsl(30, 10%, 97%);
+  
+  /* Primario: Negro sólido (Botones Shop All / Add to Cart) */
+  --primary: hsl(0, 0%, 0%);
+  --primary-fg: hsl(0, 0%, 100%);
+  
+  /* Secundario: Blanco con borde */
+  --secondary: hsl(0, 0%, 100%);
+  --secondary-fg: hsl(0, 0%, 40%);
+  
+  /* Acentos y Bordes */
+  --muted: hsl(0, 0%, 0%);
+  --accent: hsl(30, 20%, 90%);
+  --border: hsl(0, 0%, 90%);
+  
+  /* Tipografía y Bordes */
+  --radius: 0px; /* Las marcas de lujo suelen usar bordes rectos */
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
 }
 
 html, body {
-  height: 100%; /* Asegura que html y body tomen la altura completa de su padre (el viewport) */
+  height: 100%;
 }
-
-/* src/Client/index.css */
 
 body {
   margin: 0;
-  padding-top: 4rem; /* Esto empuja todo el contenido hacia abajo */
-  background-color: hsla(30, 25%, 97%, 1); /* Opcional: fondo que combine */
+  /* Espacio para que el Navbar fijo no tape el contenido */
+  padding-top: 4rem; 
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
-h1,h2,h3,h4 { font-family: var(--font-display); }
 
-.container { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
-.main { padding: 3rem 1.5rem; }
+/* Tipografía de Lujo */
+h1, h2, h3, h4 { 
+  font-family: var(--font-display); 
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000;
+}
 
+/* Contenedores */
+.container { 
+  max-width: 80rem; 
+  margin: 0 auto; 
+  padding: 0 1.5rem; 
+}
 
+.main { 
+  padding: 3rem 0; 
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+/* Animaciones */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  from { 
+    opacity: 0; 
+    transform: translateY(16px); 
+    filter: blur(4px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+    filter: blur(0); 
+  }
 }
+
+.fade-in {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+p {
+  color: var(--muted);}

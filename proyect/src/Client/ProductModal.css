@@ -1,0 +1,315 @@
+/* Product Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: var(--bg);
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 48rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(20px);
+  transition: transform 0.3s ease-out;
+}
+
+.modal-overlay.open .modal-content {
+  transform: translateY(0);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--card);
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  transition: background 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: var(--border);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .modal-body {
+    flex-direction: row;
+  }
+}
+
+.modal-img-wrap {
+  flex: 1;
+  min-width: 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--card);
+}
+
+.modal-img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.modal-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-brand {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.modal-name {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.modal-price {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.modal-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.modal-tones h4 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.tones-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tone-item {
+  background: var(--card);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.add-to-cart-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+
+.add-to-cart-btn:hover {
+  background: var(--primary-dark);
+}
+
+/* Estilos para pantallas pequeñas (móviles) */
+@media (max-width: 767px) {
+  .modal-content {
+    padding: 1rem; /* Reduce el padding para pantallas más pequeñas */
+    width: calc(100% - 2rem); /* Ocupa casi todo el ancho, dejando un margen */
+    max-width: 95%; /* Asegura que no se desborde */
+    max-height: 90vh; /* Permite que ocupe un poco menos de altura para ver el overlay */
+    margin: 1rem; /* Añade un margen alrededor del modal */
+  }
+
+  .modal-body {
+    flex-direction: column; /* Asegura que la imagen y la info estén en columna */
+    gap: 1rem; /* Reduce el espacio entre la imagen y la información */
+    align-items: center; /* Centra los elementos en la columna */
+  }
+
+  .modal-img-wrap {
+    flex: none; /* Elimina el flex para que no intente ocupar espacio horizontal */
+    width: 100%; /* La imagen ocupa todo el ancho disponible */
+    max-width: 300px; /* Limita el tamaño máximo de la imagen */
+    height: auto; /* Altura automática para mantener la proporción */
+    border-radius: 0.5rem; /* Radio de borde ligeramente más pequeño */
+  }
+
+  .modal-img-wrap img {
+    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+  }
+
+  .modal-info {
+    flex: none; /* Elimina el flex para que no intente ocupar espacio horizontal */
+    width: 100%; /* La información ocupa todo el ancho disponible */
+    min-width: 0; /* Permite que el contenido se encoja si es necesario */
+    gap: 0.20rem; /* Reduce el espacio entre los elementos de información */
+    text-align: center; /* Centra el texto para una mejor presentación en columna */
+  }
+
+  .modal-brand {
+    font-size: 0.7rem; /* Tamaño de fuente más pequeño */
+    margin-bottom: 0;
+  }
+
+  .modal-name {
+    font-size: 1.2rem; /* Tamaño de fuente más pequeño */
+    line-height: 1.3; /* Ajusta la altura de línea */
+    margin-bottom: 0;
+  }
+
+  .modal-price {
+    font-size: 1.1rem; /* Tamaño de fuente más pequeño */
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-description {
+    font-size: 0.85rem; /* Tamaño de fuente más pequeño */
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    word-break: break-word; /* Evita que palabras largas desborden el contenedor */
+  }
+
+  .modal-tones h4 {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tones-list {
+    justify-content: center; /* Centra los tonos */
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .tone-item {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .add-to-cart-btn {
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    width: 100%; /* El botón ocupa todo el ancho */
+  }
+
+  .modal-close-btn {
+    width: 1.8rem;
+    height: 1.8rem;
+    font-size: 1rem;
+    top: 0.3rem;
+    right: 0.3rem;
+  }
+}
+
+/* Estilos para pantallas muy pequeñas (móviles) */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 0.75rem; /* Reduce aún más el padding */
+    margin: 0.75rem; /* Reduce el margen */
+  }
+
+  .modal-body {
+    gap: 0.75rem; /* Reduce el espacio entre elementos */
+  }
+
+  .modal-img-wrap {
+    max-width: 150px; /* Reduce el tamaño máximo de la imagen */
+    height: 150px;
+  }
+
+  .modal-brand {
+    font-size: 0.65rem;
+  }
+
+  .modal-name {
+    font-size: 1.1rem;
+  }
+
+  .modal-price {
+    font-size: 1rem;
+  }
+
+  .modal-description {
+    font-size: 0.8rem;
+  }
+
+  .modal-tones h4 {
+    font-size: 0.75rem;
+  }
+
+  .tone-item {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .add-to-cart-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .modal-close-btn {
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 0.9rem;
+    top: 0.2rem;
+    right: 0.2rem;
+  }
+}

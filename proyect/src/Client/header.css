@@ -8,10 +8,10 @@
   
   /* Elevación y Transparencia */
   z-index: 1000; /* Lo bajamos de 10000 (carrito) pero lo dejamos alto */
-  background: hsla(30, 25%, 97%, 0.85);
+  background: hsla(0, 0%, 0%, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px); /* Soporte para Safari */
-  border-bottom: 1px solid var(--border, #eee);
+
   
   /* Aseguramos que ocupe todo el ancho sin padding externo */
   width: 100%;
@@ -32,7 +32,7 @@
   font-weight: 600;
   letter-spacing: -0.02em;
   margin: 0;
-  color: var(--fg, #333);
+  color: var(--fg, #ffffff);
 }
 
 .cart-toggle {
@@ -57,8 +57,8 @@
   position: absolute;
   top: 2px; /* Ajustado para que no se salga tanto */
   right: 2px;
-  background: var(--primary, #d63384); /* Color Rosé */
-  color: white;
+  background: var(--primary, #ffffff); /* Color Rosé */
+  color: var(--primary-fg, #333);
   font-size: 0.65rem;
   font-weight: 700;
   width: 1.2rem;

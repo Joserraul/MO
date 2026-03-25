@@ -1,6 +1,72 @@
 /* Categories */
-.categories { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
-.cat-btn { padding: 0.5rem 1.25rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; border: none; cursor: pointer; white-space: nowrap; background: var(--secondary); color: var(--secondary-fg); transition: background 0.2s, transform 0.1s; }
-.cat-btn:hover { background: var(--accent); }
-.cat-btn:active { transform: scale(0.95); }
-.cat-btn.active { background: var(--primary); color: var(--primary-fg); }
+.categories {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en nuevas líneas */
+  justify-content: center;
+  gap: 0.75rem; /* Aumenta el espacio entre los elementos */
+  margin-top: 2.5rem; /* Espacio superior para separar del hero */
+  margin-bottom: 2.5rem; /* Espacio inferior para separar de los productos */
+  padding-bottom: 0.5rem;
+}
+
+.category-item {
+  position: relative;
+  aspect-ratio: 1 / 1; /* Hace que el elemento sea cuadrado */
+  border-radius: 0.7rem;
+  overflow: hidden; /* Asegura que la imagen de fondo no se desborde */
+  background-size: cover; /* Cubre todo el área del elemento */
+  background-position: center; /* Centra la imagen de fondo */
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  flex-basis: calc((100% - (3 * 0.75rem)) / 3); /* 3 elementos por fila en pantallas grandes */
+  max-width: calc((40% - (3 * 0.75rem)) / 3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Mantener la sombra para el efecto */
+}
+
+/* Efectos de hover y active */
+.category-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+.category-item.active {
+  border: 2px solid var(--primary); /* Borde para indicar que está activo */
+  box-shadow: 0 0 0 3px var(--primary-light); /* Resplandor para activo */
+}
+
+.category-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4); /* Fondo semi-transparente para el texto */
+  color: white; /* Color del texto */
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Ajustes para pantallas medianas (tablets) */
+@media (max-width: 520px) {
+  .category-item {
+    flex-basis: calc((100% - (2 * 0.75rem)) / 3); /* 3 elementos por fila */
+    max-width: calc((100% - (2 * 0.75rem)) / 3);
+  }
+  .category-overlay {
+    font-size: 1rem;
+  }
+}
+
+/* Ajustes para pantallas pequeñas (teléfonos) */
+@media (max-width: 220px) {
+  .category-item {
+    flex-basis: calc((100% - 0.75rem) / 2); /* 2 elementos por fila */
+    max-width: calc((100% - 0.75rem) / 2);
+  }
+  .category-overlay {
+    font-size: 0.9rem;
+  }
+}

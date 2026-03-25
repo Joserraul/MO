@@ -1,4 +1,35 @@
 /* Hero */
-.hero { margin-bottom: 4rem; max-width: 36rem; }
-.hero-title { font-size: clamp(2.5rem, 5vw, 3.75rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; }
+.hero {
+  margin-bottom: 4rem;
+  max-width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  padding-top: 130px; /* Aumenta el espacio superior */
+  padding-bottom: 130px; /* Aumenta el espacio inferior */
+  background-image: url('../Client/assets/gemini.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex; /* Para centrar el contenido */
+  flex-direction: column; /* Para apilar el título y subtítulo */
+  justify-content: center; /* Centra verticalmente */
+  align-items: flex-start; /* Alinea a la izquierda */
+  padding-left: 2rem; /* Añade un espacio a la izquierda */
+}
+.hero-title { font-size: clamp(2.5rem, 5vw, 3.75rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; color: #FFFFFF; }
 .hero-sub { color: var(--muted); margin-top: 1rem; font-size: 1.125rem; line-height: 1.6; }
+p.hero-sub { color: #FFFFFF; }
+
+/* Ajustes para pantallas pequeñas (teléfonos) */
+@media (max-width: 800px) {
+  .hero {
+    background-position: 80% center; /* Mueve la imagen para que la persona sea más visible */
+    padding-left: 2rem; /* Aumenta el padding izquierdo para dar más espacio al texto */
+    padding-top: 200px; /* Aumenta el padding superior para bajar más las letras */
+    padding-bottom: 250px; /* Ajusta la altura para móviles */
+  }
+  .hero-title {
+    font-size: clamp(1.5rem, 8vw, 2.25rem); /* Reduce el tamaño del título para móviles */
+  }
+  .hero-sub {
+    font-size: 1rem; /* Reduce el tamaño del subtítulo para móviles */
+  }
+}

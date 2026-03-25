@@ -9,14 +9,14 @@
 body {
   margin: 0;
   padding-top: 80px; /* Exactamente el mismo alto que le diste a .Navbar */
-  background-color: #ffffff;
+  background-color: #000000;
 }
 
 .logo {
   height: auto; /* Ajustado para que no sea excesivo */
   font-size: 1.5rem;
   font-weight: 600;
-  color: #333;
+  color: #ffffff;
   margin: 0;
 }
 
@@ -40,7 +40,7 @@ body {
   left: 0;
   width: 100%;
   height: 80px; 
-  background-color: white; 
+  background-color: #000000; 
   z-index: 1000; /* Sobre los productos, bajo el carrito (10000) */
   display: flex;
   align-items: center;

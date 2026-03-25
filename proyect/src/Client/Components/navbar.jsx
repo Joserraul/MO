@@ -38,7 +38,7 @@ function Navbar({ onCartClick }) {
     /* La clase "Navbar" debe tener position: fixed en Header.css */
     <nav className="Navbar">
       <div className="header-inner">
-        <h1 className="logo">Rosé Beauty</h1>
+        <h1 className="logo">Makeup Oriente</h1>
         
         <div className="header-actions">
           <button 
