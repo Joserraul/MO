@@ -1,0 +1,59 @@
+.shipping-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #ffffff; /* Un fondo claro para destacarlo */
+  margin-top: 40px;
+/*   border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+  gap: 20px; /* Espacio entre la imagen y el texto */
+}
+
+.shipping-cart-image {
+  width: 780px; /* Ajusta el tamaño de la imagen del carrito */
+  height: auto;
+
+}
+
+.shipping-text {
+  font-size: 2.5em; /* Tamaño de fuente más grande */
+  font-weight: 600;
+  color: #333;
+  text-align: center; /* Centra el texto */
+  max-width: 300px; /* Limita el ancho del texto para mejor legibilidad */
+  line-height: 1.3;
+  
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .shipping-info-container {
+    flex-direction: column; /* Apila los elementos en pantallas pequeñas */
+    text-align: center;
+  }
+
+  .shipping-cart-image {
+    margin-right: 0; /* Elimina el margen derecho en pantallas pequeñas */
+    margin-bottom: 20px; /* Añade margen inferior a la imagen */
+  }
+
+  .shipping-text {
+    font-size: 1.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .shipping-info-container {
+    padding: 30px 15px;
+  }
+
+  .shipping-cart-image {
+    width: 300px;
+  }
+
+  .shipping-text {
+    font-size: 1.5em;
+  }
+}

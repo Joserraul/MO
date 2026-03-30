@@ -11,6 +11,8 @@ import '../Modal.css'; // Importa los estilos del Modal
 import '../CartDrawer.css'; // Importa los estilos del Cart Drawer
 import '../ProductModal.css'; // Importa los estilos del ProductModal
 import VideoBanner from '../Components/VideoBanner'; // Importar el nuevo componente VideoBanner
+import ShippingInfo from '../Components/ShippingInfo.jsx'; // Importar el nuevo componente ShippingInfo
+import Footer from '../Components/Footer.jsx';
 
 import video1 from '../assets/video/Download.mp4';
 import video2 from '../assets/video/Download 1.mp4';
@@ -194,7 +196,10 @@ const changeQty = (id, delta) => {
         </div>
 
         <VideoBanner videos={bannerVideos} />
+
+        <ShippingInfo />
       </main>
+      <Footer />
     </>
   );
 }

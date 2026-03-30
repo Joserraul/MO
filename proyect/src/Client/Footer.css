@@ -1,0 +1,109 @@
+.footer-container {
+  background-color: #f8f8f8; /* Un color de fondo claro que se integre */
+  color: #333;
+  padding: 40px 20px;
+  margin-top: 60px;
+  border-top: 1px solid #eee;
+  font-family: 'Arial', sans-serif; /* Ajusta la fuente a la de tu branding */
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  justify-content: space-around;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-text-section {
+  margin-top: 20px; /* Ajusta este valor para empujar las secciones de texto hacia abajo */
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+}
+
+.footer-section h3 {
+  font-size: 1.4em;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 1em;
+  line-height: 1.6;
+  color: #666;
+  text-decoration: none;
+}
+
+.footer-section a:hover {
+  color: #007bff; /* Color de hover que coincida con tu branding */
+}
+
+.whatsapp-button {
+  display: inline-block;
+  background-color: #25d366; /* Color de WhatsApp */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.whatsapp-button:hover {
+  background-color: #1da851;
+}
+
+.social-links a {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.admin-images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 250px; /* Asegura que tenga espacio para la imagen */
+}
+
+.admin-rotating-image {
+  width: 300px; /* Ajusta el tamaño de la imagen */
+  height: 300px;
+  object-fit: cover; /* Para que la imagen cubra el área sin distorsionarse */
+  border-radius: 10%; /* Para hacerla circular, si lo deseas */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.5s ease-in-out; /* Transición suave al cambiar de imagen */
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  color: #888;
+  font-size: 0.9em;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-section {
+    min-width: unset;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .admin-rotating-image {
+    width: 150px;
+    height: 150px;
+  }
+}
