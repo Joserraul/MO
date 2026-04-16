@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../Footer.css'; // Importa los estilos para el Footer
+import '../Style/Footer.css'; // Importa los estilos para el Footer
 
 // Importa las imágenes de la carpeta admi
 import candelaImage from '../assets/admi/candela.jpeg';

@@ -78,6 +78,7 @@
   border-radius: 0.75rem;
   overflow: hidden;
   background: var(--card);
+  margin-top: 12%;
 }
 
 .modal-img-wrap img {
@@ -120,7 +121,7 @@
 .modal-description {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--text);
+  color: #000000;
   margin-bottom: 1rem;
 }
 
@@ -145,7 +146,7 @@
   border-radius: 0.5rem;
   padding: 0.5rem 0.9rem;
   font-size: 0.85rem;
-  color: var(--text);
+  color: #000000;
   border: 1px solid var(--border);
 }
 

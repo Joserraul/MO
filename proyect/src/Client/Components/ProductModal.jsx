@@ -1,5 +1,5 @@
 import React from 'react';
-import '../ProductModal.css'; // Asegúrate de crear este archivo CSS
+import '../Style/ProductModal.css'; // Asegúrate de crear este archivo CSS
 
 const ProductModal = ({ product, onClose, onAddToCart }) => {
   if (!product) {
@@ -18,7 +18,7 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
         </button>
         <div className="modal-body">
           <div className="modal-img-wrap">
-            <img src={`/src/Client/assets/${product.id}.jpeg`} alt={product.name} />
+            <img src={`/src/Client/assets/${product.id}.${product.imageExtension}`} alt={product.name} />
           </div>
           <div className="modal-info">
             <p className="modal-brand">{product.brand} &bull; {product.category}</p>

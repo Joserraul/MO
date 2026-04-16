@@ -4,7 +4,7 @@
   max-width: 100%; /* Asegura que ocupe todo el ancho disponible */
   padding-top: 130px; /* Aumenta el espacio superior */
   padding-bottom: 130px; /* Aumenta el espacio inferior */
-  background-image: url('../Client/assets/gemini.png');
+  background-image: url('../assets/gemini.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -21,10 +21,11 @@ p.hero-sub { color: #FFFFFF; }
 /* Ajustes para pantallas pequeñas (teléfonos) */
 @media (max-width: 800px) {
   .hero {
-    background-position: 80% center; /* Mueve la imagen para que la persona sea más visible */
+    background-position: 90% center; /* Mueve la imagen para que la persona sea más visible */
     padding-left: 2rem; /* Aumenta el padding izquierdo para dar más espacio al texto */
     padding-top: 200px; /* Aumenta el padding superior para bajar más las letras */
     padding-bottom: 250px; /* Ajusta la altura para móviles */
+    justify-content: flex-end; /* Mueve el contenido a la parte inferior
   }
   .hero-title {
     font-size: clamp(1.5rem, 8vw, 2.25rem); /* Reduce el tamaño del título para móviles */

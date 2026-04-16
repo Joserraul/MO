@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, } from 'react';
-import '../VideoBanner.css';
+import '../Style/VideoBanner.css';
 
 const VideoBanner = ({ videos }) => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(Math.floor(videos.length / 2)); // Iniciar en el medio

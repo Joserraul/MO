@@ -3,14 +3,14 @@ import Cart from "./cart.jsx"; // Asegúrate de que la ruta sea correcta
 import ProductModal from "../Components/ProductModal"; // Importar el nuevo componente Modal
 import { useState } from "react";
 import { debug } from "../utils/debug.js"; // Importa tu utilidad de debug
-import '../Hero.css'; // Importa los estilos del Hero
-import '../Categories.css'; // Importa los estilos de Categories
-import '../ProductGrid.css'; // Importa los estilos de Product Grid
-import '../AddQty.css'; // Importa los estilos de Add / Qty
-import '../Modal.css'; // Importa los estilos del Modal
-import '../CartDrawer.css'; // Importa los estilos del Cart Drawer
-import '../ProductModal.css'; // Importa los estilos del ProductModal
-import VideoBanner from '../Components/VideoBanner'; // Importar el nuevo componente VideoBanner
+import '../Style/hero.css'; // Importa los estilos del Hero
+import '../Style/Categories.css'; // Importa los estilos de Categories
+import '../Style/ProductGrid.css'; // Importa los estilos de Product Grid
+import '../Style/AddQty.css'; // Importa los estilos de Add / Qty
+import '../Style/Modal.css'; // Importa los estilos del Modal
+import '../Style/CartDrawer.css'; // Importa los estilos del Cart Drawer
+import '../Style/ProductModal.css'; // Importa los estilos del ProductModal
+import VideoBanner from '../Components/VideoBanner.jsx'; // Importar el nuevo componente VideoBanner
 import ShippingInfo from '../Components/ShippingInfo.jsx'; // Importar el nuevo componente ShippingInfo
 import Footer from '../Components/Footer.jsx';
 
@@ -24,7 +24,7 @@ import video7 from '../assets/video/Download 6.mp4';
 import video8 from '../assets/video/Download 7.mp4';
 
 function Home() {
-  const [cartItems, setCartItems] = useState({}); // { '1': 2, '3': 1 }
+  const [cartItems, setCartItems] = useState(() => JSON.parse(localStorage.getItem('cart') || '{}')); // Inicializar desde localStorage
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false); // Estado para abrir/cerrar carrito
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar la visibilidad del modal
@@ -40,15 +40,15 @@ function Home() {
 
   // Asegúrate de que los productos también usen las categorías actualizadas
   const products = [
-    { id: '1', name: 'Velvet Lip Tint', brand: 'Rosé Studio', price: 24.50, category: 'Labios', description: 'Un tinte labial aterciopelado de larga duración que deja un acabado mate suave y natural. Fórmula hidratante enriquecida con aceite de jojoba.', tones: ['Rosewood', 'Berry Crush', 'Nude Petal', 'Crimson'] },
-    { id: '2', name: 'Luminous Skin Serum', brand: 'Glow Lab', price: 38.00, category: 'Rostro' },
-    { id: '3', name: 'Silk Foundation', brand: 'Rosé Studio', price: 42.00, category: 'Rostro' },
-    { id: '4', name: 'Brow Sculptor', brand: 'Arch Atelier', price: 18.00, category: 'Ojos' },
-    { id: '5', name: 'Cloud Blush', brand: 'Petal Beauty', price: 28.00, category: 'Rostro' },
-    { id: '6', name: 'Midnight Mascara', brand: 'Lash Co.', price: 22.00, category: 'Ojos' },
-    { id: '7', name: 'Palette Terre', brand: 'Rosé Studio', price: 45.00, category: 'Ojos' },
-    { id: '8', name: 'Dewy Setting Spray', brand: 'Glow Lab', price: 19.50, category: 'Skincare' },
-    { id: '9', name: 'Beauty Blender', brand: 'BlendIt', price: 12.00, category: 'Herramientas' }
+    { id: '1', name: 'Velvet Lip Tint', brand: 'Rosé Studio', price: 24.50, category: 'Labios', description: 'Un tinte labial aterciopelado de larga duración que deja un acabado mate suave y natural. Fórmula hidratante enriquecida con aceite de jojoba.', tones: ['Rosewood', 'Berry Crush', 'Nude Petal', 'Crimson'], imageExtension: 'jpeg' },
+    { id: '2', name: 'Luminous Skin Serum', brand: 'Glow Lab', price: 38.00, category: 'Rostro', imageExtension: 'jpeg' },
+    { id: '3', name: 'Silk Foundation', brand: 'Rosé Studio', price: 42.00, category: 'Rostro', imageExtension: 'jpeg' },
+    { id: '4', name: 'Brow Sculptor', brand: 'Arch Atelier', price: 18.00, category: 'Ojos', imageExtension: 'jpeg' },
+    { id: '5', name: 'prubea color', brand: 'Petal Beauty', price: 28.00, category: 'Rostro', imageExtension: 'png' }, // Cambiado a .png
+    { id: '6', name: 'Midnight Mascara', brand: 'Lash Co.', price: 22.00, category: 'Ojos', imageExtension: 'png' },
+    { id: '7', name: 'Palette Terre', brand: 'Rosé Studio', price: 45.00, category: 'Ojos', imageExtension: 'png' },
+    { id: '8', name: 'Dewy Setting Spray', brand: 'Glow Lab', price: 19.50, category: 'Skincare', imageExtension: 'png' },
+    { id: '9', name: 'Beauty Blender', brand: 'BlendIt', price: 12.00, category: 'Herramientas', imageExtension: 'png' }
   ];
 
   const bannerVideos = [
@@ -72,9 +72,17 @@ const changeQty = (id, delta) => {
   debug.info('Home', 'Changing quantity', { productId: id, delta });
   
   setCartItems(prev => {
-    const newQty = (prev[id] || 0) + delta;
-    debug.info('Home', 'New quantity calculated', { productId: id, newQty });
-    return newQty > 0 ? { ...prev, [id]: newQty } : Object.fromEntries(Object.entries(prev).filter(([key]) => key !== id));
+    const updatedCart = { ...prev };
+    const newQty = (updatedCart[id] || 0) + delta;
+    if (newQty > 0) {
+      updatedCart[id] = newQty;
+    } else {
+      delete updatedCart[id];
+    }
+    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Guardar en localStorage
+    window.dispatchEvent(new Event('cartUpdated')); // Disparar evento
+    debug.info('Home', 'New quantity calculated and cart updated', { productId: id, newQty, updatedCart });
+    return updatedCart;
   });
 };
 
@@ -171,7 +179,7 @@ const changeQty = (id, delta) => {
           {filteredProducts.map(product => (
             <div key={product.id} className="product-card">
               <div className="product-img-wrap" onClick={() => openProductModal(product)}>
-                <img src={`/src/Client/assets/${product.id}.jpeg`} alt={product.name} />
+                <img src={`/src/Client/assets/${product.id}.${product.imageExtension}`} alt={product.name} />
               </div>
               <div className="product-info">
                 <p className="product-brand">{product.brand}</p>
