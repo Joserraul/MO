@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './page/home.jsx';
+import Home from './pages/Home.jsx';
 
 const root = createRoot(document.getElementById('root'));
 

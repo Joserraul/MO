@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import '../Style/Footer.css'; // Importa los estilos para el Footer
+import '../styles/Footer.css'; // Importa los estilos para el Footer
 
-// Importa las imágenes de la carpeta admi
-import candelaImage from '../assets/admi/candela.jpeg';
-import dianaImage from '../assets/admi/diana.jpg'; // ¡Corregida la extensión a .jpg!
-import fioImage from '../assets/admi/fio.jpeg';
-import jrImage from '../assets/admi/jr.jpeg';
+// Importa las imágenes de la carpeta admin
+import candelaImage from '../assets/admin/candela.jpeg';
+import dianaImage from '../assets/admin/diana.jpg'; // ¡Corregida la extensión a .jpg!
+import fioImage from '../assets/admin/fio.jpeg';
+import jrImage from '../assets/admin/jr.jpeg';
 const Footer = () => {
   const adminImages = [candelaImage, dianaImage, fioImage, jrImage,];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

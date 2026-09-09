@@ -60,7 +60,7 @@ const Cart = ({ isOpen, onClose, cartItems = [], onChangeQty }) => {
               {cartItems.map(item => (
                 <div key={item.id} className="cart-item">
                   <div className="cart-item-img">
-                    <img src={`/src/Client/assets/${item.id}.${item.imageExtension}`} alt={item.name} />
+                    <img src={item.image || "https://placehold.co/400x400/FFFFFF/E8A0BF?text=Makeup+Oriente"} alt={item.name} />
                   </div>
                   <div className="cart-item-info">
                     <h4 className="cart-item-name">{item.name}</h4>

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Style/ProductModal.css'; // Asegúrate de crear este archivo CSS
+import '../styles/ProductModal.css'; // Asegúrate de crear este archivo CSS
 
 const ProductModal = ({ product, onClose, onAddToCart }) => {
   if (!product) {

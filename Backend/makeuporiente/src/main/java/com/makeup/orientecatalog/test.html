@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba WebSocket STOMP</title>
+</head>
+<body>
+<h1>Prueba WebSocket /topic/stock.{id}</h1>
+
+<!-- Donde irán apareciendo los mensajes recibidos -->
+<div id="mensajes" style="font-family: monospace;"></div>
+
+<!-- Pieza 1: librerías SockJS + STOMP desde CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+<script>
+    // Pieza 2: crear el "túnel" (SockJS) hacia el endpoint /ws
+    const socket = new SockJS('http://localhost:8080/ws');
+    const stompClient = Stomp.over(socket);
+
+    // Pieza 3: conectar y suscribirse al topic del producto id=1
+    stompClient.connect({}, function(frame) {
+        console.log('Conectado al broker STOMP');
+
+        // Suscribirse al topic: /topic/stock.1
+        stompClient.subscribe("/topic/stock.1", function(message) {
+            // message.body contiene el JSON que envía el backend
+            console.log('Mensaje recibido:', message.body);
+
+            // Pieza 4: pintarlo en pantalla
+            const div = document.getElementById('mensajes');
+            div.innerHTML += "<p>Recibido: " + message.body + "</p>";
+        });
+    });
+</script>
+</body>
+</html>

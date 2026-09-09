@@ -1,18 +1,20 @@
-import Navbar from "../Components/navbar.jsx"; // Asegúrate de que la ruta sea correcta
-import Cart from "./cart.jsx"; // Asegúrate de que la ruta sea correcta
-import ProductModal from "../Components/ProductModal"; // Importar el nuevo componente Modal
-import { useState } from "react";
+import Navbar from "../components/Navbar.jsx"; // Asegúrate de que la ruta sea correcta
+import Cart from "./Cart.jsx"; // Asegúrate de que la ruta sea correcta
+import ProductModal from "../components/ProductModal"; // Importar el nuevo componente Modal
+import { useState, useEffect } from "react";
+import * as StompJs from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 import { debug } from "../utils/debug.js"; // Importa tu utilidad de debug
-import '../Style/hero.css'; // Importa los estilos del Hero
-import '../Style/Categories.css'; // Importa los estilos de Categories
-import '../Style/ProductGrid.css'; // Importa los estilos de Product Grid
-import '../Style/AddQty.css'; // Importa los estilos de Add / Qty
-import '../Style/Modal.css'; // Importa los estilos del Modal
-import '../Style/CartDrawer.css'; // Importa los estilos del Cart Drawer
-import '../Style/ProductModal.css'; // Importa los estilos del ProductModal
-import VideoBanner from '../Components/VideoBanner.jsx'; // Importar el nuevo componente VideoBanner
-import ShippingInfo from '../Components/ShippingInfo.jsx'; // Importar el nuevo componente ShippingInfo
-import Footer from '../Components/Footer.jsx';
+import '../styles/hero.css'; // Importa los estilos del Hero
+import '../styles/Categories.css'; // Importa los estilos de Categories
+import '../styles/ProductGrid.css'; // Importa los estilos de Product Grid
+import '../styles/AddQty.css'; // Importa los estilos de Add / Qty
+import '../styles/Modal.css'; // Importa los estilos del Modal
+import '../styles/CartDrawer.css'; // Importa los estilos del Cart Drawer
+import '../styles/ProductModal.css'; // Importa los estilos del ProductModal
+import VideoBanner from '../components/VideoBanner.jsx'; // Importar el nuevo componente VideoBanner
+import ShippingInfo from '../components/ShippingInfo.jsx'; // Importar el nuevo componente ShippingInfo
+import Footer from '../components/Footer.jsx';
 
 import video1 from '../assets/video/Download.mp4';
 import video2 from '../assets/video/Download 1.mp4';
@@ -46,7 +48,7 @@ function Home() {
   ];
 
   // Asegúrate de que los productos también usen las categorías actualizadas
-  const products = [
+/*  const products = [
     { id: '1', name: 'Velvet Lip Tint', brand: 'Rosé Studio', price: 24.50, category: 'Labios', description: 'Un tinte labial aterciopelado de larga duración que deja un acabado mate suave y natural. Fórmula hidratante enriquecida con aceite de jojoba.', tones: ['Rosewood', 'Berry Crush', 'Nude Petal', 'Crimson'], imageExtension: 'jpeg' },
     { id: '2', name: 'Luminous Skin Serum', brand: 'Glow Lab', price: 38.00, category: 'Rostro', imageExtension: 'jpeg' },
     { id: '3', name: 'Silk Foundation', brand: 'Rosé Studio', price: 42.00, category: 'Rostro', imageExtension: 'jpeg' },
@@ -56,7 +58,40 @@ function Home() {
     { id: '7', name: 'Palette Terre', brand: 'Rosé Studio', price: 45.00, category: 'Ojos', imageExtension: 'png' },
     { id: '8', name: 'Dewy Setting Spray', brand: 'Glow Lab', price: 19.50, category: 'Skincare', imageExtension: 'png' },
     { id: '9', name: 'Beauty Blender', brand: 'BlendIt', price: 12.00, category: 'Herramientas', imageExtension: 'png' }
-  ];
+  ];*/
+
+  const [products, setProducts] = useState([]);
+
+
+  useEffect(() => {                                // ← B2 VA AQUÍ, debajo
+    fetch("http://localhost:8080/api/products")
+        .then(response => response.json())
+        .then(data => setProducts(data));
+  }, []);
+
+  const productIds = products.map(p => p.id).join(",");
+
+  useEffect(() => {
+    if (products.length === 0) return;
+
+    const client = new StompJs.Client({
+      webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
+      onConnect: () => {
+        products.forEach(product => {
+          client.subscribe(`/topic/stock.${product.id}`, (message) => {
+            const data = JSON.parse(message.body);
+            setProducts(prev =>
+                prev.map(p => (p.id === data.id ? { ...p, stock: data.stock } : p))
+            );
+          });
+        });
+      },
+    });
+
+    client.activate();
+
+    return () => client.deactivate();
+  }, [productIds]);
 
   const bannerVideos = [
     { id: '1', videoSrc: video1, link: 'https://www.tiktok.com/@makeup_oriente/video/7588339575207005452?is_from_webapp=1&sender_device=pc' },
@@ -120,16 +155,19 @@ const changeQty = (id, delta) => {
   // Función para transformar el objeto cartItems en una lista de objetos de productos reales
   const getCartList = () => {
     return Object.keys(cartItems)
-      .filter(id => cartItems[id] > 0)
-      .map(id => {
-        const product = products.find(p => p.id === id);
-        return { ...product, quantity: cartItems[id] };
-      });
+        .filter(id => cartItems[id] > 0)
+        .map(id => {
+          const product = products.find(p => String(p.id) === String(id));
+          return product ? { ...product, quantity: cartItems[id] } : null;
+        })
+        .filter(p => p !== null);
   };
 
+  const visibleProducts = products.filter(product => product.stock > 0);
+
   const filteredProducts = selectedCategory === null
-    ? products
-    : products.filter(product => product.category === selectedCategory);
+      ? visibleProducts
+      : visibleProducts.filter(product => product.category === selectedCategory);
 
   return (
     <>
@@ -186,7 +224,8 @@ const changeQty = (id, delta) => {
           {filteredProducts.map(product => (
             <div key={product.id} className="product-card">
               <div className="product-img-wrap" onClick={() => openProductModal(product)}>
-                <img src={`/src/Client/assets/${product.id}.${product.imageExtension}`} alt={product.name} />
+                <img   src={product.image || "https://placehold.co/400x400/FFFFFF/E8A0BF?text=Makeup+Oriente"}
+                       alt={product.name} />
               </div>
               <div className="product-info">
                 <p className="product-brand">{product.brand}</p>

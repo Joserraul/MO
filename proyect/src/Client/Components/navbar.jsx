@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import '../Style/Header.css'; // Asegúrate de que este archivo tenga el position: fixed
+import '../styles/Header.css'; // Asegúrate de que este archivo tenga el position: fixed
 
 function Navbar({ onCartClick }) {
   const [cartCount, setCartCount] = useState(0);

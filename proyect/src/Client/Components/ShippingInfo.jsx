@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Style/ShippingInfo.css'; // Importa los estilos para este componente
+import '../styles/ShippingInfo.css'; // Importa los estilos para este componente
 import cartImage from '../assets/cart.png'; // Importa la imagen del carrito
 
 const ShippingInfo = () => {
