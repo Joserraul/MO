@@ -1,12 +1,14 @@
 import React from 'react';
 import debug from '../utils/debug.js';
+import { useNavigate } from "react-router-dom";
+
 
 const Cart = ({ isOpen, onClose, cartItems = [], onChangeQty }) => {
   debug.lifecycle('Cart', 'render', { isOpen, cartItemsCount: cartItems.length });
   
   const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
-  const handleCheckout = () => {
+/*  const handleCheckout = () => {
     const whatsappNumber = '584248555089';
     let message = "¡Hola! Me gustaría realizar el siguiente pedido:\n\n";
 
@@ -26,8 +28,13 @@ const Cart = ({ isOpen, onClose, cartItems = [], onChangeQty }) => {
 
     // Opcional: Cerrar el carrito después de enviar el pedido
     onClose();
-  };
+  };*/
+  const navigate = useNavigate();
 
+  const handleCheckout = () => {
+      onClose();
+      navigate("/checkout");
+    };
 
   return (
     <>

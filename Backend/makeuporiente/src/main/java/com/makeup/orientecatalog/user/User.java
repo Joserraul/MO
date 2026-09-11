@@ -1,10 +1,10 @@
 package com.makeup.orientecatalog.user;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.makeup.orientecatalog.cart.Cart;
+import com.makeup.orientecatalog.order.Order;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @Table(name = "users")
 
@@ -16,18 +16,21 @@ public class User {
 
     @Column(name = "username")
     private String username;
+    private String lastName;
+    private String phone;
 
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
 
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Cart> carts = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 
 
     public User() {}
@@ -45,6 +48,12 @@ public class User {
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
@@ -54,8 +63,9 @@ public class User {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    public List<Cart> getCarts() { return carts; }
-    public void setCarts(List<Cart> carts) { this.carts = carts; }
+
+    public List<Order> getOrders() { return orders; }
+    public void setOrders(List<Order> orders) { this.orders = orders; }
 
 
 

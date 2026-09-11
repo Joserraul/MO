@@ -24,7 +24,7 @@ public class ProductService {
 
 
         String mensaje = "{\"id\":" + savedProduct.getId() + ", \"stock\":" + savedProduct.getStock() + "}";
-        messagingTemplate.convertAndSend("/topic/stock." + savedProduct.getId(), mensaje);
+        messagingTemplate.convertAndSend("/topic/stock", mensaje);
 
         return savedProduct;
     }
@@ -49,7 +49,7 @@ public class ProductService {
                     Product savedProduct = repository.save(existingProduct);
 
                     String mensaje = String.format("{\"id\":" + savedProduct.getId() + ", \"stock\":" + savedProduct.getStock() + "}");
-                    messagingTemplate.convertAndSend("/topic/stock." + savedProduct.getId(), mensaje);
+                    messagingTemplate.convertAndSend("/topic/stock", mensaje);
 
                     return savedProduct;
                 })

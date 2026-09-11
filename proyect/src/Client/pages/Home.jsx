@@ -69,29 +69,34 @@ function Home() {
         .then(data => setProducts(data));
   }, []);
 
-  const productIds = products.map(p => p.id).join(",");
-
   useEffect(() => {
-    if (products.length === 0) return;
-
     const client = new StompJs.Client({
       webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
       onConnect: () => {
-        products.forEach(product => {
-          client.subscribe(`/topic/stock.${product.id}`, (message) => {
-            const data = JSON.parse(message.body);
-            setProducts(prev =>
-                prev.map(p => (p.id === data.id ? { ...p, stock: data.stock } : p))
-            );
-          });
+        client.subscribe("/topic/stock", (message) => {
+          const data = JSON.parse(message.body);
+
+          setProducts(prev =>
+              prev.map(p => (p.id === data.id ? { ...p, stock: data.stock } : p))
+          );
+
+          fetch(`http://localhost:8080/api/products/${data.id}`)
+              .then(response => response.json())
+              .then(fullProduct => {
+                if (fullProduct.stock > 0) {
+                  setProducts(prev =>
+                      prev.some(p => p.id === data.id) ? prev : [...prev, fullProduct]
+                  );
+                }
+              })
+              .catch(() => {});
         });
       },
     });
 
     client.activate();
-
     return () => client.deactivate();
-  }, [productIds]);
+  }, []);
 
   const bannerVideos = [
     { id: '1', videoSrc: video1, link: 'https://www.tiktok.com/@makeup_oriente/video/7588339575207005452?is_from_webapp=1&sender_device=pc' },

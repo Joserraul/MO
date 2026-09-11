@@ -33,6 +33,8 @@ public class UserService {
         return repository.findById(id)
                 .map(user -> {
                     user.setUsername(userDetails.getUsername());
+                    user.setLastName(userDetails.getLastName());
+                    user.setPhone(userDetails.getPhone());
                     user.setEmail(userDetails.getEmail());
                     user.setPassword(userDetails.getPassword());
                     user.setRole(userDetails.getRole());
@@ -46,5 +48,16 @@ public class UserService {
 
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    public User login(String email, String password) {
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Credenciales incorrectas"));
+
+        if (!user.getPassword().equals(password)) {
+            throw new RuntimeException("Credenciales incorrectas");
+        }
+
+        return user;
     }
 }
