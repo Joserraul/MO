@@ -16,6 +16,8 @@ public class OrderItem {
     @JsonIgnore
     private Order order;
 
+    private Long productId;
+
     private String productName;
     private double price;
     private int quantity;
@@ -27,6 +29,9 @@ public class OrderItem {
 
     public Order getOrder() { return order; }
     public void setOrder(Order order) { this.order = order; }
+
+    public Long getProductId() { return productId; }
+    public void setProductId(Long productId) { this.productId = productId; }
 
     public String getProductName() { return productName; }
     public void setProductName(String productName) { this.productName = productName; }

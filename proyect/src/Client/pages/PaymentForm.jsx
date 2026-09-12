@@ -58,6 +58,7 @@ function PaymentForm() {
     }
 
     const items = cartList.map((item) => ({
+      productId: item.id,
       productName: item.name,
       price: item.price,
       quantity: item.quantity,

@@ -116,11 +116,17 @@ function Home() {
 
   // En home.jsx
 const changeQty = (id, delta) => {
-  debug.info('Home', 'Changing quantity', { productId: id, delta });
-  
+  // Límite de stock: no puedes agregar más de lo que hay disponible
+  const product = products.find((p) => String(p.id) === String(id));
+  if (!product) return;
+  debug.info('Home', 'Changing quantity', { productId: id, delta, stock: product.stock });
+
   setCartItems(prev => {
+    const current = prev[id] || 0;
+    const newQty = current + delta;
+    if (newQty > product.stock) return prev; // no pasar del stock
+
     const updatedCart = { ...prev };
-    const newQty = (updatedCart[id] || 0) + delta;
     if (newQty > 0) {
       updatedCart[id] = newQty;
     } else {
@@ -242,7 +248,7 @@ const changeQty = (id, delta) => {
                   <div className="qty-controls flex">
                     <button onClick={() => changeQty(product.id, -1)} className="qty-btn">−</button>
                     <span className="qty-num">{cartItems[product.id]}</span>
-                    <button onClick={() => changeQty(product.id, 1)} className="qty-btn">+</button>
+                    <button onClick={() => changeQty(product.id, 1)} className="qty-btn" disabled={cartItems[product.id] >= product.stock}>+</button>
                   </div>
                 ) : (
                   <button className="add-btn" onClick={() => changeQty(product.id, 1)}>

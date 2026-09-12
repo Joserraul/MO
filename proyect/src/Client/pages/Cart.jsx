@@ -76,7 +76,7 @@ const Cart = ({ isOpen, onClose, cartItems = [], onChangeQty }) => {
                     <div className="qty-controls">
                       <button onClick={() => onChangeQty(item.id, -1)} className="qty-btn">−</button>
                       <span className="qty-num">{item.quantity}</span>
-                      <button onClick={() => onChangeQty(item.id, 1)} className="qty-btn">+</button>
+                      <button onClick={() => onChangeQty(item.id, 1)} className="qty-btn" disabled={item.quantity >= item.stock}>+</button>
                     </div>
                   </div>
                   <div className="cart-item-total">
