@@ -26,5 +26,10 @@ public class OrderController {
         return service.findByUserId(userId);
     }
 
+    @GetMapping
+    public List<OrderSummary> listarTodos() {
+        return service.findAllSummary();
+    }
+
 
 }

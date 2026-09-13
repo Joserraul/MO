@@ -57,6 +57,12 @@ public class OrderService {
         return orderRepository.findByUserId(userId);
     }
 
+    public List<OrderSummary> findAllSummary() {
+        return orderRepository.findAll().stream()
+                .map(OrderSummary::new)
+                .toList();
+    }
+
     public Order findById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));

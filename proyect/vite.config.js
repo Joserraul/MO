@@ -7,4 +7,7 @@ export default defineConfig({
   define: {
     global: 'globalThis',
   },
+  server: {
+    host: true, // Escucha en la red local (0.0.0.0), no solo localhost
+  },
 })

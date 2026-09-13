@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DeliveryMethod from "./DeliveryMethod.jsx";
+import { API_HOST } from "../services/api.js";
 
 const PAYMENT_METHODS = [
   {
@@ -32,7 +33,7 @@ function PaymentForm() {
       navigate("/login");
       return;
     }
-    fetch("http://localhost:8080/api/products")
+    fetch(`${API_HOST}/api/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch(() => {});
@@ -65,7 +66,7 @@ function PaymentForm() {
     }));
 
     try {
-      const res = await fetch(`http://localhost:8080/api/orders/${user.id}`, {
+      const res = await fetch(`${API_HOST}/api/orders/${user.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -91,8 +92,8 @@ function PaymentForm() {
       <div className="checkout-container">
         <h1>¡Pedido registrado!</h1>
         <p>Tu pedido fue guardado correctamente.</p>
-        <button className="checkout-submit" onClick={() => navigate("/")}>
-          Volver a la tienda
+        <button className="checkout-submit" onClick={() => navigate("/profile")}>
+          Ver mi perfil
         </button>
       </div>
     );

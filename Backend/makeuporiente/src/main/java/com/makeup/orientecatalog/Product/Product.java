@@ -15,6 +15,7 @@ public class Product {
     private String description;
     private String brand;
     private String category;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String image;
     private int stock;
 

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import * as StompJs from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { debug } from "../utils/debug.js"; // Importa tu utilidad de debug
+import { API_HOST } from "../services/api.js";
 import '../styles/hero.css'; // Importa los estilos del Hero
 import '../styles/Categories.css'; // Importa los estilos de Categories
 import '../styles/ProductGrid.css'; // Importa los estilos de Product Grid
@@ -64,14 +65,14 @@ function Home() {
 
 
   useEffect(() => {                                // ← B2 VA AQUÍ, debajo
-    fetch("http://localhost:8080/api/products")
+    fetch(`${API_HOST}/api/products`)
         .then(response => response.json())
         .then(data => setProducts(data));
   }, []);
 
   useEffect(() => {
     const client = new StompJs.Client({
-      webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
+      webSocketFactory: () => new SockJS(`${API_HOST}/ws`),
       onConnect: () => {
         client.subscribe("/topic/stock", (message) => {
           const data = JSON.parse(message.body);
@@ -80,7 +81,7 @@ function Home() {
               prev.map(p => (p.id === data.id ? { ...p, stock: data.stock } : p))
           );
 
-          fetch(`http://localhost:8080/api/products/${data.id}`)
+          fetch(`${API_HOST}/api/products/${data.id}`)
               .then(response => response.json())
               .then(fullProduct => {
                 if (fullProduct.stock > 0) {

@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import '../styles/Header.css'; // Asegúrate de que este archivo tenga el position: fixed
 
 function Navbar({ onCartClick }) {
   const [cartCount, setCartCount] = useState(0);
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user') || 'null'));
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Función para actualizar contador del carrito
@@ -34,6 +37,12 @@ function Navbar({ onCartClick }) {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    navigate('/');
+  };
+
   return (
     /* La clase "Navbar" debe tener position: fixed en Header.css */
     <nav className="Navbar">
@@ -41,6 +50,24 @@ function Navbar({ onCartClick }) {
         <h1 className="logo">Makeup Oriente</h1>
         
         <div className="header-actions">
+          {user ? (
+            <>
+              {user.role === "admin" && (
+                <Link to="/admin" className="nav-link">Admin</Link>
+              )}
+              <Link to="/profile" className="nav-link">
+                Hola, {user.username}
+              </Link>
+              <button className="nav-link nav-logout" onClick={handleLogout}>
+                Salir
+              </button>
+            </>
+          ) : (
+            <Link to="/login" className="nav-link">
+              Iniciar sesión
+            </Link>
+          )}
+
           <button 
             className="cart-toggle" 
             onClick={handleToggleCart}
