@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser, registerUser } from "../services/api.js";
+import '../styles/Login.css';
+import Navbar from "../components/Navbar.jsx";
 
 function Login() {
     const [mode, setMode] = useState("login"); // "login" | "register"
@@ -31,9 +33,11 @@ function Login() {
     };
 
     return (
-        <div className="login-container">
-            <h1>Makeup Oriente</h1>
-            <h2>{mode === "login" ? "Iniciar sesión" : "Crear cuenta"}</h2>
+        <>
+            <Navbar />
+            <div className="login-container">
+                <h1>Makeup Oriente</h1>
+                <h2>{mode === "login" ? "Iniciar sesión" : "Crear cuenta"}</h2>
 
             <form onSubmit={handleSubmit}>
                 {mode === "register" && (
@@ -52,10 +56,11 @@ function Login() {
                 <button type="submit">{mode === "login" ? "Entrar" : "Registrarme"}</button>
             </form>
 
-            <button type="button" onClick={() => setMode(mode === "login" ? "register" : "login")}>
+            <button type="button" className="login-toggle" onClick={() => setMode(mode === "login" ? "register" : "login")}>
                 {mode === "login" ? "¿No tienes cuenta? Regístrate" : "Ya tengo cuenta, entrar"}
             </button>
         </div>
+        </>
     );
 }
 

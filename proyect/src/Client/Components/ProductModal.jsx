@@ -18,7 +18,10 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
         </button>
         <div className="modal-body">
           <div className="modal-img-wrap">
-            <img src={`/src/Client/assets/${product.id}.${product.imageExtension}`} alt={product.name} />
+            <img
+              src={product.image || "https://placehold.co/400x400/FFFFFF/E8A0BF?text=Makeup+Oriente"}
+              alt={product.name}
+            />
           </div>
           <div className="modal-info">
             <p className="modal-brand">{product.brand} &bull; {product.category}</p>

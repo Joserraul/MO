@@ -1,0 +1,74 @@
+/* Login (estilo The Ordinary: centrado y minimalista) */
+.login-container {
+  max-width: 26rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.login-container h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.login-container h2 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  font-size: 0.95rem;
+  background: #fff;
+  color: #000;
+}
+
+.login-container input:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.login-container button[type="submit"] {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 0.8rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.login-container button[type="submit"]:hover {
+  opacity: 0.8;
+}
+
+.login-toggle {
+  background: none;
+  border: none;
+  margin-top: 1.25rem;
+  padding: 0.25rem;
+  font-size: 0.85rem;
+  color: #000;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-error {
+  margin-top: 0.5rem;
+  color: #b00020;
+  font-size: 0.85rem;
+}

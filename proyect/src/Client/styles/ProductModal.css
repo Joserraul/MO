@@ -75,15 +75,16 @@
 .modal-img-wrap {
   flex: 1;
   min-width: 0;
-  border-radius: 0.75rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
   overflow: hidden;
   background: var(--card);
-  margin-top: 12%;
 }
 
 .modal-img-wrap img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 
@@ -154,7 +155,7 @@
   background: var(--primary);
   color: white;
   border: none;
-  border-radius: 0.75rem;
+  border-radius: 0;
   padding: 0.9rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
@@ -190,8 +191,8 @@
     flex: none; /* Elimina el flex para que no intente ocupar espacio horizontal */
     width: 100%; /* La imagen ocupa todo el ancho disponible */
     max-width: 300px; /* Limita el tamaño máximo de la imagen */
-    height: auto; /* Altura automática para mantener la proporción */
-    border-radius: 0.5rem; /* Radio de borde ligeramente más pequeño */
+    aspect-ratio: 1 / 1; /* Mantiene el cuadrado */
+    border-radius: 0; /* Radio de borde ligeramente más pequeño */
   }
 
   .modal-img-wrap img {
@@ -273,7 +274,7 @@
 
   .modal-img-wrap {
     max-width: 150px; /* Reduce el tamaño máximo de la imagen */
-    height: 150px;
+    aspect-ratio: 1 / 1;
   }
 
   .modal-brand {

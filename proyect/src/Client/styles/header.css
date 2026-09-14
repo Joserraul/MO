@@ -27,12 +27,20 @@
   padding: 0 1.5rem;
 }
 
+.logo-link {
+  text-decoration: none;
+}
+
 .logo {
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   margin: 0;
   color: var(--fg, #ffffff);
+}
+
+.logo-link:hover .logo {
+  opacity: 0.8;
 }
 
 .header-actions {
@@ -44,18 +52,19 @@
 .nav-link {
   color: var(--fg, #ffffff);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.78rem;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  transition: background 0.2s;
+  transition: opacity 0.2s;
 }
 
 .nav-link:hover {
-  background: rgba(240, 240, 240, 0.15);
+  opacity: 0.7;
 }
 
 .nav-logout {

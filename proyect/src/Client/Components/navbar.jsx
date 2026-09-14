@@ -34,6 +34,9 @@ function Navbar({ onCartClick }) {
     console.log('📦 Abriendo carrito...');
     if (onCartClick) {
       onCartClick();
+    } else {
+      // En páginas sin drawer de carrito, el icono lleva al inicio
+      navigate('/');
     }
   };
 
@@ -47,7 +50,9 @@ function Navbar({ onCartClick }) {
     /* La clase "Navbar" debe tener position: fixed en Header.css */
     <nav className="Navbar">
       <div className="header-inner">
-        <h1 className="logo">Makeup Oriente</h1>
+        <Link to="/" className="logo-link">
+          <h1 className="logo">Makeup Oriente</h1>
+        </Link>
         
         <div className="header-actions">
           {user ? (

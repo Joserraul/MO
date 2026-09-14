@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import debug from '../utils/debug.js';
 import { useNavigate } from "react-router-dom";
+import { fetchBcvRate } from '../services/api.js';
+import { formatBs } from '../utils/format.js';
 
 
 const Cart = ({ isOpen, onClose, cartItems = [], onChangeQty }) => {
   debug.lifecycle('Cart', 'render', { isOpen, cartItemsCount: cartItems.length });
   
   const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const [usdRate, setUsdRate] = useState(null);
+
+  useEffect(() => {
+    let active = true;
+    fetchBcvRate()
+      .then((rate) => {
+        if (active) setUsdRate(rate);
+      })
+      .catch(() => {
+        console.warn("No se pudo obtener la tasa BCV");
+      });
+    return () => { active = false; };
+  }, []);
 
 /*  const handleCheckout = () => {
     const whatsappNumber = '584248555089';
@@ -90,9 +105,20 @@ const Cart = ({ isOpen, onClose, cartItems = [], onChangeQty }) => {
 
         {cartItems.length > 0 && (
           <div className="cart-footer">
-            <div className="cart-total">
-              <span className="cart-total-label">Total</span>
-              <span className="cart-total-price">${total.toFixed(2)}</span>
+            <div className="cart-totals">
+              <div className="cart-total">
+                <span className="cart-total-label">Total en dólares</span>
+                <span className="cart-total-price">${total.toFixed(2)}</span>
+              </div>
+              {usdRate && (
+                <>
+                  <div className="cart-total cart-total-bs">
+                    <span className="cart-total-label">Total en Bs</span>
+                    <span className="cart-total-price">Bs {formatBs(total * usdRate)}</span>
+                  </div>
+                  <p className="cart-rate-note">Tasa BCV: 1 USD = Bs {formatBs(usdRate)}</p>
+                </>
+              )}
             </div>
             <button className="checkout-btn" onClick={handleCheckout}>Ir a Pagar</button>
           </div>

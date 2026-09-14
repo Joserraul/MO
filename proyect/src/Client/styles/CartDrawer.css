@@ -47,28 +47,32 @@
   .cart-item .qty-btn { width: 1.25rem; height: 1.25rem; font-size: 0.7rem; }
   .cart-item .qty-num { font-size: 0.7rem; }
 }
-.cart-footer { border-top: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
-.cart-total-label { color: var(--muted); margin-right: 0.5rem;}
+.cart-footer { border-top: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.cart-totals { display: flex; flex-direction: column; gap: 0.35rem; }
+.cart-total { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.cart-total-label { color: var(--muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .cart-total-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: black; }
+.cart-total-bs .cart-total-price { font-size: 1.1rem; }
+.cart-rate-note { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* Ajustes para iPhone */
 @media (max-width: 480px) {
-  .cart-footer { padding: 0.75rem 1rem; flex-direction: column; gap: 0.5rem; align-items: stretch; }
-  .cart-total-price { font-size: 1.25rem; color: var(--primary); }
+  .cart-footer { padding: 0.75rem 1rem; }
+  .cart-total-price { font-size: 1.25rem; }
+  .cart-total-bs .cart-total-price { font-size: 1rem; }
 }
 
 .checkout-btn {
   background: var(--primary);
   color: white;
   border: none;
-  border-radius: 0.75rem;
+  border-radius: 0;
   padding: 0.9rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
-  width: 60%;
-  margin-top: 1rem;
+  width: 100%;
 }
 
 .checkout-btn:hover {

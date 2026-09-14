@@ -6,7 +6,6 @@ import * as StompJs from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { debug } from "../utils/debug.js"; // Importa tu utilidad de debug
 import { API_HOST } from "../services/api.js";
-import '../styles/hero.css'; // Importa los estilos del Hero
 import '../styles/Categories.css'; // Importa los estilos de Categories
 import '../styles/ProductGrid.css'; // Importa los estilos de Product Grid
 import '../styles/AddQty.css'; // Importa los estilos de Add / Qty
@@ -26,12 +25,7 @@ import video6 from '../assets/video/Download 5.mp4';
 import video7 from '../assets/video/Download 6.mp4';
 import video8 from '../assets/video/Download 7.mp4';
 
-// Importaciones de imágenes para las categorías
-import rostroImage from '../assets/rostro.png';
-import labiosImage from '../assets/labios.png';
-import ojosImage from '../assets/ojos.png';
-import skincareImage from '../assets/skincare.png';
-import herramientasImage from '../assets/herramientas.png';
+import SkinConcerns from '../components/SkinConcerns.jsx'; // Importar la sección "Sobre tu piel"
 
 function Home() {
   const [cartItems, setCartItems] = useState(() => JSON.parse(localStorage.getItem('cart') || '{}')); // Inicializar desde localStorage
@@ -40,13 +34,7 @@ function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar la visibilidad del modal
   const [selectedProduct, setSelectedProduct] = useState(null); // Estado para el producto seleccionado en el modal
 
-  const categoriesData = [
-    { name: 'Rostro', imageSrc: rostroImage },
-    { name: 'Labios', imageSrc: labiosImage },
-    { name: 'Ojos', imageSrc: ojosImage },
-    { name: 'Skincare', imageSrc: skincareImage },
-    { name: 'Herramientas', imageSrc: herramientasImage },
-  ];
+  const categoriesData = ['Rostro', 'Labios', 'Ojos', 'Skincare', 'Herramientas'];
 
   // Asegúrate de que los productos también usen las categorías actualizadas
 /*  const products = [
@@ -77,20 +65,25 @@ function Home() {
         client.subscribe("/topic/stock", (message) => {
           const data = JSON.parse(message.body);
 
-          setProducts(prev =>
-              prev.map(p => (p.id === data.id ? { ...p, stock: data.stock } : p))
-          );
+          // ¿El backend avisó que el producto fue ELIMINADO?
+          if (data.deleted) {
+            setProducts(prev => prev.filter(p => p.id !== data.id));
+          } else {
+            setProducts(prev =>
+                prev.map(p => (p.id === data.id ? { ...p, stock: data.stock } : p))
+            );
 
-          fetch(`${API_HOST}/api/products/${data.id}`)
-              .then(response => response.json())
-              .then(fullProduct => {
-                if (fullProduct.stock > 0) {
-                  setProducts(prev =>
-                      prev.some(p => p.id === data.id) ? prev : [...prev, fullProduct]
-                  );
-                }
-              })
-              .catch(() => {});
+            fetch(`${API_HOST}/api/products/${data.id}`)
+                .then(response => response.json())
+                .then(fullProduct => {
+                  if (fullProduct.stock > 0) {
+                    setProducts(prev =>
+                        prev.some(p => p.id === data.id) ? prev : [...prev, fullProduct]
+                    );
+                  }
+                })
+                .catch(() => {});
+          }
         });
       },
     });
@@ -205,32 +198,20 @@ const changeQty = (id, delta) => {
       />
 
       <main className="container main">
-        <div className="hero">
-          <h2 className="hero-title">Makeup Oriente</h2>
-          <p className="hero-sub">Catalogo de productos disponibles.</p>
-        </div>
-
-        {/* ... (Tus botones de categorías se mantienen igual) ... */}
-        <div className="categories">
+        {/* Categorías: estilo The Ordinary, solo texto */}
+        <nav className="categories" aria-label="Categorías">
+          <span className="categories-label">Categorías</span>
           {categoriesData.map(cat => (
-            <div
-              key={cat.name}
-              className={`category-item ${selectedCategory === cat.name ? 'active' : ''}`}
-              onClick={() => {
-                if (selectedCategory === cat.name) {
-                  setSelectedCategory(null); // Si ya está seleccionada, deseleccionar (mostrar todos)
-                } else {
-                  setSelectedCategory(cat.name); // Seleccionar la nueva categoría
-                }
-              }}
-              style={{ backgroundImage: `url(${cat.imageSrc})` }} // Establecer la imagen como fondo
+            <button
+              key={cat}
+              type="button"
+              className={`category-link ${selectedCategory === cat ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
             >
-              <div className="category-overlay">
-                <span className="category-name">{cat.name}</span>
-              </div>
-            </div>
+              {cat}
+            </button>
           ))}
-        </div>
+        </nav>
 
         <div className="product-grid">
           {filteredProducts.map(product => (
@@ -260,6 +241,8 @@ const changeQty = (id, delta) => {
             </div>
           ))}
         </div>
+
+        <SkinConcerns />
 
         <VideoBanner videos={bannerVideos} />
 

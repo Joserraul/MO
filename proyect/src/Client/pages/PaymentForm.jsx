@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DeliveryMethod from "./DeliveryMethod.jsx";
 import { API_HOST } from "../services/api.js";
+import Navbar from "../components/Navbar.jsx";
+import '../styles/Checkout.css';
+import { useBcvRate } from "../hooks/useBcvRate.js";
+import { formatBs } from "../utils/format.js";
 
 const PAYMENT_METHODS = [
   {
@@ -27,6 +31,7 @@ function PaymentForm() {
   const [payNumber, setPayNumber] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const usdRate = useBcvRate();
 
   useEffect(() => {
     if (!user) {
@@ -89,18 +94,30 @@ function PaymentForm() {
 
   if (success) {
     return (
-      <div className="checkout-container">
-        <h1>¡Pedido registrado!</h1>
-        <p>Tu pedido fue guardado correctamente.</p>
-        <button className="checkout-submit" onClick={() => navigate("/profile")}>
-          Ver mi perfil
-        </button>
-      </div>
+      <>
+        <Navbar />
+        <div className="checkout-success">
+          <h1>¡Gracias por tu compra!</h1>
+          <p className="success-sub">
+            Tu pedido fue registrado correctamente.
+            <br />
+            Te contactaremos para coordinar la entrega.
+          </p>
+          <button className="checkout-submit" onClick={() => navigate("/profile")}>
+            Ver mi perfil
+          </button>
+          <button className="checkout-secondary" onClick={() => navigate("/")}>
+            Seguir comprando
+          </button>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="checkout-container">
+    <>
+      <Navbar />
+      <div className="checkout-container">
       <h1>Finalizar compra</h1>
 
       <form onSubmit={handleSubmit}>
@@ -162,15 +179,21 @@ function PaymentForm() {
           <p>
             <strong>Total: ${total.toFixed(2)}</strong>
           </p>
+          {usdRate && (
+            <p>
+              <strong>Total en Bs: Bs {formatBs(total * usdRate)}</strong>
+            </p>
+          )}
         </div>
 
         {error && <p className="checkout-error">{error}</p>}
 
         <button type="submit" className="checkout-submit">
-          Enviar
+          Enviar pedido
         </button>
       </form>
-    </div>
+      </div>
+    </>
   );
 }
 

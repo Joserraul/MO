@@ -54,3 +54,28 @@ export async function fetchOrders() {
     if (!res.ok) throw new Error("Error al cargar pedidos");
     return res.json();
 }
+
+// Tasa oficial del BCV (a través de DolarAPI, se actualiza a diario).
+// Se guarda en localStorage para no consultarla en cada render.
+const BCV_CACHE_KEY = "bcvRate";
+const BCV_CACHE_MS = 6 * 60 * 60 * 1000; // 6 horas
+
+export async function fetchBcvRate() {
+    const cached = localStorage.getItem(BCV_CACHE_KEY);
+    if (cached) {
+        const data = JSON.parse(cached);
+        if (Date.now() - data.timestamp < BCV_CACHE_MS) {
+            return data.promedio;
+        }
+    }
+
+    const res = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
+    if (!res.ok) throw new Error("No se pudo obtener la tasa BCV");
+
+    const data = await res.json();
+    localStorage.setItem(
+        BCV_CACHE_KEY,
+        JSON.stringify({ promedio: data.promedio, timestamp: Date.now() })
+    );
+    return data.promedio;
+}

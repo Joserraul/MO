@@ -58,5 +58,7 @@ public class ProductService {
 
     public void delete(Long id) {
         repository.deleteById(id);
+        messagingTemplate.convertAndSend("/topic/stock",
+                String.format("{\"id\":%d, \"deleted\":true}", id));
     }
 }

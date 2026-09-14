@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { API_HOST } from "../services/api.js";
+import '../styles/Profile.css';
+import Navbar from "../components/Navbar.jsx";
+import { useBcvRate } from "../hooks/useBcvRate.js";
+import { formatBs } from "../utils/format.js";
 
 const METHOD_LABELS = {
   ENVIO: "Envío nacional",
@@ -14,6 +18,7 @@ function Profile() {
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const usdRate = useBcvRate();
 
   useEffect(() => {
     if (!user) {
@@ -32,10 +37,12 @@ function Profile() {
   }
 
   return (
-    <div className="profile-container">
+    <>
+      <Navbar />
+      <div className="profile-container">
       <h1>Mi perfil</h1>
 
-      <Link to="/">← Volver a la tienda</Link>
+      <Link to="/" className="profile-back">← Volver a la tienda</Link>
 
       <div className="profile-box">
         <h2>Mis datos</h2>
@@ -57,7 +64,12 @@ function Profile() {
         ) : orders.length === 0 ? (
           <p>Aún no has hecho compras.</p>
         ) : (
-          orders.map((order) => (
+          orders.map((order) => {
+            const orderTotal = order.items.reduce(
+              (acc, item) => acc + item.price * item.quantity,
+              0
+            );
+            return (
             <div key={order.id} className="order-card">
               <p>
                 <strong>Fecha de pago:</strong> {order.paymentDate || "-"}
@@ -85,16 +97,20 @@ function Profile() {
                 ))}
               </ul>
               <p className="order-total">
-                <strong>Total:</strong> $
-                {order.items
-                  .reduce((acc, item) => acc + item.price * item.quantity, 0)
-                  .toFixed(2)}
+                <strong>Total:</strong> ${orderTotal.toFixed(2)}
               </p>
+              {usdRate && (
+                <p className="order-total">
+                  <strong>Total en Bs:</strong> Bs {formatBs(orderTotal * usdRate)}
+                </p>
+              )}
             </div>
-          ))
+          );
+          })
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 

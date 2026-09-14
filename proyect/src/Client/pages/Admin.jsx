@@ -5,6 +5,10 @@ import {
   fetchOrders,
   fetchProducts,
 } from "../services/api.js";
+import '../styles/Admin.css';
+import Navbar from "../components/Navbar.jsx";
+import { useBcvRate } from "../hooks/useBcvRate.js";
+import { formatBs } from "../utils/format.js";
 
 const CATEGORIES = ["Rostro", "Labios", "Ojos", "Skincare", "Herramientas"];
 
@@ -126,6 +130,7 @@ function AddProduct() {
 function OrdersByDay() {
   const [groups, setGroups] = useState({});
   const [loading, setLoading] = useState(true);
+  const usdRate = useBcvRate();
 
   useEffect(() => {
     fetchOrders()
@@ -155,7 +160,12 @@ function OrdersByDay() {
         days.map((day) => (
           <div key={day} className="admin-day">
             <h3>📅 {day}</h3>
-            {groups[day].map((order) => (
+            {groups[day].map((order) => {
+              const orderTotalBcv = order.items.reduce(
+                (acc, it) => acc + it.price * it.quantity,
+                0
+              );
+              return (
               <div key={order.id} className="admin-order">
                 <p>
                   <strong>Cliente:</strong> {order.clientName} — {order.clientPhone}
@@ -176,13 +186,16 @@ function OrdersByDay() {
                   ))}
                 </ul>
                 <p>
-                  <strong>Total:</strong> $
-                  {order.items
-                    .reduce((acc, it) => acc + it.price * it.quantity, 0)
-                    .toFixed(2)}
+                  <strong>Total:</strong> ${orderTotalBcv.toFixed(2)}
                 </p>
+                {usdRate && (
+                  <p>
+                    <strong>Total en Bs:</strong> Bs {formatBs(orderTotalBcv * usdRate)}
+                  </p>
+                )}
               </div>
-            ))}
+              );
+            })}
           </div>
         ))
       )}
@@ -230,15 +243,20 @@ function Admin() {
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="admin-container">
-        <h1>Acceso denegado</h1>
-        <p>Debes iniciar sesión con una cuenta de administrador.</p>
-      </div>
+      <>
+        <Navbar />
+        <div className="admin-container">
+          <h1>Acceso denegado</h1>
+          <p>Debes iniciar sesión con una cuenta de administrador.</p>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="admin-container">
+    <>
+      <Navbar />
+      <div className="admin-container">
       <h1>Panel de administración</h1>
 
       <div className="admin-tabs">
@@ -265,7 +283,8 @@ function Admin() {
       {tab === "products" && <AddProduct />}
       {tab === "orders" && <OrdersByDay />}
       {tab === "stock" && <StockManager />}
-    </div>
+      </div>
+    </>
   );
 }
 

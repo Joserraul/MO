@@ -1,0 +1,188 @@
+/* Checkout (estilo The Ordinary, consistente con Admin) */
+.checkout-container {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.checkout-container h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.checkout-container h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+  color: #000;
+}
+
+.pay-section {
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Opciones seleccionables (entrega y método de pago) */
+.pay-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #000;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.pay-option:last-child {
+  margin-bottom: 0;
+}
+
+.pay-option:hover {
+  border-color: #000;
+}
+
+.pay-option.selected {
+  border-color: #000;
+  background: #fafafa;
+  font-weight: 600;
+}
+
+.pay-option input[type="radio"] {
+  accent-color: #000;
+  cursor: pointer;
+}
+
+/* Datos del método de pago seleccionado */
+.pay-details {
+  margin-top: 0.75rem;
+  padding: 0.9rem;
+  background: #fafafa;
+  border: 1px solid var(--border);
+}
+
+.pay-details p {
+  color: #000;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0.25rem;
+}
+
+.pay-detail-line {
+  font-family: 'DM Sans', monospace;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+/* Campos de texto y fecha */
+.checkout-container input[type="date"],
+.checkout-container input[type="text"] {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  font-size: 0.95rem;
+  background: #fff;
+  color: #000;
+}
+
+.checkout-container input:focus {
+  outline: none;
+  border-color: #000;
+}
+
+/* Resumen del pedido */
+.checkout-summary {
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.checkout-summary p {
+  color: #000;
+  line-height: 1.7;
+}
+
+.checkout-error {
+  color: #b00020;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* Botones */
+.checkout-submit {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 0.9rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.checkout-submit:hover {
+  opacity: 0.8;
+}
+
+/* Pantalla de éxito (agradecimiento) */
+.checkout-success {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.checkout-success h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.checkout-success .success-sub {
+  font-size: 1.1rem;
+  color: #444;
+  margin: 1rem 0 2.5rem;
+  line-height: 1.6;
+}
+
+.checkout-success .checkout-submit {
+  max-width: 20rem;
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+.checkout-secondary {
+  display: block;
+  margin: 0 auto;
+  max-width: 20rem;
+  width: 100%;
+  background: none;
+  border: 1px solid #000;
+  color: #000;
+  padding: 0.8rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.checkout-secondary:hover {
+  background: #000;
+  color: #fff;
+}

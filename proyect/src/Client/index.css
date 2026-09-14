@@ -30,7 +30,7 @@
   
   /* Tipografía y Bordes */
   --radius: 0px; /* Las marcas de lujo suelen usar bordes rectos */
-  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-display: 'DM Sans', system-ui, sans-serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
 }
 
@@ -67,6 +67,27 @@ h1, h2, h3, h4 {
 
 .main { 
   padding: 3rem 0; 
+}
+
+/* Título de sección (estilo The Ordinary) */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+
+.section-sub {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Formularios y botones: heredan la tipografía del cuerpo */
+button, input, select, textarea {
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
 /* Animaciones */
