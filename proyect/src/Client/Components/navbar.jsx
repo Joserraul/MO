@@ -57,7 +57,7 @@ function Navbar({ onCartClick }) {
         <div className="header-actions">
           {user ? (
             <>
-              {user.role === "admin" && (
+              {user.role?.toLowerCase() === "admin" && (
                 <Link to="/admin" className="nav-link">Admin</Link>
               )}
               <Link to="/profile" className="nav-link">

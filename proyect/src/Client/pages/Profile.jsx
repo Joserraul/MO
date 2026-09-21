@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { API_HOST } from "../services/api.js";
+import { API_HOST, getToken } from "../services/api.js";
 import '../styles/Profile.css';
 import Navbar from "../components/Navbar.jsx";
 import { useBcvRate } from "../hooks/useBcvRate.js";
@@ -25,8 +25,19 @@ function Profile() {
       navigate("/login");
       return;
     }
-    fetch(`${API_HOST}/api/orders/user/${user.id}`)
-      .then((res) => res.json())
+    fetch(`${API_HOST}/api/orders/user/${user.id}`, {
+      headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          navigate("/login");
+          throw new Error("Sesión expirada");
+        }
+        if (!res.ok) throw new Error("Error al cargar pedidos");
+        return res.json();
+      })
       .then((data) => setOrders(data))
       .catch(() => setOrders([]))
       .finally(() => setLoading(false));

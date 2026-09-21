@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DeliveryMethod from "./DeliveryMethod.jsx";
-import { API_HOST } from "../services/api.js";
+import { API_HOST, getToken, clearSession } from "../services/api.js";
 import Navbar from "../components/Navbar.jsx";
 import '../styles/Checkout.css';
 import { useBcvRate } from "../hooks/useBcvRate.js";
@@ -73,7 +73,9 @@ function PaymentForm() {
     try {
       const res = await fetch(`${API_HOST}/api/orders/${user.id}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: getToken()
+          ? { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` }
+          : { "Content-Type": "application/json" },
         body: JSON.stringify({
           deliveryMethod: delivery,
           paymentMethod: payMethod,

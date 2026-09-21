@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser, registerUser } from "../services/api.js";
+import { loginUser, registerUser, saveSession } from "../services/api.js";
 import '../styles/Login.css';
 import Navbar from "../components/Navbar.jsx";
 
@@ -18,14 +18,16 @@ function Login() {
         e.preventDefault();
         setError("");
         try {
-            let user;
+            let session;
             if (mode === "register") {
                 await registerUser(form);
-                user = await loginUser(form.email, form.password); // auto-login
+                session = await loginUser(form.email, form.password); // auto-login
             } else {
-                user = await loginUser(form.email, form.password);
+                session = await loginUser(form.email, form.password);
             }
-            localStorage.setItem("user", JSON.stringify(user));
+            // El backend devuelve { token, user }: guardamos ambas cosas.
+            // El token es lo que autoriza las peticiones protegidas.
+            saveSession(session.token, session.user);
             navigate("/");
         } catch (err) {
             setError(err.message);

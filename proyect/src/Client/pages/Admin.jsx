@@ -130,6 +130,7 @@ function AddProduct() {
 function OrdersByDay() {
   const [groups, setGroups] = useState({});
   const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState(""); // "" = todas las fechas
   const usdRate = useBcvRate();
 
   useEffect(() => {
@@ -147,15 +148,35 @@ function OrdersByDay() {
       .finally(() => setLoading(false));
   }, []);
 
-  const days = Object.keys(groups).sort((a, b) => (a < b ? 1 : -1));
+  const allDays = Object.keys(groups).sort((a, b) => (a < b ? 1 : -1));
+  const days = selectedDate
+    ? (groups[selectedDate] ? [selectedDate] : [])
+    : allDays;
 
   return (
     <div>
       <h2>Pedidos por día</h2>
+
+      <div className="admin-date-filter">
+        <label>
+          Ver pedidos de una fecha
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+        </label>
+        {selectedDate && (
+          <button className="admin-btn" onClick={() => setSelectedDate("")}>
+            Ver todas
+          </button>
+        )}
+      </div>
+
       {loading ? (
         <p>Cargando...</p>
       ) : days.length === 0 ? (
-        <p>No hay pedidos aún.</p>
+        <p>{selectedDate ? `No hay pedidos para el ${selectedDate}.` : "No hay pedidos aún."}</p>
       ) : (
         days.map((day) => (
           <div key={day} className="admin-day">
@@ -204,34 +225,175 @@ function OrdersByDay() {
 }
 
 // ---------- Sección 3: stock ----------
+const STOCK_CATEGORY_ORDER = ["Rostro", "Labios", "Ojos", "Skincare", "Herramientas"];
+
 function StockManager() {
   const [products, setProducts] = useState([]);
+  const [collapsed, setCollapsed] = useState(new Set()); // categorías plegadas
 
   useEffect(() => {
     fetchProducts().then(setProducts).catch(() => {});
   }, []);
 
+  const toggleCategory = (cat) => {
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(cat)) {
+        next.delete(cat);
+      } else {
+        next.add(cat);
+      }
+      return next;
+    });
+  };
+
   const adjustStock = async (product, delta) => {
     const newStock = Math.max(0, product.stock + delta);
+    await updateField(product, { stock: newStock });
+  };
+
+  // Guarda cambios puntuales de un producto (stock, precio, categoría, imagen)
+  const updateField = async (product, patch) => {
     try {
-      const updated = await updateProduct({ ...product, stock: newStock });
+      const updated = await updateProduct({ ...product, ...patch });
       setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
     } catch (err) {
-      console.error(err);
+      console.error("Error al guardar cambios:", err);
     }
   };
+
+  // Cambiar la imagen del producto (se sube en base64 igual que al crearlo)
+  const changeImage = (product, e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async () => {
+      await updateField(product, { image: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Cambiar precio: se guarda al salir del campo o al pulsar Enter
+  const handlePriceBlur = (product, e) => {
+    const price = parseFloat(e.target.value);
+    if (!Number.isNaN(price) && price >= 0 && price !== product.price) {
+      updateField(product, { price });
+    }
+  };
+
+  // Agrupar productos por categoría (respetando el orden de STOCK_CATEGORY_ORDER + otras)
+  const grouped = {};
+  products.forEach((p) => {
+    const cat = p.category || "Sin categoría";
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(p);
+  });
+
+  const categoryOrder = [
+    ...STOCK_CATEGORY_ORDER,
+    ...Object.keys(grouped).filter((c) => !STOCK_CATEGORY_ORDER.includes(c)),
+  ];
+
+  // Opciones del selector de categoría: las conocidas + las que existan en productos
+  const categoryOptions = [
+    ...new Set([
+      ...CATEGORIES,
+      ...Object.keys(grouped),
+    ]),
+  ];
 
   return (
     <div>
       <h2>Control de stock</h2>
-      {products.map((p) => (
-        <div key={p.id} className="admin-stock-row">
-          <span className="admin-stock-name">{p.name}</span>
-          <button className="admin-btn" onClick={() => adjustStock(p, -1)}>−</button>
-          <strong className="admin-stock-qty">{p.stock}</strong>
-          <button className="admin-btn" onClick={() => adjustStock(p, 1)}>+</button>
-        </div>
-      ))}
+
+      {categoryOrder.length === 0 ? (
+        <p>No hay productos aún.</p>
+      ) : (
+        categoryOrder.map((cat) => {
+          const items = grouped[cat] || [];
+          const isOpen = !collapsed.has(cat);
+          return (
+            <div key={cat} className="admin-category">
+              <button
+                type="button"
+                className="admin-cat-header"
+                onClick={() => toggleCategory(cat)}
+                aria-expanded={isOpen}
+              >
+                <span className="admin-cat-arrow">{isOpen ? "▾" : "▸"}</span>
+                {cat} <span className="admin-cat-count">({items.length})</span>
+              </button>
+
+              {isOpen && (
+                <div className="admin-cat-body">
+                  {items.length === 0 ? (
+                    <p className="admin-cat-empty">No hay productos en esta categoría.</p>
+                  ) : (
+                    items.map((p) => (
+                    <div key={p.id} className="admin-stock-row">
+                      <img
+                        src={p.image || "https://placehold.co/100x100/FFFFFF/E8A0BF?text=No+img"}
+                        alt={p.name}
+                        className="admin-thumb"
+                      />
+                      <div className="admin-stock-info">
+                        <span className="admin-stock-name">{p.name}</span>
+                        <span className="admin-stock-brand">{p.brand}</span>
+
+                        <select
+                          className="admin-stock-cat"
+                          defaultValue={p.category || "Sin categoría"}
+                          onChange={(e) =>
+                            updateField(p, { category: e.target.value })
+                          }
+                          aria-label={`Categoría de ${p.name}`}
+                        >
+                          {categoryOptions.map((c) => (
+                            <option key={c} value={c}>{c}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="admin-stock-price">
+                        <span className="admin-stock-price-label">$</span>
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          defaultValue={p.price}
+                          onBlur={(e) => handlePriceBlur(p, e)}
+                          onKeyDown={(e) => e.key === "Enter" && e.target.blur()}
+                          aria-label={`Precio de ${p.name}`}
+                        />
+                      </div>
+
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="admin-file-input"
+                        onChange={(e) => changeImage(p, e)}
+                        aria-label={`Cambiar imagen de ${p.name}`}
+                      />
+
+                      <button
+                        className="admin-btn"
+                        onClick={() => adjustStock(p, -1)}
+                        aria-label={`Quitar stock a ${p.name}`}
+                      >−</button>
+                      <strong className="admin-stock-qty">{p.stock}</strong>
+                      <button
+                        className="admin-btn"
+                        onClick={() => adjustStock(p, 1)}
+                        aria-label={`Agregar stock a ${p.name}`}
+                      >+</button>
+                    </div>
+                  )))}
+                </div>
+              )}
+            </div>
+          );
+        })
+      )}
     </div>
   );
 }
@@ -241,7 +403,7 @@ function Admin() {
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const [tab, setTab] = useState("products");
 
-  if (!user || user.role !== "admin") {
+  if (!user || !user.role || user.role.toLowerCase() !== "admin") {
     return (
       <>
         <Navbar />

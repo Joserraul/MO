@@ -16,15 +16,6 @@ import VideoBanner from '../components/VideoBanner.jsx'; // Importar el nuevo co
 import ShippingInfo from '../components/ShippingInfo.jsx'; // Importar el nuevo componente ShippingInfo
 import Footer from '../components/Footer.jsx';
 
-import video1 from '../assets/video/Download.mp4';
-import video2 from '../assets/video/Download 1.mp4';
-import video3 from '../assets/video/Download 2.mp4';
-import video4 from '../assets/video/Download 3.mp4';
-import video5 from '../assets/video/Download 4.mp4';
-import video6 from '../assets/video/Download 5.mp4';
-import video7 from '../assets/video/Download 6.mp4';
-import video8 from '../assets/video/Download 7.mp4';
-
 import SkinConcerns from '../components/SkinConcerns.jsx'; // Importar la sección "Sobre tu piel"
 
 function Home() {
@@ -92,21 +83,17 @@ function Home() {
     return () => client.deactivate();
   }, []);
 
+  // Videos directamente de TikTok: solo basta el enlace (la app los convierte en reproductor embed)
   const bannerVideos = [
-    { id: '1', videoSrc: video1, link: 'https://www.tiktok.com/@makeup_oriente/video/7588339575207005452?is_from_webapp=1&sender_device=pc' },
-    { id: '2', videoSrc: video2, link: 'https://www.tiktok.com/@makeup_oriente/video/7620600491642277141?is_from_webapp=1&sender_device=pc' },
-    { id: '3', videoSrc: video3, link: 'https://www.tiktok.com/@makeup_oriente/video/7615395285304429845?is_from_webapp=1&sender_device=pc' },
-    { id: '4', videoSrc: video4, link: 'https://www.tiktok.com/@makeup_oriente/video/7611589555476630805?is_from_webapp=1&sender_device=pc' },
-    { id: '5', videoSrc: video5, link: 'https://www.tiktok.com/@makeup_oriente/video/7606844083121786133?is_from_webapp=1&sender_device=pc' },
-    { id: '6', videoSrc: video6, link: 'https://www.tiktok.com/@makeup_oriente/video/7608698844221623572?is_from_webapp=1&sender_device=pc' },
-    { id: '7', videoSrc: video7, link: 'https://www.tiktok.com/@makeup_oriente/video/7594647289067605259?is_from_webapp=1&sender_device=pc' },
-    { id: '8', videoSrc: video8, link: 'https://www.tiktok.com/@makeup_oriente/video/7588648668337556748?is_from_webapp=1&sender_device=pc' },
+    { id: '1', link: 'https://vt.tiktok.com/ZSq4waPr2/' },
+    { id: '2', link: 'https://vt.tiktok.com/ZSq4wxJy9/' },
+    { id: '3', link: 'https://vt.tiktok.com/ZSq4w4uBa/' },
+    { id: '4', link: 'https://vt.tiktok.com/ZSq4KYjHW/' },
+    { id: '5', link: 'https://vt.tiktok.com/ZSq4KYru8/' },
+    { id: '6', link: 'https://vt.tiktok.com/ZSq4wpWVy/' },
+    { id: '7', link: 'https://vt.tiktok.com/ZSq4KYnJT/' },
+    { id: '8', link: 'https://vt.tiktok.com/ZSq4KeWgP/' },
   ];
-
-  // Añadir un console.log para depurar el valor de videoSrc
-  bannerVideos.forEach(video => {
-    console.log(`Video ID: ${video.id}, videoSrc:`, video.videoSrc, `Type: ${typeof video.videoSrc}`);
-  });
 
   // En home.jsx
 const changeQty = (id, delta) => {

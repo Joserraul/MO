@@ -1,7 +1,41 @@
 const API_HOST = `http://${window.location.hostname}:8080`;
 const API_URL = `${API_HOST}/api`;
+const TOKEN_KEY = "token";
 
 export { API_HOST };
+
+// ---------- Sesión / token JWT ----------
+
+export function getToken() {
+    return localStorage.getItem(TOKEN_KEY);
+}
+
+/**
+ * Guarda el token y el usuario tras un login exitoso.
+ * El token es la "credencial" que el backend valida en cada petición.
+ */
+export function saveSession(token, user) {
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem("user", JSON.stringify(user));
+}
+
+export function clearSession() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem("user");
+}
+
+/**
+ * Headers con el token: "Authorization: Bearer <token>".
+ * Este header es lo que el backend usa para saber quién eres.
+ */
+function authHeaders(extra = {}) {
+    const token = getToken();
+    return token
+        ? { ...extra, Authorization: `Bearer ${token}` }
+        : extra;
+}
+
+// ---------- Autenticación ----------
 
 export async function registerUser(userData) {
     const res = await fetch(`${API_URL}/users`, {
@@ -23,35 +57,42 @@ export async function loginUser(email, password) {
     return res.json();
 }
 
+// ---------- Productos (el catálogo es público) ----------
+
 export async function fetchProducts() {
     const res = await fetch(`${API_URL}/products`);
     if (!res.ok) throw new Error("Error al cargar productos");
     return res.json();
 }
 
+// Crear producto: solo ADMIN (requiere token)
 export async function createProduct(product) {
     const res = await fetch(`${API_URL}/products`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify(product),
     });
-    if (!res.ok) throw new Error("No se pudo crear el producto");
+    if (!res.ok) throw new Error("No se pudo crear el producto (¿sin permisos?)");
     return res.json();
 }
 
+// Actualizar producto (stock): solo ADMIN (requiere token)
 export async function updateProduct(product) {
     const res = await fetch(`${API_URL}/products/${product.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify(product),
     });
-    if (!res.ok) throw new Error("No se pudo actualizar el producto");
+    if (!res.ok) throw new Error("No se pudo actualizar el producto (¿sin permisos?)");
     return res.json();
 }
 
+// Pedidos de TODOS los usuarios: solo ADMIN (requiere token)
 export async function fetchOrders() {
-    const res = await fetch(`${API_URL}/orders`);
-    if (!res.ok) throw new Error("Error al cargar pedidos");
+    const res = await fetch(`${API_URL}/orders`, {
+        headers: authHeaders(),
+    });
+    if (!res.ok) throw new Error("Error al cargar pedidos (¿sin permisos?)");
     return res.json();
 }
 

@@ -1,50 +1,47 @@
-import React, { useState, useEffect, useRef, } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/VideoBanner.css';
+
+// Obtiene la miniatura (portada) del video desde el link usando el API oEmbed de TikTok.
+// Ej: https://www.tiktok.com/oembed?url=<link> → { thumbnail_url, ... }
+const fetchThumbnail = async (link) => {
+  const res = await fetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(link)}`);
+  if (!res.ok) throw new Error('No se pudo obtener la miniatura');
+  const data = await res.json();
+  return data.thumbnail_url;
+};
 
 const VideoBanner = ({ videos }) => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(Math.floor(videos.length / 2)); // Iniciar en el medio
+  const [thumbnails, setThumbnails] = useState({}); // id → url de la miniatura
   const videoItemRefs = useRef([]);
-  const videoRefs = useRef([]); // Ref para los elementos de video
   const intervalRef = useRef(null);
   const wrapperRef = useRef(null); // Ref para el wrapper para el scroll
 
-  // Función para cargar el script de TikTok (ya no es necesaria si no se incrusta el reproductor)
-  // const loadTikTokEmbedScript = useCallback(() => {
-  //   if (window.tiktokEmbed) { // Evitar cargar el script múltiples veces
-  //     window.tiktokEmbed.load();
-  //     return;
-  //   }
-  //   const script = document.createElement('script');
-  //   script.src = 'https://www.tiktok.com/embed.js';
-  //   script.async = true;
-  //   script.onload = () => {
-  //     window.tiktokEmbed = window.tiktokEmbed || {};
-  //     window.tiktokEmbed.load = () => {
-  //       if (window.tiktok && window.tiktok.embed) {
-  //         window.tiktok.embed.load();
-  //       }
-  //     };
-  //     window.tiktokEmbed.load();
-  //   };
-  //   document.body.appendChild(script);
-  // }, []);
-
-  // useEffect(() => {
-  //   loadTikTokEmbedScript(); // Cargar el script al montar el componente
-  // }, [loadTikTokEmbedScript]);
+  // Cargar las miniaturas de todos los videos una sola vez
+  useEffect(() => {
+    let active = true;
+    videos.forEach((video) => {
+      fetchThumbnail(video.link)
+        .then((url) => {
+          if (active) {
+            setThumbnails((prev) => ({ ...prev, [video.id]: url }));
+          }
+        })
+        .catch(() => {}); // Si falla, se muestra el lugar reservado
+    });
+    return () => { active = false; };
+  }, [videos]);
 
   useEffect(() => {
     const goToNextVideo = () => {
       setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
     };
 
-    // Establecer el intervalo de avance a 4 segundos (4000 ms)
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
 
-    intervalRef.current = setInterval(goToNextVideo, 4000); // 4 segundos de vista previa
-    console.log('Current Video Index:', currentVideoIndex); // Depuración
+    intervalRef.current = setInterval(goToNextVideo, 4000); // 4 segundos por video
 
     return () => {
       if (intervalRef.current) {
@@ -52,20 +49,6 @@ const VideoBanner = ({ videos }) => {
       }
     };
   }, [videos, currentVideoIndex]);
-
-  // Efecto para controlar la reproducción de los videos
-  useEffect(() => {
-    videoRefs.current.forEach((videoElement, index) => {
-      if (videoElement) {
-        if (index === currentVideoIndex) {
-          videoElement.play().catch(error => console.error("Error al intentar reproducir el video:", error));
-        } else {
-          videoElement.pause();
-          videoElement.currentTime = 0; // Reiniciar el video al pausar
-        }
-      }
-    });
-  }, [currentVideoIndex]); // Se ejecuta cuando currentVideoIndex cambia
 
   // Efecto para el scroll del banner cuando cambia el video activo
   useEffect(() => {
@@ -80,8 +63,9 @@ const VideoBanner = ({ videos }) => {
         behavior: 'smooth'
       });
     }
-  }, [currentVideoIndex]); // Se ejecuta cuando currentVideoIndex cambia
+  }, [currentVideoIndex]);
 
+  // Al hacer clic: se abre el video en TikTok (vista previa, no se reproduce aquí)
   const handleVideoClick = (link) => {
     window.open(link, '_blank');
   };
@@ -99,31 +83,32 @@ const VideoBanner = ({ videos }) => {
             ref={el => videoItemRefs.current[index] = el}
             className={`video-item ${index === currentVideoIndex ? 'active' : ''}`}
             onClick={() => handleVideoClick(video.link)}
+            role="button"
+            tabIndex={0}
+            aria-label={`Ver video en TikTok ${index + 1}`}
           >
             <div className="video-placeholder">
-              <video
-                ref={el => videoRefs.current[index] = el} // Asignar ref al elemento de video
-                src={video.videoSrc}
-                // autoPlay={index === currentVideoIndex} // Controlado manualmente por useEffect
-                muted
-                loop
-                playsInline
-                // controls // Eliminado, ya que el usuario quiere vista previa y clic a TikTok
-                className="video-player"
-                onError={(e) => {
-                  console.error(`Error al cargar el video ${video.id}:`, e.target.src, e);
-                }}
-              />
+              {thumbnails[video.id] ? (
+                <img
+                  src={thumbnails[video.id]}
+                  alt={`Video de TikTok ${index + 1}`}
+                  className="video-player"
+                />
+              ) : (
+                <span className="video-loader">Cargando…</span>
+              )}
+              <span className="video-play-icon" />
             </div>
           </div>
         ))}
       </div>
       <div className="video-banner-controls">
-        {videos.map((_, index) => (
+        {videos.map((video, index) => (
           <button
-            key={index}
+            key={video.id}
             className={`control-dot ${index === currentVideoIndex ? 'active' : ''}`}
             onClick={() => setCurrentVideoIndex(index)}
+            aria-label={`Video ${index + 1}`}
           />
         ))}
       </div>
