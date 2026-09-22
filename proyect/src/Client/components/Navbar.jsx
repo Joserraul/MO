@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import '../styles/Header.css'; // Asegúrate de que este archivo tenga el position: fixed
+import '../styles/header.css'; // Asegúrate de que este archivo tenga el position: fixed
 
 function Navbar({ onCartClick }) {
   const [cartCount, setCartCount] = useState(0);
