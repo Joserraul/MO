@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import '../styles/header.css'; // Asegúrate de que este archivo tenga el position: fixed
+import { isDemo } from "../demo/demo.js";
 
 function Navbar({ onCartClick }) {
   const [cartCount, setCartCount] = useState(0);
@@ -47,60 +48,70 @@ function Navbar({ onCartClick }) {
   };
 
   return (
-    /* La clase "Navbar" debe tener position: fixed en Header.css */
-    <nav className="Navbar">
-      <div className="header-inner">
-        <Link to="/" className="logo-link">
-          <h1 className="logo">Makeup Oriente</h1>
-        </Link>
-        
-        <div className="header-actions">
-          {user ? (
-            <>
-              {user.role?.toLowerCase() === "admin" && (
-                <Link to="/admin" className="nav-link">Admin</Link>
-              )}
-              <Link to="/profile" className="nav-link">
-                Hola, {user.username}
-              </Link>
-              <button className="nav-link nav-logout" onClick={handleLogout}>
-                Salir
-              </button>
-            </>
-          ) : (
-            <Link to="/login" className="nav-link">
-              Iniciar sesión
-            </Link>
-          )}
-
-          <button 
-            className="cart-toggle" 
-            onClick={handleToggleCart}
-            aria-label="Ver carrito"
-          >
-            <svg 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            >
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-              <line x1="3" x2="21" y1="6" y2="6"/>
-              <path d="M16 10a4 4 0 0 1-8 0"/>
-            </svg>
-            {cartCount > 0 && (
-              <span className="cart-badge" id="cart-badge">
-                {cartCount}
-              </span>
-            )}
-          </button>
+    <>
+      {isDemo() && (
+        <div style={{
+          background: "#111", color: "#f5e6ee", textAlign: "center",
+          padding: "6px 10px", fontSize: "12px", letterSpacing: "0.3px",
+        }}>
+          Modo demostración: datos y sesión (admin) simulados para explorar la app
         </div>
-      </div>
-    </nav>
+      )}
+      {/* La clase "Navbar" debe tener position: fixed en Header.css */}
+      <nav className="Navbar">
+        <div className="header-inner">
+          <Link to="/" className="logo-link">
+            <h1 className="logo">Makeup Oriente</h1>
+          </Link>
+          
+          <div className="header-actions">
+            {user ? (
+              <>
+                {user.role?.toLowerCase() === "admin" && (
+                  <Link to="/admin" className="nav-link">Admin</Link>
+                )}
+                <Link to="/profile" className="nav-link">
+                  Hola, {user.username}
+                </Link>
+                <button className="nav-link nav-logout" onClick={handleLogout}>
+                  Salir
+                </button>
+              </>
+            ) : (
+              <Link to="/login" className="nav-link">
+                Iniciar sesión
+              </Link>
+            )}
+
+            <button 
+              className="cart-toggle" 
+              onClick={handleToggleCart}
+              aria-label="Ver carrito"
+            >
+              <svg 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" x2="21" y1="6" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+              {cartCount > 0 && (
+                <span className="cart-badge" id="cart-badge">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      </nav>
+    </>
   );
 }
 

@@ -24,17 +24,26 @@ function ScrollReset() {
 
 const root = createRoot(document.getElementById('root'));
 
-root.render(
-  <StrictMode>
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <ScrollReset />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/checkout" element={<PaymentForm />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
-    </BrowserRouter>
-  </StrictMode>
-);
+// Si el backend no responde (p. ej. GitHub Pages), activa el modo
+// demostración y abre la app con una cuenta admin ya iniciada.
+async function startApp() {
+  const { detectBackend, ensureDemoSession } = await import('./demo/demo.js');
+  if (await detectBackend()) ensureDemoSession();
+
+  root.render(
+    <StrictMode>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <ScrollReset />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/checkout" element={<PaymentForm />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/admin" element={<Admin />} />
+        </Routes>
+      </BrowserRouter>
+    </StrictMode>
+  );
+}
+
+startApp();

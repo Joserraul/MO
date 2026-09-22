@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser, registerUser, saveSession } from "../services/api.js";
+import { isDemo, demoLogin } from "../demo/demo.js";
 import '../styles/Login.css';
 import Navbar from "../components/Navbar.jsx";
 
@@ -11,6 +12,7 @@ function Login() {
     });
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const demo = isDemo();
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -40,6 +42,25 @@ function Login() {
             <div className="login-container">
                 <h1>Makeup Oriente</h1>
                 <h2>{mode === "login" ? "Iniciar sesión" : "Crear cuenta"}</h2>
+
+            {demo && (
+                <div style={{
+                    background: "#f7e8f0", border: "1px solid #e8a0bf",
+                    borderRadius: 8, padding: "12px 14px", marginBottom: 16,
+                    fontSize: 13, textAlign: "center",
+                }}>
+                    <p style={{ margin: "0 0 8px" }}>
+                        Estás en el <strong>modo demostración</strong> (sin backend).
+                        Entra con la cuenta de prueba para explorarlo todo, incluido el panel admin.
+                    </p>
+                    <button
+                        type="button" style={{ cursor: "pointer", padding: "8px 14px" }}
+                        onClick={() => { demoLogin(); navigate("/"); }}
+                    >
+                        Entrar como demo (admin)
+                    </button>
+                </div>
+            )}
 
             <form onSubmit={handleSubmit}>
                 {mode === "register" && (

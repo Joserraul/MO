@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DeliveryMethod from "./DeliveryMethod.jsx";
 import { API_HOST, getToken, clearSession } from "../services/api.js";
+import { isDemo, DEMO_PRODUCTS, pushDemoOrder } from "../demo/demo.js";
 import Navbar from "../components/Navbar.jsx";
 import '../styles/Checkout.css';
 import { useBcvRate } from "../hooks/useBcvRate.js";
@@ -38,6 +39,7 @@ function PaymentForm() {
       navigate("/login");
       return;
     }
+    if (isDemo()) { setProducts(DEMO_PRODUCTS); return; } // modo demo: sin backend
     fetch(`${API_HOST}/api/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
@@ -71,6 +73,21 @@ function PaymentForm() {
     }));
 
     try {
+      // Modo demo (GitHub Pages): el pedido se simula y se guarda en el navegador
+      if (isDemo()) {
+        pushDemoOrder({
+          deliveryMethod: delivery,
+          paymentMethod: payMethod,
+          paymentDate: payDate,
+          transferNumber: payNumber,
+          items,
+        });
+        localStorage.removeItem("cart");
+        localStorage.removeItem("transferNumber");
+        setSuccess(true);
+        return;
+      }
+
       const res = await fetch(`${API_HOST}/api/orders/${user.id}`, {
         method: "POST",
         headers: getToken()

@@ -4,6 +4,16 @@ const TOKEN_KEY = "token";
 
 export { API_HOST };
 
+// Modo demostración (GitHub Pages, sin backend): datos simulados aislados.
+// Ver src/Client/demo/demo.js — en local con backend esto no se activa.
+import {
+  isDemo,
+  DEMO_PRODUCTS,
+  DEMO_USER,
+  DEMO_TOKEN,
+  getDemoOrders,
+} from "../demo/demo.js";
+
 // ---------- Sesión / token JWT ----------
 
 export function getToken() {
@@ -38,6 +48,7 @@ function authHeaders(extra = {}) {
 // ---------- Autenticación ----------
 
 export async function registerUser(userData) {
+    if (isDemo()) return DEMO_USER;
     const res = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -48,6 +59,7 @@ export async function registerUser(userData) {
 }
 
 export async function loginUser(email, password) {
+    if (isDemo()) return { token: DEMO_TOKEN, user: DEMO_USER };
     const res = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -60,6 +72,7 @@ export async function loginUser(email, password) {
 // ---------- Productos (el catálogo es público) ----------
 
 export async function fetchProducts() {
+    if (isDemo()) return DEMO_PRODUCTS;
     const res = await fetch(`${API_URL}/products`);
     if (!res.ok) throw new Error("Error al cargar productos");
     return res.json();
@@ -67,6 +80,7 @@ export async function fetchProducts() {
 
 // Crear producto: solo ADMIN (requiere token)
 export async function createProduct(product) {
+    if (isDemo()) return { ...product, id: Date.now() };
     const res = await fetch(`${API_URL}/products`, {
         method: "POST",
         headers: authHeaders({ "Content-Type": "application/json" }),
@@ -78,6 +92,7 @@ export async function createProduct(product) {
 
 // Actualizar producto (stock): solo ADMIN (requiere token)
 export async function updateProduct(product) {
+    if (isDemo()) return product;
     const res = await fetch(`${API_URL}/products/${product.id}`, {
         method: "PUT",
         headers: authHeaders({ "Content-Type": "application/json" }),
@@ -89,6 +104,7 @@ export async function updateProduct(product) {
 
 // Pedidos de TODOS los usuarios: solo ADMIN (requiere token)
 export async function fetchOrders() {
+    if (isDemo()) return getDemoOrders();
     const res = await fetch(`${API_URL}/orders`, {
         headers: authHeaders(),
     });

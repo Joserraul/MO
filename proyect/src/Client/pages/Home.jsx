@@ -6,6 +6,7 @@ import * as StompJs from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { debug } from "../utils/debug.js"; // Importa tu utilidad de debug
 import { API_HOST } from "../services/api.js";
+import { isDemo, DEMO_PRODUCTS } from "../demo/demo.js";
 import '../styles/categories.css'; // Importa los estilos de Categories
 import '../styles/productgrid.css'; // Importa los estilos de Product Grid
 import '../styles/AddQty.css'; // Importa los estilos de Add / Qty
@@ -44,12 +45,14 @@ function Home() {
 
 
   useEffect(() => {                                // ← B2 VA AQUÍ, debajo
+    if (isDemo()) { setProducts(DEMO_PRODUCTS); return; } // modo demo: sin backend
     fetch(`${API_HOST}/api/products`)
         .then(response => response.json())
         .then(data => setProducts(data));
   }, []);
 
   useEffect(() => {
+    if (isDemo()) return; // en modo demo no hay WebSocket (no hay backend)
     const client = new StompJs.Client({
       webSocketFactory: () => new SockJS(`${API_HOST}/ws`),
       onConnect: () => {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { API_HOST, getToken } from "../services/api.js";
+import { isDemo, getDemoOrders } from "../demo/demo.js";
 import '../styles/Profile.css';
 import Navbar from "../components/Navbar.jsx";
 import { useBcvRate } from "../hooks/useBcvRate.js";
@@ -23,6 +24,11 @@ function Profile() {
   useEffect(() => {
     if (!user) {
       navigate("/login");
+      return;
+    }
+    if (isDemo()) {
+      setOrders(getDemoOrders()); // modo demo: pedidos locales simulados
+      setLoading(false);
       return;
     }
     fetch(`${API_HOST}/api/orders/user/${user.id}`, {
