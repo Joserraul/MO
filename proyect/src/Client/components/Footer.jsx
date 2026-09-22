@@ -6,7 +6,7 @@ import { fetchBcvRate } from '../services/api.js';
 import candelaImage from '../assets/admin/candela.jpeg';
 import dianaImage from '../assets/admin/diana.jpg'; // ¡Corregida la extensión a .jpg!
 import fioImage from '../assets/admin/fio.jpeg';
-import jodaImage from '../assets/admin/joda.jpg';
+import jodaImage from '../assets/1.jpeg';
 import jrImage from '../assets/admin/jr.jpeg';
 
 const TEAM = [
