@@ -6,14 +6,12 @@ import { fetchBcvRate } from '../services/api.js';
 import candelaImage from '../assets/admin/candela.jpeg';
 import dianaImage from '../assets/admin/diana.jpg'; // ¡Corregida la extensión a .jpg!
 import fioImage from '../assets/admin/fio.jpeg';
-import jodaImage from '../assets/1.jpeg';
 import jrImage from '../assets/admin/jr.jpeg';
 
 const TEAM = [
   { image: candelaImage, name: 'Candela', role: 'Equipo Makeup Oriente' },
   { image: dianaImage, name: 'Diana', role: 'Equipo Makeup Oriente' },
   { image: fioImage, name: 'Fio', role: 'Equipo Makeup Oriente' },
-  { image: jodaImage, name: 'Joda', role: 'Equipo Makeup Oriente' },
   { image: jrImage, name: 'Jr', role: 'Equipo Makeup Oriente' },
 ];
 

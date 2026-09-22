@@ -1,7 +1,4 @@
-import candelaImage from "../assets/admin/candela.jpeg";
-import dianaImage from "../assets/admin/diana.jpg";
-import fioImage from "../assets/admin/fio.jpeg";
-import jrImage from "../assets/admin/jr.jpeg";
+import productImage from "../assets/1.jpeg";
 
 /**
  * MODO DEMOSTRACIÓN — datos simulados.
@@ -30,7 +27,7 @@ export const DEMO_PRODUCTS = [
     description:
       "Serum antioxidante con vitamina C al 8% + ácido hialurónico, para iluminar y uniformar el tono.",
     category: "Rostro",
-    image: candelaImage,
+    image: productImage,
     stock: 15,
   },
   {
@@ -41,7 +38,7 @@ export const DEMO_PRODUCTS = [
     description:
       "Crema hidratante de acabado luminoso, ligera y sin grasa. Ideal para pieles mixtas.",
     category: "Rostro",
-    image: dianaImage,
+    image: productImage,
     stock: 8,
   },
   {
@@ -51,7 +48,7 @@ export const DEMO_PRODUCTS = [
     price: 24.5,
     description: "Tinte labial aterciopelado de larga duración con acabado mate suave.",
     category: "Labios",
-    image: fioImage,
+    image: productImage,
     stock: 20,
   },
   {
@@ -61,7 +58,7 @@ export const DEMO_PRODUCTS = [
     price: 18.0,
     description: "Paleta con 12 tonos neutros, pigmentación intensa y fácil difuminado.",
     category: "Ojos",
-    image: jrImage,
+    image: productImage,
     stock: 5,
   },
 ];
