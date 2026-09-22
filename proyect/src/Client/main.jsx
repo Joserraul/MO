@@ -26,7 +26,7 @@ const root = createRoot(document.getElementById('root'));
 
 root.render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <ScrollReset />
       <Routes>
         <Route path="/" element={<Home />} />
