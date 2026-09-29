@@ -10,7 +10,7 @@
 .auth-capsule {
   width: 100%;
   max-width: 22rem;
-  margin-top: 5.5rem;
+  margin-top: 7.5rem;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(32px) saturate(150%);
   -webkit-backdrop-filter: blur(32px) saturate(150%);
@@ -23,9 +23,9 @@
 }
 
 .auth-circle {
-  width: 11rem;
-  height: 11rem;
-  margin: -6rem auto 1.25rem;
+  width: 12.5rem;
+  height: 12.5rem;
+  margin: -8rem auto 1.25rem;
   border-radius: 50%;
   overflow: hidden;
   border: none;
@@ -124,13 +124,13 @@
 
 @media (max-width: 480px) {
   .auth-capsule {
-    margin-top: 4.5rem;
+    margin-top: 6rem;
   }
 
   .auth-circle {
-    width: 9rem;
-    height: 9rem;
-    margin-top: -5rem;
+    width: 10.5rem;
+    height: 10.5rem;
+    margin-top: -6.5rem;
   }
 
   .auth-capsule h2 {
