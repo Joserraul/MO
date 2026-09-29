@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/ProductModal.css';
 
-const ProductModal = ({ product, onClose, onAddToCart }) => {
+const ProductModal = ({ product, quantity = 0, onClose, onAddToCart, onChangeQty }) => {
   if (!product) {
     return null;
   }
@@ -36,9 +36,21 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
               </div>
             </div>
           )}
-          <button className="add-to-cart-btn" onClick={() => onAddToCart(product.id)}>
-            + Agregar al carrito
-          </button>
+          {quantity > 0 ? (
+            <div className="qty-controls">
+              <button onClick={() => onChangeQty(product.id, -1)} className="qty-btn">−</button>
+              <span className="qty-num">{quantity}</span>
+              <button
+                onClick={() => onChangeQty(product.id, 1)}
+                className="qty-btn"
+                disabled={quantity >= product.stock}
+              >+</button>
+            </div>
+          ) : (
+            <button className="add-to-cart-btn" onClick={() => onAddToCart(product.id)}>
+              + Agregar al carrito
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -182,6 +182,13 @@
   transform: translateY(-1px);
 }
 
+/* Controles de cantidad dentro del modal (reutiliza el estilo glass del home) */
+.modal-card .qty-controls {
+  margin-top: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
 @media (max-width: 767px) {
   .modal-content {
     width: calc(100% - 1.5rem);

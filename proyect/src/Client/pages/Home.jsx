@@ -177,11 +177,10 @@ const changeQty = (id, delta) => {
       {/* Componente Modal de Producto */}
       <ProductModal
         product={selectedProduct}
+        quantity={selectedProduct ? (cartItems[selectedProduct.id] || 0) : 0}
         onClose={closeProductModal}
-        onAddToCart={(productId) => {
-          changeQty(productId, 1);
-          closeProductModal(); // Cerrar modal después de agregar al carrito
-        }}
+        onAddToCart={(productId) => changeQty(productId, 1)}
+        onChangeQty={changeQty}
       />
 
       <main className="container main">
