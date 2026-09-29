@@ -10,6 +10,7 @@
 
 .shipping-cart-image {
   width: 780px;
+  max-width: 100%;
   height: auto;
 }
 

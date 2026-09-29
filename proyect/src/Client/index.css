@@ -39,6 +39,17 @@ html, body {
   height: 100%;
 }
 
+/* La página nunca se rueda a los lados en teléfono/tablet */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Ninguna imagen puede salirse de su contenedor */
+img {
+  max-width: 100%;
+}
+
 body {
   margin: 0;
   /* Espacio para que el Navbar fijo no tape el contenido */
