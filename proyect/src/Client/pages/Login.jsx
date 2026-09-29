@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { loginUser, registerUser, saveSession } from "../services/api.js";
 import '../styles/Login.css';
 import Navbar from "../components/Navbar.jsx";
+import moSymbol from "../assets/Mo_Smbolo Color_Base Oscura.png";
 
 function Login() {
     const [mode, setMode] = useState("login"); // "login" | "register"
@@ -37,31 +38,36 @@ function Login() {
     return (
         <>
             <Navbar />
-            <div className="login-container">
-                <h1>Makeup Oriente</h1>
-                <h2>{mode === "login" ? "Iniciar sesión" : "Crear cuenta"}</h2>
+            <div className="auth-page">
+                <div className="auth-capsule">
+                    <div className="auth-circle">
+                        <img src={moSymbol} alt="Makeup Oriente" />
+                    </div>
+                    <p className="auth-kicker">Makeup Oriente</p>
+                    <h2>{mode === "login" ? "Iniciar sesión" : "Crear cuenta"}</h2>
 
-            <form onSubmit={handleSubmit}>
-                {mode === "register" && (
-                    <>
-                        <input name="username" placeholder="Nombre" onChange={handleChange} required />
-                        <input name="lastName" placeholder="Apellido" onChange={handleChange} required />
-                        <input name="phone" placeholder="Teléfono" onChange={handleChange} required />
-                    </>
-                )}
+                    <form onSubmit={handleSubmit}>
+                        {mode === "register" && (
+                            <>
+                                <input name="username" placeholder="Nombre" onChange={handleChange} required />
+                                <input name="lastName" placeholder="Apellido" onChange={handleChange} required />
+                                <input name="phone" placeholder="Teléfono" onChange={handleChange} required />
+                            </>
+                        )}
 
-                <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
-                <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} required />
+                        <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
+                        <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} required />
 
-                {error && <p className="login-error">{error}</p>}
+                        {error && <p className="login-error">{error}</p>}
 
-                <button type="submit">{mode === "login" ? "Entrar" : "Registrarme"}</button>
-            </form>
+                        <button type="submit">{mode === "login" ? "Entrar" : "Registrarme"}</button>
+                    </form>
 
-            <button type="button" className="login-toggle" onClick={() => setMode(mode === "login" ? "register" : "login")}>
-                {mode === "login" ? "¿No tienes cuenta? Regístrate" : "Ya tengo cuenta, entrar"}
-            </button>
-        </div>
+                    <button type="button" className="login-toggle" onClick={() => setMode(mode === "login" ? "register" : "login")}>
+                        {mode === "login" ? "¿No tienes cuenta? Regístrate" : "Ya tengo cuenta, entrar"}
+                    </button>
+                </div>
+            </div>
         </>
     );
 }
