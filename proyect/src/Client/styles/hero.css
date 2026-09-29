@@ -1,3 +1,27 @@
+/* Banner principal encima de las categorías — proporcional y centrado */
+.hero-banner {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto 0.5rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.hero-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1475 / 672;
+  object-fit: cover;
+}
+
+@media (max-width: 640px) {
+  .hero-banner {
+    border-radius: 16px;
+  }
+}
+
 /* Hero */
 .hero {
   margin-bottom: 4rem;

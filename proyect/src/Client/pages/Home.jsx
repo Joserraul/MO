@@ -15,6 +15,8 @@ import '../styles/ProductModal.css'; // Importa los estilos del ProductModal
 import VideoBanner from '../components/VideoBanner.jsx'; // Importar el nuevo componente VideoBanner
 import ShippingInfo from '../components/ShippingInfo.jsx'; // Importar el nuevo componente ShippingInfo
 import Footer from '../components/Footer.jsx';
+import '../styles/hero.css'; // Estilos del banner principal
+import heroBanner from '../assets/banner.jpg'; // Banner principal encima de categorías
 
 import SkinConcerns from '../components/SkinConcerns.jsx'; // Importar la sección "Sobre tu piel"
 
@@ -184,6 +186,11 @@ const changeQty = (id, delta) => {
       />
 
       <main className="container main">
+        {/* Banner principal */}
+        <section className="hero-banner" aria-label="Promoción principal">
+          <img src={heroBanner} alt="Makeup Oriente" />
+        </section>
+
         {/* Categorías: estilo The Ordinary, solo texto */}
         <nav className="categories" aria-label="Categorías">
           <span className="categories-label">Categorías</span>
