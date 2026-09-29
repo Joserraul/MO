@@ -75,13 +75,20 @@ function Profile() {
         ) : orders.length === 0 ? (
           <p>Aún no has hecho compras.</p>
         ) : (
-          orders.map((order) => {
+          <div className="timeline timeline-bg">
+          {orders.map((order) => {
             const orderTotal = order.items.reduce(
               (acc, item) => acc + item.price * item.quantity,
               0
             );
+            const headerDate =
+              order.paymentDate ||
+              (order.orderDate ? order.orderDate.slice(0, 10) : null) ||
+              `#${order.id}`;
             return (
-            <div key={order.id} className="order-card">
+            <div key={order.id} className="timeline-item">
+              <p className="timeline-date">{headerDate}</p>
+              <p className="timeline-sub">Pedido #{order.id}</p>
               <p>
                 <strong>Fecha de pago:</strong> {order.paymentDate || "-"}
               </p>
@@ -117,7 +124,8 @@ function Profile() {
               )}
             </div>
           );
-          })
+          })}
+          </div>
         )}
       </div>
       </div>

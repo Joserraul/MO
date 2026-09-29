@@ -154,7 +154,7 @@ function OrdersByDay() {
     : allDays;
 
   return (
-    <div>
+    <div className="admin-timeline-wrap timeline-bg">
       <h2>Pedidos por día</h2>
 
       <div className="admin-date-filter">
@@ -178,9 +178,10 @@ function OrdersByDay() {
       ) : days.length === 0 ? (
         <p>{selectedDate ? `No hay pedidos para el ${selectedDate}.` : "No hay pedidos aún."}</p>
       ) : (
-        days.map((day) => (
-          <div key={day} className="admin-day">
-            <h3>📅 {day}</h3>
+        <div className="timeline">
+        {days.map((day) => (
+          <div key={day} className="admin-day timeline-item">
+            <p className="timeline-date">{day}</p>
             {groups[day].map((order) => {
               const orderTotalBcv = order.items.reduce(
                 (acc, it) => acc + it.price * it.quantity,
@@ -218,7 +219,8 @@ function OrdersByDay() {
               );
             })}
           </div>
-        ))
+        ))}
+        </div>
       )}
     </div>
   );

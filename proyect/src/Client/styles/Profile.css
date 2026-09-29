@@ -94,3 +94,79 @@
 .profile-box .empty {
   color: #848484;
 }
+
+/* Timeline estilo agenda + marca de agua MO detrás del vidrio */
+.timeline {
+  position: relative;
+  margin-top: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 1.75rem;
+  padding-bottom: 1.5rem;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0.25rem;
+}
+
+.timeline-item::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 8px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #0a0a0a;
+  border: 2px solid #B3B3B3;
+}
+
+.timeline-date {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #E0E0E0;
+  margin-bottom: 0.15rem;
+}
+
+.timeline-sub {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #848484;
+  margin-bottom: 0.6rem;
+}
+
+.timeline-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assets/Mo_Smbolo Color_Base Oscura.png") center / contain no-repeat;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.timeline-bg > * {
+  position: relative;
+  z-index: 1;
+}
