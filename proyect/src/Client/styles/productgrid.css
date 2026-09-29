@@ -14,9 +14,9 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 6rem 6rem 1.5rem 1.5rem;
   padding: 0 1.25rem 1.25rem;
-  margin-top: 4rem;
+  margin-top: 5rem;
   animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
@@ -27,17 +27,16 @@
 }
 .product-card[data-hidden="true"] { display: none; }
 
-/* Imagen que sobresale del cuadro */
+/* Imagen en círculo que sobresale del borde superior (como el logo del login) */
 .product-img-wrap {
   position: relative;
-  width: calc(100% + 2rem);
-  margin-left: -1rem;
-  margin-top: -3rem;
-  margin-bottom: 1rem;
-  aspect-ratio: 1 / 0.88;
+  width: 8.5rem;
+  height: 8.5rem;
+  margin: -4.5rem auto 1rem;
+  border-radius: 50%;
   overflow: hidden;
-  border-radius: var(--radius) var(--radius) 0 0;
   cursor: pointer;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
 }
 .product-img-wrap img {
   width: 100%;
@@ -52,6 +51,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  text-align: center;
 }
 .product-brand {
   font-size: 0.65rem;
@@ -143,4 +143,18 @@
   color: var(--fg);
   min-width: 1.5rem;
   text-align: center;
+}
+
+@media (max-width: 640px) {
+  .product-card {
+    border-radius: 4rem 4rem 1.25rem 1.25rem;
+    margin-top: 4.25rem;
+    padding: 0 0.9rem 1rem;
+  }
+
+  .product-img-wrap {
+    width: 7rem;
+    height: 7rem;
+    margin-top: -3.75rem;
+  }
 }
