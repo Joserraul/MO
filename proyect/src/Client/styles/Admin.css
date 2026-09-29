@@ -93,6 +93,13 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* Lista desplegable de los select (lo máximo que permite el navegador) */
+.admin-form select option,
+.admin-stock-cat option {
+  background-color: #141414;
+  color: #E0E0E0;
+}
+
 .admin-btn {
   background: #E0E0E0;
   color: #0a0a0a;
