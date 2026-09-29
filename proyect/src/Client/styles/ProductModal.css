@@ -5,9 +5,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +60,7 @@
 }
 
 .modal-close-btn:hover {
-  background: rgba(0, 0, 0, 0.7);
+/*  background: rgba(0, 0, 0, 0.7);*/
   border-color: rgba(255, 255, 255, 0.3);
 }
 
