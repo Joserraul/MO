@@ -1,4 +1,4 @@
-/* Checkout (estilo The Ordinary, consistente con Admin) */
+/* Checkout — estilo glass */
 .checkout-container {
   max-width: 40rem;
   margin: 0 auto;
@@ -6,8 +6,10 @@
 }
 
 .checkout-container h1 {
+  font-family: var(--font-display);
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 500;
+  color: #E0E0E0;
   margin-bottom: 1.5rem;
 }
 
@@ -19,11 +21,15 @@
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--border);
   margin-bottom: 1rem;
-  color: #000;
+  color: #E0E0E0;
 }
 
 .pay-section {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
+  border-radius: 16px;
   padding: 1.25rem;
   margin-bottom: 1.25rem;
 }
@@ -36,12 +42,13 @@
   width: 100%;
   text-align: left;
   border: 1px solid var(--border);
-  background: #fff;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
   padding: 0.85rem 1rem;
   margin-bottom: 0.6rem;
   font-family: var(--font-body);
   font-size: 0.95rem;
-  color: #000;
+  color: #E0E0E0;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
 }
@@ -51,30 +58,32 @@
 }
 
 .pay-option:hover {
-  border-color: #000;
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .pay-option.selected {
-  border-color: #000;
-  background: #fafafa;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
   font-weight: 600;
 }
 
 .pay-option input[type="radio"] {
-  accent-color: #000;
+  accent-color: #E0E0E0;
   cursor: pointer;
 }
 
 /* Datos del método de pago seleccionado */
 .pay-details {
   margin-top: 0.75rem;
-  padding: 0.9rem;
-  background: #fafafa;
+  padding: 0.9rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
 .pay-details p {
-  color: #000;
+  color: #B3B3B3;
   font-size: 0.9rem;
   line-height: 1.6;
   margin-bottom: 0.25rem;
@@ -83,6 +92,7 @@
 .pay-detail-line {
   font-family: 'DM Sans', monospace;
   font-weight: 600;
+  color: #E0E0E0;
   word-break: break-all;
 }
 
@@ -92,31 +102,40 @@
   width: 100%;
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--border);
-  border-radius: 0;
+  border-radius: 10px;
   font-size: 0.95rem;
-  background: #fff;
-  color: #000;
+  background: rgba(255, 255, 255, 0.05);
+  color: #E0E0E0;
 }
 
 .checkout-container input:focus {
   outline: none;
-  border-color: #000;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Resumen del pedido */
 .checkout-summary {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
+  border-radius: 16px;
   padding: 1.25rem;
   margin-bottom: 1.25rem;
 }
 
 .checkout-summary p {
-  color: #000;
+  color: #B3B3B3;
   line-height: 1.7;
 }
 
+.checkout-summary p strong {
+  color: #E0E0E0;
+}
+
 .checkout-error {
-  color: #b00020;
+  color: #f0a0b8;
   font-size: 0.9rem;
   margin-bottom: 1rem;
 }
@@ -124,19 +143,22 @@
 /* Botones */
 .checkout-submit {
   width: 100%;
-  background: #000;
-  color: #fff;
+  background: #E0E0E0;
+  color: #0a0a0a;
   border: none;
+  border-radius: 12px;
   padding: 0.9rem;
   font-size: 0.85rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: background 0.2s, transform 0.2s;
 }
 
 .checkout-submit:hover {
-  opacity: 0.8;
+  background: #fff;
+  transform: translateY(-1px);
 }
 
 /* Pantalla de éxito (agradecimiento) */
@@ -148,14 +170,16 @@
 }
 
 .checkout-success h1 {
+  font-family: var(--font-display);
   font-size: 2.5rem;
-  font-weight: 600;
+  font-weight: 500;
+  color: #E0E0E0;
   margin-bottom: 0.5rem;
 }
 
 .checkout-success .success-sub {
   font-size: 1.1rem;
-  color: #444;
+  color: #B3B3B3;
   margin: 1rem 0 2.5rem;
   line-height: 1.6;
 }
@@ -171,18 +195,19 @@
   margin: 0 auto;
   max-width: 20rem;
   width: 100%;
-  background: none;
-  border: 1px solid #000;
-  color: #000;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: #E0E0E0;
   padding: 0.8rem;
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .checkout-secondary:hover {
-  background: #000;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.35);
 }

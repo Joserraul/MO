@@ -6,6 +6,7 @@
 }
 
 :root {
+  color-scheme: dark; /* controles nativos (fecha, select, archivo) en modo oscuro */
   /* Fondo principal: Negro profundo (estilo glass) */
   --bg: #0a0a0a;
 
