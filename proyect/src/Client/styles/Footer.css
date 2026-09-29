@@ -25,7 +25,7 @@
   border-radius: 50%;
   display: block;
   margin: 0 auto;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--border);
 }
 
 .team-name {
@@ -33,12 +33,12 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #000;
+  color: var(--fg);
 }
 
 .team-role {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--muted);
 }
 
 .team-arrow {
@@ -46,18 +46,18 @@
   height: 2.75rem;
   border-radius: 50%;
   border: 1px solid var(--border);
-  background: none;
+  background: rgba(255,255,255,0.06);
   font-size: 1.75rem;
   line-height: 1;
-  color: #000;
+  color: var(--fg);
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
   flex-shrink: 0;
 }
 
 .team-arrow:hover {
-  background: #f2f2f2;
-  border-color: #000;
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.25);
 }
 
 .team-dots {
@@ -72,14 +72,14 @@
   height: 0.5rem;
   border-radius: 50%;
   border: none;
-  background: #d9d9d9;
+  background: rgba(255,255,255,0.2);
   cursor: pointer;
   padding: 0;
   transition: background 0.2s, transform 0.2s;
 }
 
 .team-dot.active {
-  background: #000;
+  background: var(--fg);
   transform: scale(1.2);
 }
 
@@ -96,10 +96,13 @@
   }
 }
 
-/* Footer (info de tienda) */
+/* Footer (info de tienda) — estilo glass */
 .footer-container {
-  background-color: #000;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  color: var(--fg);
   padding: 40px 20px;
   margin-top: 60px;
   font-family: var(--font-body);
@@ -127,20 +130,20 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 10px;
-  color: #fff;
+  color: var(--fg);
 }
 
 .footer-section p,
 .footer-section a {
   font-size: 0.95rem;
   line-height: 1.7;
-  color: #ccc;
+  color: var(--muted);
   text-decoration: none;
   display: block;
 }
 
 .footer-section a:hover {
-  color: #fff;
+  color: var(--fg);
   text-decoration: underline;
 }
 
@@ -148,8 +151,8 @@
   text-align: center;
   margin-top: 40px;
   padding-top: 20px;
-  border-top: 1px solid #333;
-  color: #888;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
   font-size: 0.85em;
 }
 

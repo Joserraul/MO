@@ -204,15 +204,17 @@ const changeQty = (id, delta) => {
           {filteredProducts.map(product => (
             <div key={product.id} className="product-card">
               <div className="product-img-wrap" onClick={() => openProductModal(product)}>
-                <img   src={product.image || "https://placehold.co/400x400/FFFFFF/E8A0BF?text=Makeup+Oriente"}
-                       alt={product.name} />
+                <img src={product.image || "https://placehold.co/400x400/FFFFFF/E8A0BF?text=Makeup+Oriente"} alt={product.name} />
               </div>
               <div className="product-info">
                 <p className="product-brand">{product.brand}</p>
                 <h3 className="product-name" onClick={() => openProductModal(product)}>{product.name}</h3>
-                <p className="product-price">${product.price.toFixed(2)}</p>
+                {product.description && (
+                  <p className="product-desc">{product.description.slice(0, 200)}</p>
+                )}
               </div>
               <div className="product-actions">
+                <span className="product-price">${product.price.toFixed(2)}</span>
                 {cartItems[product.id] > 0 ? (
                   <div className="qty-controls flex">
                     <button onClick={() => changeQty(product.id, -1)} className="qty-btn">−</button>
@@ -220,8 +222,8 @@ const changeQty = (id, delta) => {
                     <button onClick={() => changeQty(product.id, 1)} className="qty-btn" disabled={cartItems[product.id] >= product.stock}>+</button>
                   </div>
                 ) : (
-                  <button className="add-btn" onClick={() => changeQty(product.id, 1)}>
-                    + Agregar
+                  <button className="add-btn" onClick={() => changeQty(product.id, 1)} aria-label="Agregar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                   </button>
                 )}
               </div>

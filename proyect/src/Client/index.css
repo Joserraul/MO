@@ -6,31 +6,31 @@
 }
 
 :root {
-  /* Fondo principal: Blanco puro (como en la referencia) */
-  --bg: hsl(0, 0%, 100%);
-  
-  /* Texto: Negro profundo para elegancia */
-  --fg: hsl(0, 0%, 100%);
-  
-  /* Tarjetas: Gris/Crema muy sutil para las fotos de producto */
-  --card: hsl(30, 10%, 97%);
-  
-  /* Primario: Negro sólido (Botones Shop All / Add to Cart) */
-  --primary: hsl(0, 0%, 0%);
-  --primary-fg: hsl(0, 0%, 100%);
-  
-  /* Secundario: Blanco con borde */
-  --secondary: hsl(0, 0%, 100%);
-  --secondary-fg: hsl(0, 0%, 40%);
-  
+  /* Fondo principal: Negro profundo (estilo glass) */
+  --bg: #0a0a0a;
+
+  /* Texto: Cloud Veil */
+  --fg: #E0E0E0;
+
+  /* Tarjetas: Glass semi-transparente */
+  --card: rgba(255, 255, 255, 0.06);
+
+  /* Primario: Moonlit Silver */
+  --primary: #B3B3B3;
+  --primary-fg: #0a0a0a;
+
+  /* Secundario: Glass con borde */
+  --secondary: rgba(255, 255, 255, 0.08);
+  --secondary-fg: #B3B3B3;
+
   /* Acentos y Bordes */
-  --muted: hsl(0, 0%, 0%);
-  --accent: hsl(30, 20%, 90%);
-  --border: hsl(0, 0%, 90%);
-  
+  --muted: #848484;
+  --accent: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.12);
+
   /* Tipografía y Bordes */
-  --radius: 0px; /* Las marcas de lujo suelen usar bordes rectos */
-  --font-display: 'DM Sans', system-ui, sans-serif;
+  --radius: 24px;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
 }
 
@@ -50,12 +50,11 @@ body {
 }
 
 /* Tipografía de Lujo */
-h1, h2, h3, h4 { 
-  font-family: var(--font-display); 
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #000;
+  letter-spacing: 0.02em;
+  color: var(--fg);
 }
 
 /* Contenedores */
