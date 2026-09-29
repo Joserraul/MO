@@ -22,7 +22,7 @@
   visibility: visible;
 }
 
-.modal-content {
+.modal-overlay .modal-content {
   position: relative;
   width: 90%;
   max-width: 42rem;
