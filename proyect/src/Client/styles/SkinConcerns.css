@@ -55,6 +55,13 @@
   }
 }
 
+/* En teléfono: una sola columna para que nada se salga del ancho */
+@media (max-width: 640px) {
+  .skin-list {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Modal de la sección */
 .skin-modal-overlay .modal-content {
   max-width: 34rem;
