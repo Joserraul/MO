@@ -39,7 +39,7 @@
   height: 15rem;
   overflow: hidden;
   border-radius: var(--radius) var(--radius) 0 0;
-  background: rgba(255, 255, 255, 0.03);
+  background: transparent;
   cursor: pointer;
 }
 .product-img-wrap img {
