@@ -6,6 +6,7 @@ import * as StompJs from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { debug } from "../utils/debug.js"; // Importa tu utilidad de debug
 import { API_HOST } from "../services/api.js";
+import { lockScroll, unlockScroll } from "../utils/scrollLock.js";
 import '../styles/categories.css'; // Importa los estilos de Categories
 import '../styles/productgrid.css'; // Importa los estilos de Product Grid
 import '../styles/AddQty.css'; // Importa los estilos de Add / Qty
@@ -126,24 +127,24 @@ const changeQty = (id, delta) => {
   const openProductModal = (product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
-    document.body.style.overflow = 'hidden'; // Evitar scroll en el body
+    lockScroll(); // Bloquear scroll conservando la posición
   };
 
   const closeProductModal = () => {
     setIsModalOpen(false);
     setSelectedProduct(null);
-    document.body.style.overflow = 'unset'; // Restaurar scroll en el body
+    unlockScroll(); // Restaurar scroll en la misma posición
   };
 
   // Funciones para abrir y cerrar el carrito
   const openCart = () => {
     setIsCartOpen(true);
-    document.body.style.overflow = 'hidden'; // Evitar scroll en el body
+    lockScroll(); // Bloquear scroll conservando la posición
   };
 
   const closeCart = () => {
     setIsCartOpen(false);
-    document.body.style.overflow = 'unset'; // Restaurar scroll en el body
+    unlockScroll(); // Restaurar scroll en la misma posición
   };
 
   // Función para transformar el objeto cartItems en una lista de objetos de productos reales

@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Cart from "../pages/Cart.jsx";
 import { fetchProducts } from "../services/api.js";
+import { lockScroll, unlockScroll } from "../utils/scrollLock.js";
 
 /**
  * Drawer del carrito para las páginas que no tienen uno propio
@@ -11,6 +12,7 @@ function CartDrawerHost() {
   const [isOpen, setIsOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [, setCartVersion] = useState(0); // solo para re-render al cambiar el carrito
+  const lockedRef = useRef(false);
 
   useEffect(() => {
     fetchProducts().then(setProducts).catch(() => {});
@@ -28,8 +30,22 @@ function CartDrawerHost() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "unset";
+    if (isOpen && !lockedRef.current) {
+      lockScroll();
+      lockedRef.current = true;
+    } else if (!isOpen && lockedRef.current) {
+      unlockScroll();
+      lockedRef.current = false;
+    }
   }, [isOpen]);
+
+  // Si se navega con el drawer abierto, liberar el bloqueo
+  useEffect(() => () => {
+    if (lockedRef.current) {
+      unlockScroll();
+      lockedRef.current = false;
+    }
+  }, []);
 
   const changeQty = (id, delta) => {
     const product = products.find((p) => String(p.id) === String(id));
