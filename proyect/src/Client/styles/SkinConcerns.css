@@ -28,7 +28,7 @@
 }
 
 .skin-link:hover {
-  background: #fafafa;
+  background: rgba(255, 255, 255, 0.08);
   padding-left: 1rem;
 }
 
@@ -38,7 +38,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #000;
+  color: #E0E0E0;
 }
 
 .skin-more {
@@ -46,7 +46,7 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   white-space: nowrap;
-  color: var(--muted);
+  color: #B3B3B3;
 }
 
 @media (min-width: 768px) {
@@ -68,7 +68,7 @@
 }
 
 .skin-modal-intro {
-  color: #000;
+  color: #E0E0E0;
   line-height: 1.65;
   margin-bottom: 1.25rem;
 }
@@ -86,7 +86,7 @@
 
 .skin-modal-tips li {
   position: relative;
-  color: #000;
+  color: #B3B3B3;
   line-height: 1.55;
   margin-bottom: 0.5rem;
   padding-left: 1.25rem;
