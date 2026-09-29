@@ -185,12 +185,12 @@ const changeQty = (id, delta) => {
         onChangeQty={changeQty}
       />
 
-      <main className="container main">
-        {/* Banner principal */}
-        <section className="hero-banner" aria-label="Promoción principal">
-          <img src={heroBanner} alt="Makeup Oriente" />
-        </section>
+      {/* Banner principal a ancho completo */}
+      <section className="hero-banner" aria-label="Promoción principal">
+        <img src={heroBanner} alt="Makeup Oriente" />
+      </section>
 
+      <main className="container main">
         {/* Categorías: estilo The Ordinary, solo texto */}
         <nav className="categories" aria-label="Categorías">
           <span className="categories-label">Categorías</span>

@@ -1,25 +1,22 @@
-/* Banner principal encima de las categorías — proporcional y centrado */
+/* Banner principal a ancho completo, como parte del fondo,
+   con fundido inferior hacia el fondo de la página */
 .hero-banner {
   width: 100%;
-  max-width: 80rem;
-  margin: 0 auto 0.5rem;
-  border-radius: var(--radius);
+  margin: 0;
+  border: none;
+  border-radius: 0;
   overflow: hidden;
-  border: 1px solid var(--border);
+  line-height: 0;
 }
 
 .hero-banner img {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 1475 / 672;
+  height: clamp(280px, 45vw, 620px);
   object-fit: cover;
-}
-
-@media (max-width: 640px) {
-  .hero-banner {
-    border-radius: 16px;
-  }
+  object-position: center;
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 98%);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 98%);
 }
 
 /* Hero */
