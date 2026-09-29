@@ -46,6 +46,7 @@ public class ProductService {
                     existingProduct.setDescription(productDetails.getDescription());
                     existingProduct.setPrice(productDetails.getPrice());
                     existingProduct.setStock(productDetails.getStock());
+                    existingProduct.setImage(productDetails.getImage());
                     Product savedProduct = repository.save(existingProduct);
 
                     String mensaje = String.format("{\"id\":" + savedProduct.getId() + ", \"stock\":" + savedProduct.getStock() + "}");
