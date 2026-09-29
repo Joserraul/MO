@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import '../styles/header.css'; // Asegúrate de que este archivo tenga el position: fixed
+import CartDrawerHost from "./CartDrawerHost.jsx";
 
 function Navbar({ onCartClick }) {
   const [cartCount, setCartCount] = useState(0);
@@ -31,12 +32,11 @@ function Navbar({ onCartClick }) {
 
   const handleToggleCart = (e) => {
     e.preventDefault(); // Evita comportamientos extraños si estuviera en un form
-    console.log('📦 Abriendo carrito...');
     if (onCartClick) {
       onCartClick();
     } else {
-      // En páginas sin drawer de carrito, el icono lleva al inicio
-      navigate('/');
+      // En páginas sin drawer propio: abrir el drawer global sin salir de la página
+      window.dispatchEvent(new Event("open-cart"));
     }
   };
 
@@ -48,6 +48,7 @@ function Navbar({ onCartClick }) {
 
   return (
     /* La clase "Navbar" debe tener position: fixed en Header.css */
+    <>
     <nav className="Navbar">
       <div className="header-inner">
         <Link to="/" className="logo-link">
@@ -101,6 +102,8 @@ function Navbar({ onCartClick }) {
         </div>
       </div>
     </nav>
+    {!onCartClick && <CartDrawerHost />}
+    </>
   );
 }
 
