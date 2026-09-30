@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import DeliveryMethod from "./DeliveryMethod.jsx";
 import { API_HOST, getToken } from "../services/api.js";
@@ -6,8 +7,23 @@ import Navbar from "../components/Navbar.jsx";
 import '../styles/Checkout.css';
 import { useBcvRate } from "../hooks/useBcvRate.js";
 import { formatBs } from "../utils/format.js";
+import type {
+  CartItem,
+  CartMap,
+  DeliveryMethodCode,
+  OrderItem,
+  PaymentMethodCode,
+  Product,
+  User,
+} from "../types/index.js";
 
-const PAYMENT_METHODS = [
+interface PaymentOption {
+  value: PaymentMethodCode;
+  label: string;
+  details: string[];
+}
+
+const PAYMENT_METHODS: PaymentOption[] = [
   {
     value: "PAGOMOVIL",
     label: "Pago Móvil",
@@ -22,11 +38,11 @@ const PAYMENT_METHODS = [
 
 function PaymentForm() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user") || "null");
-  const cart = JSON.parse(localStorage.getItem("cart") || "{}");
-  const [products, setProducts] = useState([]);
-  const [delivery, setDelivery] = useState("");
-  const [payMethod, setPayMethod] = useState("");
+  const user = JSON.parse(localStorage.getItem("user") || "null") as User | null;
+  const cart = JSON.parse(localStorage.getItem("cart") || "{}") as CartMap;
+  const [products, setProducts] = useState<Product[]>([]);
+  const [delivery, setDelivery] = useState<DeliveryMethodCode | "">("");
+  const [payMethod, setPayMethod] = useState<PaymentMethodCode | "">("");
   const [payDate, setPayDate] = useState("");
   const [payNumber, setPayNumber] = useState("");
   const [error, setError] = useState("");
@@ -39,12 +55,12 @@ function PaymentForm() {
       return;
     }
     fetch(`${API_HOST}/api/products`)
-      .then((res) => res.json())
+      .then((res) => res.json() as Promise<Product[]>)
       .then((data) => setProducts(data))
       .catch(() => {});
   }, []);
 
-  const cartList = Object.keys(cart)
+  const cartList: CartItem[] = Object.keys(cart)
     .filter((id) => cart[id] > 0)
     .map((id) => {
       const product = products.find((p) => String(p.id) === String(id));
@@ -56,14 +72,18 @@ function PaymentForm() {
 
   const selectedMethod = PAYMENT_METHODS.find((m) => m.value === payMethod);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) {
+      setError("Tu sesion expiro. Inicia sesion de nuevo.");
+      return;
+    }
     if (!delivery || !payMethod || !payDate || !payNumber.trim()) {
       setError("Completa entrega, método de pago, fecha y número de pago");
       return;
     }
 
-    const items = cartList.map((item) => ({
+    const items: OrderItem[] = cartList.map((item) => ({
       productId: item.id,
       productName: item.name,
       price: item.price,
@@ -90,7 +110,7 @@ function PaymentForm() {
       localStorage.removeItem("transferNumber");
       setSuccess(true);
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : "No se pudo registrar el pedido");
     }
   };
 
@@ -155,7 +175,7 @@ function PaymentForm() {
           <input
             type="date"
             value={payDate}
-            onChange={(e) => setPayDate(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setPayDate(e.target.value)}
             required
           />
         </div>
@@ -165,7 +185,7 @@ function PaymentForm() {
           <input
             type="text"
             value={payNumber}
-            onChange={(e) => setPayNumber(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setPayNumber(e.target.value)}
             placeholder="Escribe el número de tu pago"
             required
           />

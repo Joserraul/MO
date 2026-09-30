@@ -3,15 +3,12 @@ import debug from '../utils/debug.js';
 import { useNavigate } from "react-router-dom";
 import { fetchBcvRate } from '../services/api.js';
 import { formatBs } from '../utils/format.js';
-import type { Product } from '../types/index.js';
-
-/** Producto del catálogo con la cantidad agregada al carrito */
-type CartLine = Product & { quantity: number };
+import type { CartItem } from '../types/index.js';
 
 interface CartProps {
   isOpen: boolean;
   onClose: () => void;
-  cartItems?: CartLine[];
+  cartItems?: CartItem[];
   onChangeQty: (id: number, delta: number) => void;
 }
 

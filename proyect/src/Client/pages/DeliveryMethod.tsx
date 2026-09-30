@@ -1,5 +1,13 @@
-function DeliveryMethod({ method, onChange }) {
-  const options = [
+import type { DeliveryMethodCode } from '../types/index.js';
+
+interface DeliveryMethodProps {
+  /** Vacío hasta que el usuario elige una opción. */
+  method: DeliveryMethodCode | '';
+  onChange: (method: DeliveryMethodCode) => void;
+}
+
+function DeliveryMethod({ method, onChange }: DeliveryMethodProps) {
+  const options: Array<{ value: DeliveryMethodCode; label: string }> = [
     { value: "ENVIO", label: "Envío nacional" },
     { value: "TIENDA", label: "Retiro por tienda" },
   ];

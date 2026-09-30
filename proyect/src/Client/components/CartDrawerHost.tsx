@@ -2,16 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import Cart from "../pages/Cart.jsx";
 import { fetchProducts } from "../services/api.js";
 import { lockScroll, unlockScroll } from "../utils/scrollLock.js";
-import type { Product } from "../types/index.js";
+import type { CartItem, CartMap, Product } from "../types/index.js";
 
-/** Carrito persistido en localStorage: id → cantidad */
-type StoredCart = Record<string, number>;
-
-/** Producto del catálogo enriquecido con la cantidad agregada */
-type CartLine = Product & { quantity: number };
-
-const readCart = (): StoredCart =>
-  JSON.parse(localStorage.getItem("cart") || "{}") as StoredCart;
+const readCart = (): CartMap =>
+  JSON.parse(localStorage.getItem("cart") || "{}") as CartMap;
 
 /**
  * Drawer del carrito para las páginas que no tienen uno propio
@@ -74,7 +68,7 @@ function CartDrawerHost() {
   };
 
   const cart = readCart();
-  const cartList: CartLine[] = Object.keys(cart)
+  const cartList: CartItem[] = Object.keys(cart)
     .filter((id) => cart[id] > 0)
     .map((id) => {
       const product = products.find((p) => String(p.id) === String(id));

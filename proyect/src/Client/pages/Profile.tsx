@@ -5,8 +5,9 @@ import '../styles/Profile.css';
 import Navbar from "../components/Navbar.jsx";
 import { useBcvRate } from "../hooks/useBcvRate.js";
 import { formatBs } from "../utils/format.js";
+import type { Order, User } from "../types/index.js";
 
-const METHOD_LABELS = {
+const METHOD_LABELS: Record<string, string> = {
   ENVIO: "Envío nacional",
   TIENDA: "Retiro por tienda",
   PAGOMOVIL: "Pago Móvil",
@@ -15,8 +16,8 @@ const METHOD_LABELS = {
 
 function Profile() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user") || "null");
-  const [orders, setOrders] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user") || "null") as User | null;
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const usdRate = useBcvRate();
 
@@ -36,7 +37,7 @@ function Profile() {
           throw new Error("Sesión expirada");
         }
         if (!res.ok) throw new Error("Error al cargar pedidos");
-        return res.json();
+        return res.json() as Promise<Order[]>;
       })
       .then((data) => setOrders(data))
       .catch(() => setOrders([]))

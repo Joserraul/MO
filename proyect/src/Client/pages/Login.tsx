@@ -1,25 +1,31 @@
 import { useState } from "react";
+import type { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser, registerUser, saveSession } from "../services/api.js";
+import type { RegisterData } from "../services/api.js";
+import type { Session } from "../types/index.js";
 import '../styles/Login.css';
 import Navbar from "../components/Navbar.jsx";
 import moSymbol from "../assets/Mo_Smbolo Color_Base Oscura.png";
 
+type AuthMode = 'login' | 'register';
+
 function Login() {
-    const [mode, setMode] = useState("login"); // "login" | "register"
-    const [form, setForm] = useState({
+    const [mode, setMode] = useState<AuthMode>("login");
+    const [form, setForm] = useState<RegisterData>({
         username: "", lastName: "", phone: "", email: "", password: "",
     });
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+        setForm({ ...form, [e.target.name]: e.target.value });
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
         try {
-            let session;
+            let session: Session;
             if (mode === "register") {
                 await registerUser(form);
                 session = await loginUser(form.email, form.password); // auto-login
@@ -31,7 +37,7 @@ function Login() {
             saveSession(session.token, session.user);
             navigate("/");
         } catch (err) {
-            setError(err.message);
+            setError(err instanceof Error ? err.message : "Ocurrio un error inesperado");
         }
     };
 
