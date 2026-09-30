@@ -1,0 +1,22 @@
+{
+  "_nota": "Hashes del CSS aprobado. Cambiar el estilo exige re-sellar con \"npm run design:manifest\" y la revision del usuario.",
+  "files": {
+    "src/Client/index.css": "1db3d0617a6fbbf6",
+    "src/Client/styles/AddQty.css": "a9cee0bec9cd2736",
+    "src/Client/styles/Admin.css": "49487cfed1e66bfb",
+    "src/Client/styles/CartDrawer.css": "44998a8a7c238e87",
+    "src/Client/styles/Checkout.css": "9a1f4dc3b79f46f6",
+    "src/Client/styles/Footer.css": "64ca6495fc383994",
+    "src/Client/styles/Login.css": "ec940fe2188caf46",
+    "src/Client/styles/Modal.css": "81a405e3ce97119a",
+    "src/Client/styles/ProductModal.css": "16f2fac08b463e43",
+    "src/Client/styles/Profile.css": "78457fe9076fe3b9",
+    "src/Client/styles/ShippingInfo.css": "ed1c23d650f24e31",
+    "src/Client/styles/SkinConcerns.css": "c5b514924e5d9956",
+    "src/Client/styles/VideoBanner.css": "c8334ca3e52a2c51",
+    "src/Client/styles/categories.css": "509d42e7ee3d1a11",
+    "src/Client/styles/header.css": "c494a3ce52b4138d",
+    "src/Client/styles/hero.css": "4120122bc7127329",
+    "src/Client/styles/productgrid.css": "de69a9fd54459948"
+  }
+}
