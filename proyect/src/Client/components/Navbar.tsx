@@ -2,16 +2,25 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import '../styles/header.css'; // Asegúrate de que este archivo tenga el position: fixed
 import CartDrawerHost from "./CartDrawerHost.jsx";
+import type { MouseEvent } from "react";
+import type { User } from "../types/index.js";
 
-function Navbar({ onCartClick }) {
+interface NavbarProps {
+  /** Páginas con drawer propio pasan el handler; si no, se usa el drawer global. */
+  onCartClick?: () => void;
+}
+
+function Navbar({ onCartClick }: NavbarProps) {
   const [cartCount, setCartCount] = useState(0);
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user') || 'null'));
+  const [user, setUser] = useState<User | null>(
+    () => JSON.parse(localStorage.getItem('user') || 'null') as User | null
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
     // Función para actualizar contador del carrito
     const updateCartCount = () => {
-      const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+      const cart = JSON.parse(localStorage.getItem('cart') || '{}') as Record<string, number>;
       // Si el carrito es un objeto de IDs y cantidades:
       const total = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
       setCartCount(total);
@@ -30,7 +39,7 @@ function Navbar({ onCartClick }) {
     };
   }, []);
 
-  const handleToggleCart = (e) => {
+  const handleToggleCart = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Evita comportamientos extraños si estuviera en un form
     if (onCartClick) {
       onCartClick();

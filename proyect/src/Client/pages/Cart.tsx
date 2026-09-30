@@ -1,15 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import debug from '../utils/debug.js';
 import { useNavigate } from "react-router-dom";
 import { fetchBcvRate } from '../services/api.js';
 import { formatBs } from '../utils/format.js';
+import type { Product } from '../types/index.js';
 
+/** Producto del catálogo con la cantidad agregada al carrito */
+type CartLine = Product & { quantity: number };
 
-const Cart = ({ isOpen, onClose, cartItems = [], onChangeQty }) => {
+interface CartProps {
+  isOpen: boolean;
+  onClose: () => void;
+  cartItems?: CartLine[];
+  onChangeQty: (id: number, delta: number) => void;
+}
+
+const Cart = ({ isOpen, onClose, cartItems = [], onChangeQty }: CartProps) => {
   debug.lifecycle('Cart', 'render', { isOpen, cartItemsCount: cartItems.length });
   
   const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-  const [usdRate, setUsdRate] = useState(null);
+  const [usdRate, setUsdRate] = useState<number | null>(null);
 
   useEffect(() => {
     let active = true;

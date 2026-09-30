@@ -1,0 +1,144 @@
+import type { Product, Order, Session, User } from "../types/index.js";
+
+const API_HOST = `http://${window.location.hostname}:8080`;
+const API_URL = `${API_HOST}/api`;
+const TOKEN_KEY = "token";
+
+export { API_HOST };
+
+/** Campos que envía el formulario de registro de /login. */
+export interface RegisterData {
+  email: string;
+  password: string;
+  username?: string;
+  lastName?: string;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  age?: number;
+  tone?: string;
+}
+
+/** Producto sin id: lo asigna el backend al crearlo. */
+export type NewProduct = Omit<Product, "id">;
+
+/** Lo que devuelve dolarapi y se guarda cacheado en localStorage. */
+interface BcvCache {
+  promedio: number;
+  timestamp: number;
+}
+
+// ---------- Sesión / token JWT ----------
+
+export function getToken(): string | null {
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+/**
+ * Guarda el token y el usuario tras un login exitoso.
+ * El token es la "credencial" que el backend valida en cada petición.
+ */
+export function saveSession(token: string, user: User): void {
+  localStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem("user", JSON.stringify(user));
+}
+
+export function clearSession(): void {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem("user");
+}
+
+/**
+ * Headers con el token: "Authorization: Bearer <token>".
+ * Este header es lo que el backend usa para saber quién eres.
+ */
+function authHeaders(extra: Record<string, string> = {}): Record<string, string> {
+  const token = getToken();
+  return token ? { ...extra, Authorization: `Bearer ${token}` } : extra;
+}
+
+// ---------- Autenticación ----------
+
+export async function registerUser(userData: RegisterData): Promise<unknown> {
+  const res = await fetch(`${API_URL}/users`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(userData),
+  });
+  if (!res.ok) throw new Error("No se pudo registrar (¿email ya existe?)");
+  return res.json();
+}
+
+export async function loginUser(email: string, password: string): Promise<Session> {
+  const res = await fetch(`${API_URL}/users/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error("Credenciales incorrectas");
+  return res.json();
+}
+
+// ---------- Productos (el catálogo es público) ----------
+
+export async function fetchProducts(): Promise<Product[]> {
+  const res = await fetch(`${API_URL}/products`);
+  if (!res.ok) throw new Error("Error al cargar productos");
+  return res.json();
+}
+
+// Crear producto: solo ADMIN (requiere token)
+export async function createProduct(product: NewProduct): Promise<Product> {
+  const res = await fetch(`${API_URL}/products`, {
+    method: "POST",
+    headers: authHeaders({ "Content-Type": "application/json" }),
+    body: JSON.stringify(product),
+  });
+  if (!res.ok) throw new Error("No se pudo crear el producto (¿sin permisos?)");
+  return res.json();
+}
+
+// Actualizar producto (stock): solo ADMIN (requiere token)
+export async function updateProduct(product: Product): Promise<Product> {
+  const res = await fetch(`${API_URL}/products/${product.id}`, {
+    method: "PUT",
+    headers: authHeaders({ "Content-Type": "application/json" }),
+    body: JSON.stringify(product),
+  });
+  if (!res.ok) throw new Error("No se pudo actualizar el producto (¿sin permisos?)");
+  return res.json();
+}
+
+// Pedidos de TODOS los usuarios: solo ADMIN (requiere token)
+export async function fetchOrders(): Promise<Order[]> {
+  const res = await fetch(`${API_URL}/orders`, {
+    headers: authHeaders(),
+  });
+  if (!res.ok) throw new Error("Error al cargar pedidos (¿sin permisos?)");
+  return res.json();
+}
+
+// Tasa oficial del BCV (a través de DolarAPI, se actualiza a diario).
+// Se guarda en localStorage para no consultarla en cada render.
+const BCV_CACHE_KEY = "bcvRate";
+const BCV_CACHE_MS = 6 * 60 * 60 * 1000; // 6 horas
+
+export async function fetchBcvRate(): Promise<number> {
+  const cached = localStorage.getItem(BCV_CACHE_KEY);
+  if (cached) {
+    const data = JSON.parse(cached) as BcvCache;
+    if (Date.now() - data.timestamp < BCV_CACHE_MS) {
+      return data.promedio;
+    }
+  }
+
+  const res = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
+  if (!res.ok) throw new Error("No se pudo obtener la tasa BCV");
+
+  const data = (await res.json()) as BcvCache;
+  localStorage.setItem(
+    BCV_CACHE_KEY,
+    JSON.stringify({ promedio: data.promedio, timestamp: Date.now() })
+  );
+  return data.promedio;
+}

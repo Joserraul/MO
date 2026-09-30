@@ -2,6 +2,16 @@ import { useState, useEffect, useRef } from "react";
 import Cart from "../pages/Cart.jsx";
 import { fetchProducts } from "../services/api.js";
 import { lockScroll, unlockScroll } from "../utils/scrollLock.js";
+import type { Product } from "../types/index.js";
+
+/** Carrito persistido en localStorage: id → cantidad */
+type StoredCart = Record<string, number>;
+
+/** Producto del catálogo enriquecido con la cantidad agregada */
+type CartLine = Product & { quantity: number };
+
+const readCart = (): StoredCart =>
+  JSON.parse(localStorage.getItem("cart") || "{}") as StoredCart;
 
 /**
  * Drawer del carrito para las páginas que no tienen uno propio
@@ -10,7 +20,7 @@ import { lockScroll, unlockScroll } from "../utils/scrollLock.js";
  */
 function CartDrawerHost() {
   const [isOpen, setIsOpen] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [, setCartVersion] = useState(0); // solo para re-render al cambiar el carrito
   const lockedRef = useRef(false);
 
@@ -47,10 +57,10 @@ function CartDrawerHost() {
     }
   }, []);
 
-  const changeQty = (id, delta) => {
+  const changeQty = (id: string | number, delta: number) => {
     const product = products.find((p) => String(p.id) === String(id));
     if (!product) return;
-    const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+    const cart = readCart();
     const newQty = (cart[id] || 0) + delta;
     if (newQty > product.stock) return;
     if (newQty > 0) {
@@ -63,8 +73,8 @@ function CartDrawerHost() {
     setCartVersion((v) => v + 1);
   };
 
-  const cart = JSON.parse(localStorage.getItem("cart") || "{}");
-  const cartList = Object.keys(cart)
+  const cart = readCart();
+  const cartList: CartLine[] = Object.keys(cart)
     .filter((id) => cart[id] > 0)
     .map((id) => {
       const product = products.find((p) => String(p.id) === String(id));

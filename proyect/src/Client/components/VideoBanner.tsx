@@ -1,21 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import '../styles/VideoBanner.css';
+
+export interface VideoItem {
+  id: string;
+  link: string;
+}
+
+interface VideoBannerProps {
+  videos: VideoItem[];
+}
 
 // Obtiene la miniatura (portada) del video desde el link usando el API oEmbed de TikTok.
 // Ej: https://www.tiktok.com/oembed?url=<link> → { thumbnail_url, ... }
-const fetchThumbnail = async (link) => {
+const fetchThumbnail = async (link: string): Promise<string> => {
   const res = await fetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(link)}`);
   if (!res.ok) throw new Error('No se pudo obtener la miniatura');
-  const data = await res.json();
+  const data = (await res.json()) as { thumbnail_url: string };
   return data.thumbnail_url;
 };
 
-const VideoBanner = ({ videos }) => {
+const VideoBanner = ({ videos }: VideoBannerProps) => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(Math.floor(videos.length / 2)); // Iniciar en el medio
-  const [thumbnails, setThumbnails] = useState({}); // id → url de la miniatura
-  const videoItemRefs = useRef([]);
-  const intervalRef = useRef(null);
-  const wrapperRef = useRef(null); // Ref para el wrapper para el scroll
+  const [thumbnails, setThumbnails] = useState<Record<string, string>>({}); // id → url de la miniatura
+  const videoItemRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null); // Ref para el wrapper para el scroll
 
   // Cargar las miniaturas de todos los videos una sola vez
   useEffect(() => {
@@ -66,7 +75,7 @@ const VideoBanner = ({ videos }) => {
   }, [currentVideoIndex]);
 
   // Al hacer clic: se abre el video en TikTok (vista previa, no se reproduce aquí)
-  const handleVideoClick = (link) => {
+  const handleVideoClick = (link: string) => {
     window.open(link, '_blank');
   };
 
@@ -80,7 +89,7 @@ const VideoBanner = ({ videos }) => {
         {videos.map((video, index) => (
           <div
             key={video.id}
-            ref={el => videoItemRefs.current[index] = el}
+            ref={el => { videoItemRefs.current[index] = el; }}
             className={`video-item ${index === currentVideoIndex ? 'active' : ''}`}
             onClick={() => handleVideoClick(video.link)}
             role="button"

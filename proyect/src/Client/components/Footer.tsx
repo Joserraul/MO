@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/Footer.css'; // Importa los estilos para el Footer
 import { fetchBcvRate } from '../services/api.js';
 
@@ -8,7 +8,13 @@ import dianaImage from '../assets/admin/diana.jpg'; // ¡Corregida la extensión
 import fioImage from '../assets/admin/fio.jpeg';
 import jrImage from '../assets/admin/jr.jpeg';
 
-const TEAM = [
+interface TeamMember {
+  image: string;
+  name: string;
+  role: string;
+}
+
+const TEAM: TeamMember[] = [
   { image: candelaImage, name: 'Candela', role: 'Equipo Makeup Oriente' },
   { image: dianaImage, name: 'Diana', role: 'Equipo Makeup Oriente' },
   { image: fioImage, name: 'Fio', role: 'Equipo Makeup Oriente' },
@@ -17,9 +23,9 @@ const TEAM = [
 
 const Footer = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [usdRate, setUsdRate] = useState(null);
+  const [usdRate, setUsdRate] = useState<number | null>(null);
 
-  const goTo = (dir) => {
+  const goTo = (dir: number) => {
     setCurrentIndex((prev) => (prev + dir + TEAM.length) % TEAM.length);
   };
 

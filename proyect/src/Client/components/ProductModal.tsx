@@ -1,7 +1,21 @@
-import React from 'react';
 import '../styles/ProductModal.css';
+import type { Product } from '../types/index.js';
 
-const ProductModal = ({ product, quantity = 0, onClose, onAddToCart, onChangeQty }) => {
+interface ProductModalProps {
+  product: Product | null;
+  quantity?: number;
+  onClose: () => void;
+  onAddToCart: (id: number) => void;
+  onChangeQty: (id: number, delta: number) => void;
+}
+
+const ProductModal = ({
+  product,
+  quantity = 0,
+  onClose,
+  onAddToCart,
+  onChangeQty,
+}: ProductModalProps) => {
   if (!product) {
     return null;
   }

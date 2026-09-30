@@ -2,7 +2,15 @@ import { useState } from 'react';
 import { lockScroll, unlockScroll } from '../utils/scrollLock.js';
 import '../styles/SkinConcerns.css';
 
-const SKIN_INFO = [
+interface SkinInfo {
+  key: string;
+  name: string;
+  title: string;
+  intro: string;
+  tips: string[];
+}
+
+const SKIN_INFO: SkinInfo[] = [
   {
     key: 'morenas',
     name: 'Morenas',
@@ -84,9 +92,9 @@ const SKIN_INFO = [
 ];
 
 function SkinConcerns() {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState<SkinInfo | null>(null);
 
-  const open = (skin) => {
+  const open = (skin: SkinInfo) => {
     setSelected(skin);
     lockScroll();
   };
