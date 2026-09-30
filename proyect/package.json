@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "design:manifest": "node scripts/generate-design-manifest.mjs",
-    "design:check": "vitest run src/test/design.test.js"
+    "design:check": "vitest run src/test/design.test.js",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@stomp/stompjs": "^7.3.0",
@@ -35,6 +36,8 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "jsdom": "^30.1.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.0",
     "vite": "^7.3.1",
     "vitest": "^5.0.3"
   }

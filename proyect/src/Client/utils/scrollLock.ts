@@ -5,7 +5,7 @@
 let locks = 0;
 let savedY = 0;
 
-export function lockScroll() {
+export function lockScroll(): void {
   if (locks === 0) {
     savedY = window.scrollY;
     document.body.style.position = "fixed";
@@ -16,7 +16,7 @@ export function lockScroll() {
   locks++;
 }
 
-export function unlockScroll() {
+export function unlockScroll(): void {
   locks = Math.max(0, locks - 1);
   if (locks === 0) {
     document.body.style.position = "";
