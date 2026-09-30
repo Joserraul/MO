@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   verificar:
-    name: Lint, diseno, tests y build
+    name: Lint, tipos, diseno, tests y build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -36,6 +36,11 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      # Todo el codigo bajo src es TypeScript: el compilador es la capa
+      # de tipos que ninguna prueba de ejecucion cubre.
+      - name: Tipos
+        run: npm run typecheck
 
       # El diseno glass oscuro es el oficial: si alguien toca un .css,
       # este paso falla y obliga a re-sellar el manifiesto a proposito.
