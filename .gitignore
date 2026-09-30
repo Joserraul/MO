@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+.pnp
+*.lock
+
+# Production build
+dist/
+build/
+
+# Runtime stuff
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vite / React
+/dist
+/.vite
+
+# Intermediate build outputs
+/temp*
+
+# IDE stuff
+.idea/
+.vscode/
+
+# History
+.hot-reload-state-*
+
+# Old backend/data artifacts that shouldn't be in frontend src
+/src/data
+/src/views
+/src/middleware
+/src/models
