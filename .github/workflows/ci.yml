@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main, glass]
+  pull_request:
+    branches: [main, glass]
+
+# Solo lectura: este workflow no publica nada.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Lint, diseno, tests y build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proyect
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: proyect/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      # El diseno glass oscuro es el oficial: si alguien toca un .css,
+      # este paso falla y obliga a re-sellar el manifiesto a proposito.
+      - name: El diseno aprobado sigue intacto
+        run: npm run design:check
+
+      - name: Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
