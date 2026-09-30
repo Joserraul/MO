@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DeliveryMethod from "./DeliveryMethod.jsx";
-import { API_HOST, getToken, clearSession } from "../services/api.js";
+import { API_HOST, getToken } from "../services/api.js";
 import Navbar from "../components/Navbar.jsx";
 import '../styles/Checkout.css';
 import { useBcvRate } from "../hooks/useBcvRate.js";

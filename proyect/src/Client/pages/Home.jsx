@@ -25,7 +25,7 @@ function Home() {
   const [cartItems, setCartItems] = useState(() => JSON.parse(localStorage.getItem('cart') || '{}')); // Inicializar desde localStorage
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false); // Estado para abrir/cerrar carrito
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar la visibilidad del modal
+  const [, setIsModalOpen] = useState(false); // Estado para controlar la visibilidad del modal
   const [selectedProduct, setSelectedProduct] = useState(null); // Estado para el producto seleccionado en el modal
 
   const categoriesData = ['Rostro', 'Labios', 'Ojos', 'Skincare', 'Herramientas'];

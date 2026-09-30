@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { lockScroll, unlockScroll } from '../utils/scrollLock.js';
 import '../styles/SkinConcerns.css';
 
 const SKIN_INFO = [
@@ -87,12 +88,12 @@ function SkinConcerns() {
 
   const open = (skin) => {
     setSelected(skin);
-    document.body.style.overflow = 'hidden';
+    lockScroll();
   };
 
   const close = () => {
     setSelected(null);
-    document.body.style.overflow = 'unset';
+    unlockScroll();
   };
 
   return (

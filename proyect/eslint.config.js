@@ -26,4 +26,16 @@ export default defineConfig([
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },
+  {
+    // El entrypoint monta la app sin exportar componentes: react-refresh no aplica.
+    files: ['src/Client/main.jsx'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
+  {
+    // Scripts y tests corren en Node, no en el navegador.
+    files: ['scripts/**/*.{js,mjs}', 'vitest.config.js', 'src/test/**/*.{js,jsx}'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
 ])
