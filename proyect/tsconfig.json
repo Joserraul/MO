@@ -14,12 +14,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    // Migracion gradual: allowJs deja convivir los .js/.jsx que faltan por
-    // convertir, y checkJs apagado hace que el compilador todavia no los
-    // verifique. Al terminar la migracion se quitan ambos.
-    "allowJs": true,
-    "checkJs": false,
-
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
