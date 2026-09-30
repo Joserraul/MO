@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { saveSession, getToken, clearSession, loginUser } from '../Client/services/api.js';
+import type { User } from '../Client/types/index.js';
 
-const sampleUser = {
+// El fixture se ata a User: si el dominio exige un campo nuevo, el
+// compilador lo avisa en vez de dejar que el test pase en silencio.
+const sampleUser: User = {
   id: 1,
   username: 'Ana',
   email: 'ana@test.com',
@@ -17,7 +20,7 @@ describe('api - sesión', () => {
   it('saveSession guarda el token y el usuario', () => {
     saveSession('jwt-123', sampleUser);
     expect(getToken()).toBe('jwt-123');
-    expect(JSON.parse(localStorage.getItem('user'))).toEqual(sampleUser);
+    expect(JSON.parse(localStorage.getItem('user') as string)).toEqual(sampleUser);
   });
 
   it('clearSession elimina token y usuario', () => {

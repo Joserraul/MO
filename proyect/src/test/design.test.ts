@@ -19,13 +19,13 @@ import manifest from './design-manifest.json';
 const root = process.cwd();
 const stylesDir = join(root, 'src', 'Client', 'styles');
 
-const readCss = (rel) => readFileSync(join(root, rel), 'utf8');
+const readCss = (rel: string) => readFileSync(join(root, rel), 'utf8');
 const indexCss = readCss('src/Client/index.css');
 
 /** Los tokens viven en el `:root` de index.css (no hay tokens.css). */
 const rootBlock = indexCss.match(/:root\s*\{([^}]*)\}/)?.[1] ?? '';
 
-function token(name) {
+function token(name: string) {
   const m = rootBlock.match(new RegExp(`--${name}\\s*:\\s*([^;]+);`));
   return m ? m[1].trim() : '';
 }
@@ -71,18 +71,21 @@ describe('el estilo oficial sigue siendo glass oscuro', () => {
 
 /* ---------------- B. valores congelados ---------------- */
 
-const tokenMap = new Map();
+const tokenMap = new Map<string, string>();
 for (const m of rootBlock.matchAll(/(--[a-z0-9-]+)\s*:\s*([^;]+);/gi)) {
   tokenMap.set(m[1], m[2].trim());
 }
 
-function resolveVars(value, depth = 0) {
+function resolveVars(value: string, depth = 0): string {
   if (depth > 10) return value;
-  return value.replace(/var\(\s*(--[a-z0-9-]+)\s*(?:,\s*([^)]*))?\)/gi, (whole, name, fallback) => {
-    const v = tokenMap.get(name);
-    if (v === undefined) return fallback !== undefined ? fallback.trim() : whole;
-    return resolveVars(v, depth + 1);
-  });
+  return value.replace(
+    /var\(\s*(--[a-z0-9-]+)\s*(?:,\s*([^)]*))?\)/gi,
+    (whole: string, name: string, fallback?: string) => {
+      const v = tokenMap.get(name);
+      if (v === undefined) return fallback !== undefined ? fallback.trim() : whole;
+      return resolveVars(v, depth + 1);
+    }
+  );
 }
 
 /**
@@ -90,7 +93,7 @@ function resolveVars(value, depth = 0) {
  * regla que contenga el selector exacto, para que `body` no se confunda con
  * `html, body` ni `.cart-drawer` con `.cart-drawer.open`.
  */
-function resolved(file, selector, prop) {
+function resolved(file: string, selector: string, prop: string) {
   const css = readCss(file).replace(/\/\*[\s\S]*?\*\//g, '');
   const target = selector.trim();
   const declRe = new RegExp(`(?:^|;)\\s*${prop}\\s*:\\s*([^;]+)`);
@@ -169,6 +172,9 @@ const cssFiles = [
     .map((f) => `src/Client/styles/${f}`),
 ].sort();
 
+/** El manifiesto se indexa por ruta de hoja; el sellado lo recorre con cssFiles. */
+const approvedHashes = manifest.files as Record<string, string>;
+
 describe('ninguna hoja de estilos cambio sin aprobacion', () => {
   it('no hay hojas de estilo nuevas fuera del manifiesto', () => {
     expect(cssFiles).toEqual(Object.keys(manifest.files).sort());
@@ -179,6 +185,6 @@ describe('ninguna hoja de estilos cambio sin aprobacion', () => {
       .update(readFileSync(join(root, file)))
       .digest('hex')
       .slice(0, 16);
-    expect(hash).toBe(manifest.files[file]);
+    expect(hash).toBe(approvedHashes[file]);
   });
 });

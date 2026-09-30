@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import Navbar from '../Client/components/Navbar.jsx';
+import type { User } from '../Client/types/index.js';
 
 vi.mock('../Client/services/api.js', async (importOriginal) => ({
   ...(await importOriginal()),
@@ -10,10 +11,10 @@ vi.mock('../Client/services/api.js', async (importOriginal) => ({
   fetchBcvRate: vi.fn().mockResolvedValue(36.5),
 }));
 
-const user = { id: 1, username: 'Ana', email: 'ana@test.com', role: 'user' };
-const admin = { id: 2, username: 'Root', email: 'root@test.com', role: 'admin' };
+const user: User = { id: 1, username: 'Ana', email: 'ana@test.com', role: 'user' };
+const admin: User = { id: 2, username: 'Root', email: 'root@test.com', role: 'admin' };
 
-function renderNavbar(sessionUser = null) {
+function renderNavbar(sessionUser: User | null = null) {
   if (sessionUser) localStorage.setItem('user', JSON.stringify(sessionUser));
   return render(
     <MemoryRouter>

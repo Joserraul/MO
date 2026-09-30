@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import Cart from '../Client/pages/Cart.jsx';
+import type { CartItem } from '../Client/types/index.js';
 
 // El carrito consulta la tasa BCV: la stubbeamos para no hacer fetch real.
 // importOriginal conserva el resto de exportaciones del módulo (getToken, etc).
@@ -11,7 +12,7 @@ vi.mock('../Client/services/api.js', async (importOriginal) => ({
   fetchBcvRate: vi.fn().mockResolvedValue(36.5),
 }));
 
-const sampleItems = [
+const sampleItems: CartItem[] = [
   {
     id: 1,
     name: 'Velvet Lip Tint',
@@ -69,7 +70,7 @@ describe('Cart', () => {
     // El producto 2 tiene stock 3 y ya está en 3 → su + debe estar deshabilitado.
     const atStock = [{ ...sampleItems[1], quantity: 3 }];
     renderCart(atStock);
-    const plusButtons = screen.getAllByRole('button', { name: '+' });
+    const plusButtons = screen.getAllByRole('button', { name: '+' }) as HTMLButtonElement[];
     const disabled = plusButtons.filter((b) => b.disabled);
     expect(disabled.length).toBeGreaterThan(0);
   });
@@ -77,7 +78,7 @@ describe('Cart', () => {
   it('llama a onChangeQty con el id y el delta al pulsar +', async () => {
     const user = userEvent.setup();
     const { onChangeQty } = renderCart();
-    const plusButtons = screen.getAllByRole('button', { name: '+' });
+    const plusButtons = screen.getAllByRole('button', { name: '+' }) as HTMLButtonElement[];
     await user.click(plusButtons[0]);
     expect(onChangeQty).toHaveBeenCalledWith(1, 1);
   });
