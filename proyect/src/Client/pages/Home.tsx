@@ -20,15 +20,26 @@ import '../styles/hero.css'; // Estilos del banner principal
 import heroBanner from '../assets/banner.jpg'; // Banner principal encima de categorías
 
 import SkinConcerns from '../components/SkinConcerns.jsx'; // Importar la sección "Sobre tu piel"
+import type { VideoItem } from '../components/VideoBanner.jsx';
+import type { CartItem, CartMap, Product, ProductCategory } from '../types/index.js';
+
+/** Mensaje que el backend publica en /topic/stock. */
+interface StockEvent {
+  deleted?: boolean;
+  id: number;
+  stock: number;
+}
 
 function Home() {
-  const [cartItems, setCartItems] = useState(() => JSON.parse(localStorage.getItem('cart') || '{}')); // Inicializar desde localStorage
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [cartItems, setCartItems] = useState<CartMap>(
+    () => JSON.parse(localStorage.getItem('cart') || '{}') as CartMap
+  ); // Inicializar desde localStorage
+  const [selectedCategory, setSelectedCategory] = useState<ProductCategory | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false); // Estado para abrir/cerrar carrito
   const [, setIsModalOpen] = useState(false); // Estado para controlar la visibilidad del modal
-  const [selectedProduct, setSelectedProduct] = useState(null); // Estado para el producto seleccionado en el modal
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para el producto seleccionado en el modal
 
-  const categoriesData = ['Rostro', 'Labios', 'Ojos', 'Skincare', 'Herramientas'];
+  const categoriesData: ProductCategory[] = ['Rostro', 'Labios', 'Ojos', 'Skincare', 'Herramientas'];
 
   // Asegúrate de que los productos también usen las categorías actualizadas
 /*  const products = [
@@ -43,12 +54,12 @@ function Home() {
     { id: '9', name: 'Beauty Blender', brand: 'BlendIt', price: 12.00, category: 'Herramientas', imageExtension: 'png' }
   ];*/
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
 
   useEffect(() => {                                // ← B2 VA AQUÍ, debajo
     fetch(`${API_HOST}/api/products`)
-        .then(response => response.json())
+        .then(response => response.json() as Promise<Product[]>)
         .then(data => setProducts(data));
   }, []);
 
@@ -57,7 +68,7 @@ function Home() {
       webSocketFactory: () => new SockJS(`${API_HOST}/ws`),
       onConnect: () => {
         client.subscribe("/topic/stock", (message) => {
-          const data = JSON.parse(message.body);
+          const data = JSON.parse(message.body) as StockEvent;
 
           // ¿El backend avisó que el producto fue ELIMINADO?
           if (data.deleted) {
@@ -68,7 +79,7 @@ function Home() {
             );
 
             fetch(`${API_HOST}/api/products/${data.id}`)
-                .then(response => response.json())
+                .then(response => response.json() as Promise<Product>)
                 .then(fullProduct => {
                   if (fullProduct.stock > 0) {
                     setProducts(prev =>
@@ -83,11 +94,12 @@ function Home() {
     });
 
     client.activate();
-    return () => client.deactivate();
+    // deactivate() devuelve una promesa; el cleanup de React debe ser void.
+    return () => { void client.deactivate(); };
   }, []);
 
   // Videos directamente de TikTok: solo basta el enlace (la app los convierte en reproductor embed)
-  const bannerVideos = [
+  const bannerVideos: VideoItem[] = [
     { id: '1', link: 'https://vt.tiktok.com/ZSq4waPr2/' },
     { id: '2', link: 'https://vt.tiktok.com/ZSq4wxJy9/' },
     { id: '3', link: 'https://vt.tiktok.com/ZSq4w4uBa/' },
@@ -99,7 +111,7 @@ function Home() {
   ];
 
   // En home.jsx
-const changeQty = (id, delta) => {
+const changeQty = (id: string | number, delta: number) => {
   // Límite de stock: no puedes agregar más de lo que hay disponible
   const product = products.find((p) => String(p.id) === String(id));
   if (!product) return;
@@ -124,7 +136,7 @@ const changeQty = (id, delta) => {
 };
 
   // Funciones para abrir y cerrar el modal
-  const openProductModal = (product) => {
+  const openProductModal = (product: Product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
     lockScroll(); // Bloquear scroll conservando la posición
@@ -148,7 +160,7 @@ const changeQty = (id, delta) => {
   };
 
   // Función para transformar el objeto cartItems en una lista de objetos de productos reales
-  const getCartList = () => {
+  const getCartList = (): CartItem[] => {
     return Object.keys(cartItems)
         .filter(id => cartItems[id] > 0)
         .map(id => {

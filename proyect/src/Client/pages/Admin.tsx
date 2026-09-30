@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import type { ChangeEvent, FocusEvent, FormEvent } from "react";
 import {
   createProduct,
   updateProduct,
@@ -9,40 +10,57 @@ import '../styles/Admin.css';
 import Navbar from "../components/Navbar.jsx";
 import { useBcvRate } from "../hooks/useBcvRate.js";
 import { formatBs } from "../utils/format.js";
+import type { Order, Product, ProductCategory, User } from "../types/index.js";
 
-const CATEGORIES = ["Rostro", "Labios", "Ojos", "Skincare", "Herramientas"];
+const CATEGORIES: ProductCategory[] = ["Rostro", "Labios", "Ojos", "Skincare", "Herramientas"];
 
-const METHOD_LABELS = {
+const METHOD_LABELS: Record<string, string> = {
   ENVIO: "Envío nacional",
   TIENDA: "Retiro por tienda",
   PAGOMOVIL: "Pago Móvil",
   TRANSFERENCIA: "Transferencia",
 };
 
+/** Borrador del formulario: precio y stock se digitan como texto y se parsean al enviar. */
+interface ProductDraft {
+  name: string;
+  brand: string;
+  category: ProductCategory;
+  description: string;
+  price: string;
+  stock: string;
+}
+
+const EMPTY_DRAFT: ProductDraft = {
+  name: "",
+  brand: "",
+  category: CATEGORIES[0],
+  description: "",
+  price: "",
+  stock: "",
+};
+
 // ---------- Sección 1: formulario de producto ----------
 function AddProduct() {
-  const [form, setForm] = useState({
-    name: "",
-    brand: "",
-    category: CATEGORIES[0],
-    description: "",
-    price: "",
-    stock: "",
-  });
+  const [form, setForm] = useState<ProductDraft>(EMPTY_DRAFT);
   const [image, setImage] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleImage = (e) => {
-    const file = e.target.files[0];
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => setImage(reader.result); // base64 data-url
+    reader.onload = () => {
+      if (typeof reader.result === "string") setImage(reader.result); // base64 data-url
+    };
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await createProduct({
@@ -55,17 +73,10 @@ function AddProduct() {
         image,
       });
       setMessage("Producto creado correctamente");
-      setForm({
-        name: "",
-        brand: "",
-        category: CATEGORIES[0],
-        description: "",
-        price: "",
-        stock: "",
-      });
+      setForm(EMPTY_DRAFT);
       setImage("");
     } catch (err) {
-      setMessage(err.message);
+      setMessage(err instanceof Error ? err.message : "No se pudo crear el producto");
     }
   };
 
@@ -128,7 +139,7 @@ function AddProduct() {
 
 // ---------- Sección 2: pedidos por día ----------
 function OrdersByDay() {
-  const [groups, setGroups] = useState({});
+  const [groups, setGroups] = useState<Record<string, Order[]>>({});
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(""); // "" = todas las fechas
   const usdRate = useBcvRate();
@@ -136,7 +147,7 @@ function OrdersByDay() {
   useEffect(() => {
     fetchOrders()
       .then((orders) => {
-        const g = {};
+        const g: Record<string, Order[]> = {};
         orders.forEach((o) => {
           const day = o.paymentDate || (o.orderDate ? o.orderDate.slice(0, 10) : "Sin fecha");
           if (!g[day]) g[day] = [];
@@ -227,17 +238,17 @@ function OrdersByDay() {
 }
 
 // ---------- Sección 3: stock ----------
-const STOCK_CATEGORY_ORDER = ["Rostro", "Labios", "Ojos", "Skincare", "Herramientas"];
+const STOCK_CATEGORY_ORDER: string[] = ["Rostro", "Labios", "Ojos", "Skincare", "Herramientas"];
 
 function StockManager() {
-  const [products, setProducts] = useState([]);
-  const [collapsed, setCollapsed] = useState(new Set()); // categorías plegadas
+  const [products, setProducts] = useState<Product[]>([]);
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set()); // categorías plegadas
 
   useEffect(() => {
     fetchProducts().then(setProducts).catch(() => {});
   }, []);
 
-  const toggleCategory = (cat) => {
+  const toggleCategory = (cat: string) => {
     setCollapsed((prev) => {
       const next = new Set(prev);
       if (next.has(cat)) {
@@ -249,13 +260,13 @@ function StockManager() {
     });
   };
 
-  const adjustStock = async (product, delta) => {
+  const adjustStock = async (product: Product, delta: number) => {
     const newStock = Math.max(0, product.stock + delta);
     await updateField(product, { stock: newStock });
   };
 
   // Guarda cambios puntuales de un producto (stock, precio, categoría, imagen)
-  const updateField = async (product, patch) => {
+  const updateField = async (product: Product, patch: Partial<Product>) => {
     try {
       const updated = await updateProduct({ ...product, ...patch });
       setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
@@ -265,18 +276,20 @@ function StockManager() {
   };
 
   // Cambiar la imagen del producto (se sube en base64 igual que al crearlo)
-  const changeImage = (product, e) => {
-    const file = e.target.files[0];
+  const changeImage = (product: Product, e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = async () => {
-      await updateField(product, { image: reader.result });
+      if (typeof reader.result === "string") {
+        await updateField(product, { image: reader.result });
+      }
     };
     reader.readAsDataURL(file);
   };
 
   // Cambiar precio: se guarda al salir del campo o al pulsar Enter
-  const handlePriceBlur = (product, e) => {
+  const handlePriceBlur = (product: Product, e: FocusEvent<HTMLInputElement>) => {
     const price = parseFloat(e.target.value);
     if (!Number.isNaN(price) && price >= 0 && price !== product.price) {
       updateField(product, { price });
@@ -284,7 +297,7 @@ function StockManager() {
   };
 
   // Agrupar productos por categoría (respetando el orden de STOCK_CATEGORY_ORDER + otras)
-  const grouped = {};
+  const grouped: Record<string, Product[]> = {};
   products.forEach((p) => {
     const cat = p.category || "Sin categoría";
     if (!grouped[cat]) grouped[cat] = [];
@@ -364,7 +377,7 @@ function StockManager() {
                           step="0.01"
                           defaultValue={p.price}
                           onBlur={(e) => handlePriceBlur(p, e)}
-                          onKeyDown={(e) => e.key === "Enter" && e.target.blur()}
+                          onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
                           aria-label={`Precio de ${p.name}`}
                         />
                       </div>
@@ -401,9 +414,11 @@ function StockManager() {
 }
 
 // ---------- Panel principal ----------
+type AdminTab = 'products' | 'orders' | 'stock';
+
 function Admin() {
-  const user = JSON.parse(localStorage.getItem("user") || "null");
-  const [tab, setTab] = useState("products");
+  const user = JSON.parse(localStorage.getItem("user") || "null") as User | null;
+  const [tab, setTab] = useState<AdminTab>("products");
 
   if (!user || !user.role || user.role.toLowerCase() !== "admin") {
     return (
